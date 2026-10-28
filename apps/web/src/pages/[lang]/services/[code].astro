@@ -1,0 +1,87 @@
+---
+import Base from '~/layouts/Base.astro';
+import { LOCALES, type L } from '~/lib/i18n';
+import { ITEMS, SECTIONS, GROUPS, RENEW, BY, groupOf, price, renewLabel, page, svc } from '@bw/shared';
+import { T, EST, EST_ADD } from '~/i18n/service.js';
+export function getStaticPaths() {
+  return LOCALES.flatMap((lang) => ITEMS.map((it: any) => ({ params: { lang, code: it.code.toLowerCase() } })));
+}
+const lang = Astro.params.lang as L, o = lang;
+const t = (T as any)[lang], tn = t.tn, needs = t.needs;
+const it: any = BY[Astro.params.code!.toUpperCase()];
+const sec: any = SECTIONS.find((x: any) => x.k === it.sec), g = groupOf(it.code), grp: any = GROUPS.find((x: any) => x.k === g);
+const scope: string = it[o === 'id' ? 'sid' : 'sen'], parts = scope.replace(/\.$/, '').split(/;\s*/);
+const cap = (x: string) => x.charAt(0).toUpperCase() + x.slice(1);
+const inc = parts[0].split(/,\s*(?![^()]*\))/).map(cap).filter(Boolean);
+const lim = [...parts.slice(1).map(cap), t.fallback];
+const pay = it.bill === 'm' ? t.pMonth : it.p <= 99000 && it.type === 'f' ? t.pFull : it.p >= 10000000 ? t.pMs : t.p50;
+const facts = [{ k: t.bill, v: ({ o: t.once, m: t.month, y: t.year } as any)[it.bill] }, ...((RENEW as any)[it.code] ? [{ k: t.renew, v: renewLabel(it.code, lang) }] : []), { k: t.pay, v: pay }, { k: t.hours, v: t.wib }];
+const sib: any[] = ITEMS.filter((x: any) => x.sec === it.sec), i = sib.indexOf(it), prev = sib[(i - 1 + sib.length) % sib.length], next = sib[(i + 1) % sib.length];
+const blocks = [{ title: t.inc, items: inc, dot: 'var(--tx)' }, { title: t.lim, items: lim, dot: 'transparent' }, { title: t.need, items: needs[g], dot: 'transparent' }];
+const canEst = EST.includes(it.code) || EST_ADD.includes(it.code);
+const estHref = page(lang, 'Estimator', EST.includes(it.code) ? { base: it.code } : { add: it.code });
+---
+<Base lang={lang} active="Service" title={`${it.code} ${it[o]} — Buatinweb.site`} desc={scope}>
+<div class="wrap">
+<nav aria-label="Breadcrumb" class="mono" style="padding:28px 0 0;font-size:12px;color:var(--tx2)">
+<ol style="list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:8px">
+<li><a href={page(lang, 'Pricing')} style="color:var(--tx2)">{t.pricing}</a></li><li aria-hidden="true">/</li>
+<li><a href={page(lang, 'Pricing') + '#s-' + sec.k.replace('.', '-')} style="color:var(--tx2)">{sec[o]}</a></li><li aria-hidden="true">/</li>
+<li aria-current="page" style="color:var(--tx)">{it.code}</li>
+</ol>
+</nav>
+
+<section aria-labelledby="sv-h" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:clamp(32px,6vw,80px);padding:clamp(32px,5vw,64px) 0 clamp(48px,6vw,72px);border-bottom:1px solid var(--bd);align-items:start">
+<div>
+<p class="eyebrow" style="margin-bottom:20px">{it.code} · {grp[o]}</p>
+<h1 id="sv-h" class="h1" style="text-wrap:balance">{it[o]}</h1>
+<p style="font-size:clamp(17px,1.6vw,20px);color:var(--tx2);max-width:32em;margin:24px 0 0;text-wrap:pretty">{scope}</p>
+<div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:32px">
+<a href={page(lang, 'Contact', { service: it.code })} class="btn">{t.brief}</a>
+{canEst && <a href={estHref} class="btn2">{t.estimate}</a>}
+<a href={page(lang, 'Pricing', { cmp: it.code, q: it.code })} style="text-decoration:none;padding:13px 6px;font-weight:600;color:var(--tx2)">{t.compare}</a>
+</div>
+</div>
+<div style="border:1px solid var(--tx);border-radius:12px;overflow:hidden">
+<div style="padding:24px;border-bottom:1px solid var(--tx)">
+<div class="mono" style="font-size:12px;color:var(--tx2);text-transform:uppercase;letter-spacing:0.04em">{t.price}</div>
+<div style="font-size:clamp(32px,3.6vw,46px);font-weight:600;letter-spacing:-0.03em;line-height:1.05;margin-top:8px">{price(it, lang)}</div>
+<div style="font-size:14px;color:var(--tx2);margin-top:8px">{tn[it.type]}</div>
+</div>
+<dl style="margin:0">
+{facts.map((f) => <div style="display:flex;justify-content:space-between;gap:16px;padding:13px 24px;border-bottom:1px solid var(--bd);font-size:15px"><dt style="color:var(--tx2)">{f.k}</dt><dd style="margin:0;text-align:right;font-weight:600">{f.v}</dd></div>)}
+</dl>
+<div style="padding:14px 24px;background:var(--sf);font-size:13px;color:var(--tx2)">{t.quoteNote}</div>
+</div>
+</section>
+
+<section aria-label={t.detail} style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));gap:1px;background:var(--bd);border:1px solid var(--bd);border-radius:12px;overflow:hidden;margin-top:clamp(48px,6vw,72px)">
+{blocks.map((b) => (
+<div style="background:var(--bg);padding:28px 24px;display:flex;flex-direction:column;gap:14px">
+<h2 class="mono" style="margin:0;font-size:12px;text-transform:uppercase;letter-spacing:0.04em;color:var(--tx2)">{b.title}</h2>
+<ul style="margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:10px">
+{b.items.map((x: string) => <li style="display:flex;gap:10px;font-size:15px"><span aria-hidden="true" style={`width:6px;height:6px;margin-top:9px;flex:none;background:${b.dot};border:1px solid var(--tx)`}></span><span style="text-wrap:pretty">{x}</span></li>)}
+</ul>
+</div>
+))}
+</section>
+
+<section aria-labelledby="rel-h" style="padding-top:clamp(64px,8vw,104px)">
+<div class="rule"><span>{sec.k}</span><h2 id="rel-h" style="margin:0;font-size:clamp(22px,2.4vw,30px);letter-spacing:-0.02em;font-weight:600">{t.related}</h2></div>
+<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,260px),1fr));gap:12px;margin-top:24px">
+{sib.filter((x) => x !== it).slice(0, 6).map((r) => (
+<a href={svc(lang, r.code)} class="hov" style="border:1px solid var(--bd2);border-radius:12px;padding:18px;display:flex;flex-direction:column;gap:8px;text-decoration:none;min-height:140px">
+<span class="mono" style="font-size:12px;color:var(--tx2)">{r.code}</span>
+<span style="font-size:17px;font-weight:600;letter-spacing:-0.01em;color:var(--tx)">{r[o]}</span>
+<span class="mono" style="font-size:13px;margin-top:auto;border-top:1px solid var(--bd);padding-top:10px;color:var(--tx)">{price(r, lang)}</span>
+</a>
+))}
+</div>
+<div style="display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-top:32px;border-top:1px solid var(--bd);padding-top:20px">
+<a href={svc(lang, prev.code)} style="text-decoration:none;display:flex;flex-direction:column;gap:2px"><span class="mono" style="font-size:12px;color:var(--tx2)">← {prev.code}</span><span style="font-weight:600">{prev[o]}</span></a>
+<a href={svc(lang, next.code)} style="text-decoration:none;display:flex;flex-direction:column;gap:2px;text-align:right"><span class="mono" style="font-size:12px;color:var(--tx2)">{next.code} →</span><span style="font-weight:600">{next[o]}</span></a>
+</div>
+</section>
+</div>
+<style>.hov:hover{border-color:var(--tx)!important}</style>
+</Base>

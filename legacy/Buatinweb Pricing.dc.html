@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;600&family=Geist+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+body{margin:0;--bg:#FFFFFF;--sf:#F5F5F5;--tx:#111111;--tx2:#525252;--bd:#E5E5E5;--bd2:#8A8A8A;--inv:#111111;--invtx:#FFFFFF;--err:#B42318;--ok:#146C34;--logo-f:none;--logo-b:multiply;background:var(--bg);color:var(--tx);font-family:'Geist',system-ui,sans-serif;font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased}
+body[data-theme="dark"]{--bg:#0A0A0A;--sf:#151515;--tx:#F5F5F5;--tx2:#B3B3B3;--bd:#333333;--bd2:#8C8C8C;--inv:#F5F5F5;--invtx:#0A0A0A;--err:#FF8A80;--ok:#6FDC8C;--logo-f:invert(1);--logo-b:screen}
+*{box-sizing:border-box}
+a{color:var(--tx);text-decoration-thickness:1px;text-underline-offset:3px}
+a:hover{color:var(--tx2)}
+::placeholder{color:var(--tx2);opacity:1}
+@media (prefers-reduced-motion: reduce){*{transition:none!important;scroll-behavior:auto!important}}
+</style>
+</helmet>
+<div style="min-height:100vh;background:var(--bg);color:var(--tx)">
+<dc-import name="BW Header" active="Pricing" hint-size="100%,68px"></dc-import>
+<main id="main" style="max-width:1280px;margin:0 auto;padding:0 clamp(20px,4vw,40px)">
+
+<section aria-labelledby="pr-h" style="padding:clamp(48px,7vw,88px) 0 40px;border-bottom:1px solid var(--bd)">
+<p style="font:400 13px/1.4 'Geist Mono',monospace;color:var(--tx2);margin:0 0 24px;letter-spacing:0.02em;text-transform:uppercase">{{ t.eyebrow }}</p>
+<div style="display:flex;flex-wrap:wrap;justify-content:space-between;gap:24px;align-items:end">
+<h1 id="pr-h" style="font-size:clamp(40px,6vw,80px);line-height:0.98;letter-spacing:-0.045em;font-weight:600;margin:0;max-width:12ch">{{ t.title }}</h1>
+<p style="margin:0;color:var(--tx2);max-width:30em;text-wrap:pretty">{{ t.sub }}</p>
+</div>
+<dl style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,200px),1fr));gap:1px;background:var(--bd);border:1px solid var(--bd);border-radius:12px;overflow:hidden;margin:40px 0 0">
+<sc-for list="{{ legend }}" as="l" hint-placeholder-count="5"><div style="background:var(--bg);padding:16px 18px"><dt style="font:400 12px 'Geist Mono',monospace;text-transform:uppercase;letter-spacing:0.04em">{{ l.k }}</dt><dd style="margin:6px 0 0;font-size:14px;color:var(--tx2)">{{ l.v }}</dd></div></sc-for>
+</dl>
+</section>
+
+<section aria-label="{{ t.filters }}" style="position:sticky;top:68px;z-index:20;background:var(--bg);padding:16px 0;border-bottom:1px solid var(--bd);display:flex;flex-direction:column;gap:10px">
+<div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center">
+<label style="flex:1 1 260px;display:flex;align-items:center;gap:10px;border:1px solid var(--bd2);border-radius:6px;padding:0 14px;min-height:44px">
+<span style="font:400 12px 'Geist Mono',monospace;color:var(--tx2)">{{ t.search }}</span>
+<input type="search" value="{{ q }}" onChange="{{ onQ }}" placeholder="{{ t.searchPh }}" style="flex:1;min-width:0;border:0;outline:0;background:transparent;color:var(--tx);font:inherit;height:42px">
+</label>
+<label style="display:flex;align-items:center;gap:8px;font-size:14px"><span style="color:var(--tx2)">{{ t.billing }}</span>
+<select value="{{ bill }}" onChange="{{ onBill }}" style="font:inherit;font-size:14px;min-height:44px;padding:0 10px;border:1px solid var(--bd2);border-radius:6px;background:var(--bg);color:var(--tx)"><sc-for list="{{ billOpts }}" as="o" hint-placeholder-count="4"><option value="{{ o.v }}">{{ o.l }}</option></sc-for></select></label>
+<label style="display:flex;align-items:center;gap:8px;font-size:14px"><span style="color:var(--tx2)">{{ t.ptype }}</span>
+<select value="{{ ptype }}" onChange="{{ onType }}" style="font:inherit;font-size:14px;min-height:44px;padding:0 10px;border:1px solid var(--bd2);border-radius:6px;background:var(--bg);color:var(--tx)"><sc-for list="{{ typeOpts }}" as="o" hint-placeholder-count="6"><option value="{{ o.v }}">{{ o.l }}</option></sc-for></select></label>
+</div>
+<div role="group" aria-label="{{ t.category }}" style="display:flex;gap:6px;overflow-x:auto;padding-bottom:2px">
+<sc-for list="{{ groupChips }}" as="o" hint-placeholder-count="8"><button type="button" aria-pressed="{{ o.on }}" onClick="{{ o.pick }}" style="flex:none;font:inherit;font-size:14px;min-height:38px;padding:0 14px;border:1px solid var(--bd2);border-radius:999px;cursor:pointer;background:{{ o.bg }};color:{{ o.fg }}">{{ o.label }} <span style="opacity:0.65;font-family:'Geist Mono',monospace;font-size:12px">{{ o.n }}</span></button></sc-for>
+</div>
+<div style="display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font:400 12px 'Geist Mono',monospace;color:var(--tx2)"><span aria-live="polite">{{ countLabel }}</span><sc-if value="{{ filtered }}" hint-placeholder-val="{{ false }}"><button type="button" onClick="{{ reset }}" style="font:inherit;background:none;border:0;padding:0;color:var(--tx);text-decoration:underline;cursor:pointer">{{ t.reset }}</button></sc-if></div>
+</section>
+
+<sc-for list="{{ sections }}" as="s" hint-placeholder-count="3">
+<section id="{{ s.anchor }}" aria-labelledby="{{ s.hid }}" style="padding-top:56px">
+<div style="display:flex;gap:16px;align-items:baseline;border-top:1px solid var(--tx);padding-top:14px;flex-wrap:wrap">
+<span style="font:400 12px 'Geist Mono',monospace;color:var(--tx2)">{{ s.k }}</span>
+<h2 id="{{ s.hid }}" style="margin:0;font-size:clamp(22px,2.4vw,30px);letter-spacing:-0.02em;font-weight:600">{{ s.name }}</h2>
+<span style="margin-left:auto;font:400 12px 'Geist Mono',monospace;color:var(--tx2)">{{ s.count }}</span>
+</div>
+<div style="margin-top:8px">
+<sc-for list="{{ s.rows }}" as="it" hint-placeholder-count="6">
+<div style="display:grid;grid-template-columns:28px 72px minmax(0,1fr) auto;column-gap:16px;row-gap:4px;align-items:baseline;padding:16px 0;border-bottom:1px solid var(--bd)">
+<input type="checkbox" aria-label="{{ it.cmpAria }}" checked="{{ it.inCmp }}" disabled="{{ it.cmpDis }}" onChange="{{ it.toggleCmp }}" style="width:18px;height:18px;margin:0;accent-color:var(--tx);align-self:center">
+<span style="font:400 12px 'Geist Mono',monospace;color:var(--tx2)">{{ it.code }}</span>
+<div style="min-width:0">
+<a href="{{ it.href }}" style="font-size:16px;font-weight:600;text-decoration:none">{{ it.name }}</a>
+<p style="margin:4px 0 0;font-size:14px;color:var(--tx2);text-wrap:pretty;max-width:60ch">{{ it.scope }}</p>
+</div>
+<div style="text-align:right;display:flex;flex-direction:column;align-items:flex-end;gap:6px">
+<span style="font:400 14px 'Geist Mono',monospace;white-space:nowrap">{{ it.price }}</span>
+<span style="font:400 11px 'Geist Mono',monospace;text-transform:uppercase;letter-spacing:0.04em;border:1px solid var(--bd2);border-radius:4px;padding:2px 6px;color:var(--tx2)">{{ it.type }}</span>
+<sc-if value="{{ it.hasRenew }}" hint-placeholder-val="{{ false }}"><span style="font-size:12px;color:var(--tx2)">{{ it.renew }}</span></sc-if>
+</div>
+</div>
+</sc-for>
+</div>
+</section>
+</sc-for>
+<sc-if value="{{ empty }}" hint-placeholder-val="{{ false }}">
+<div style="padding:72px 0;text-align:center;color:var(--tx2)">{{ t.empty }} <button type="button" onClick="{{ reset }}" style="font:inherit;background:none;border:0;color:var(--tx);text-decoration:underline;cursor:pointer">{{ t.reset }}</button></div>
+</sc-if>
+
+<section id="renewals" aria-labelledby="rn-h" style="padding-top:88px">
+<div style="display:flex;gap:16px;align-items:baseline;border-top:1px solid var(--tx);padding-top:14px"><span style="font:400 12px 'Geist Mono',monospace;color:var(--tx2)">A.16</span><h2 id="rn-h" style="margin:0;font-size:clamp(22px,2.4vw,30px);letter-spacing:-0.02em;font-weight:600">{{ t.renewTitle }}</h2></div>
+<p style="color:var(--tx2);max-width:44em;margin:12px 0 16px">{{ t.renewSub }}</p>
+<sc-for list="{{ renewals }}" as="r" hint-placeholder-count="11">
+<div style="display:grid;grid-template-columns:72px minmax(0,1fr) auto;gap:16px;align-items:baseline;padding:14px 0;border-bottom:1px solid var(--bd)">
+<span style="font:400 12px 'Geist Mono',monospace;color:var(--tx2)">{{ r.code }}</span>
+<div style="min-width:0"><span style="font-weight:600">{{ r.name }}</span><p style="margin:2px 0 0;font-size:14px;color:var(--tx2)">{{ r.note }}</p></div>
+<span style="font:400 14px 'Geist Mono',monospace;white-space:nowrap">{{ r.price }}</span>
+</div>
+</sc-for>
+</section>
+</main>
+
+<sc-if value="{{ hasCmp }}" hint-placeholder-val="{{ false }}">
+<aside aria-label="{{ t.cmpTitle }}" style="position:sticky;bottom:0;z-index:30;background:var(--bg);border-top:1px solid var(--tx);margin-top:48px">
+<div style="max-width:1280px;margin:0 auto;padding:12px clamp(20px,4vw,40px);display:flex;flex-wrap:wrap;gap:10px;align-items:center">
+<span style="font:400 12px 'Geist Mono',monospace;text-transform:uppercase;letter-spacing:0.04em">{{ cmpCount }}</span>
+<sc-for list="{{ cmpList }}" as="c" hint-placeholder-count="2"><button type="button" onClick="{{ c.remove }}" aria-label="{{ c.aria }}" style="font:400 12px 'Geist Mono',monospace;min-height:36px;padding:0 10px;border:1px solid var(--bd2);border-radius:6px;background:var(--bg);color:var(--tx);cursor:pointer">{{ c.code }} ×</button></sc-for>
+<div style="margin-left:auto;display:flex;gap:8px">
+<button type="button" onClick="{{ clearCmp }}" style="font:inherit;font-size:14px;min-height:44px;padding:0 14px;border:1px solid var(--bd2);border-radius:6px;background:var(--bg);color:var(--tx);cursor:pointer">{{ t.clear }}</button>
+<button type="button" aria-expanded="{{ cmpOpen }}" aria-controls="cmp-panel" onClick="{{ toggleCmpPanel }}" style="font:inherit;font-weight:600;font-size:14px;min-height:44px;padding:0 16px;border:0;border-radius:6px;background:var(--inv);color:var(--invtx);cursor:pointer">{{ cmpBtn }}</button>
+</div>
+</div>
+<sc-if value="{{ cmpOpen }}" hint-placeholder-val="{{ false }}">
+<div id="cmp-panel" role="region" aria-label="{{ t.cmpTitle }}" tabindex="0" style="border-top:1px solid var(--bd);max-height:60vh;overflow:auto">
+<div style="max-width:1280px;margin:0 auto;padding:0 clamp(20px,4vw,40px) 16px;min-width:640px">
+<sc-for list="{{ cmpRows }}" as="r" hint-placeholder-count="6">
+<div style="display:flex;border-bottom:1px solid var(--bd)">
+<div style="width:150px;flex:none;padding:12px 0;font:400 12px/1.5 'Geist Mono',monospace;color:var(--tx2);text-transform:uppercase;letter-spacing:0.03em">{{ r.label }}</div>
+<sc-for list="{{ r.cells }}" as="c" hint-placeholder-count="3"><div style="flex:1 1 0;min-width:150px;padding:12px 16px;border-left:1px solid var(--bd);font-size:14px;font-weight:{{ c.w }}">{{ c.v }}</div></sc-for>
+</div>
+</sc-for>
+</div>
+</div>
+</sc-if>
+</aside>
+</sc-if>
+<dc-import name="BW Footer" hint-size="100%,220px"></dc-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+const T={en:{eyebrow:'Price book · v 2026-10-27.1',title:'Every price, in one place.',sub:'161 services across 15 sections. Each one lists its scope; recurring costs and renewals are always shown separately.',filters:'Filters',search:'SEARCH',searchPh:'Name, code or scope, e.g. “backup”, “DEP-11”',billing:'Billing',ptype:'Price type',category:'Category',all:'All',once:'One-time',month:'Monthly',year:'Yearly',reset:'Reset filters',empty:'No services match these filters.',count:'{n} of {t} services',
+renewTitle:'Website renewals, from year two',renewSub:'Year one hosting is part of each package. These are the yearly amounts after that, and they are never added to the first payment.',cmpTitle:'Compare services',cmpN:'{n} / 3 selected',open:'Compare',hide:'Hide comparison',clear:'Clear',add:'Add {c} to comparison',rm:'Remove {c} from comparison',
+rName:'Service',rPrice:'Price',rType:'Price type',rBill:'Billing',rScope:'Scope',rRenew:'Renewal',none:'—',
+lg:[['Fixed','A set price for the stated scope.'],['From','Starting price; final price set after scope review.'],['Range','Lowest and highest price for the stated scope.'],['Quote','Priced only after a needs assessment.'],['Actual','Passed through at the vendor’s real cost.']]},
+id:{eyebrow:'Daftar harga · v 2026-10-27.1',title:'Semua harga, di satu tempat.',sub:'161 layanan dalam 15 bagian. Setiap layanan mencantumkan scope; biaya berulang dan perpanjangan selalu ditampilkan terpisah.',filters:'Filter',search:'CARI',searchPh:'Nama, kode atau scope, mis. “backup”, “DEP-11”',billing:'Penagihan',ptype:'Jenis harga',category:'Kategori',all:'Semua',once:'Sekali bayar',month:'Bulanan',year:'Tahunan',reset:'Reset filter',empty:'Tidak ada layanan yang cocok.',count:'{n} dari {t} layanan',
+renewTitle:'Perpanjangan website, mulai tahun kedua',renewSub:'Hosting tahun pertama sudah termasuk dalam paket. Berikut biaya tahunan setelahnya, tidak pernah digabung ke pembayaran awal.',cmpTitle:'Bandingkan layanan',cmpN:'{n} / 3 dipilih',open:'Bandingkan',hide:'Tutup perbandingan',clear:'Hapus',add:'Tambahkan {c} ke perbandingan',rm:'Hapus {c} dari perbandingan',
+rName:'Layanan',rPrice:'Harga',rType:'Jenis harga',rBill:'Penagihan',rScope:'Scope',rRenew:'Perpanjangan',none:'—',
+lg:[['Tetap','Harga pasti untuk scope yang tertulis.'],['Mulai','Harga awal; final setelah review scope.'],['Rentang','Harga terendah dan tertinggi untuk scope tertulis.'],['Quotation','Ditentukan setelah analisis kebutuhan.'],['Aktual','Diteruskan sesuai biaya vendor sebenarnya.']]}};
+class Component extends DCLogic {
+  state={L:'en',D:null,q:'',g:'all',bill:'all',ptype:'all',cmp:[],cmpOpen:false};
+  componentDidMount(){
+    import(new URL('bw-data.js',location.href).href).then(D=>this.setState({D}));
+    const p=new URLSearchParams(location.search);let L='en';try{L=localStorage.getItem('bw-locale')||'en';}catch(e){}
+    this.setState({L,q:p.get('q')||'',g:p.get('cat')||'all',bill:p.get('bill')||'all',ptype:p.get('type')||'all',cmp:(p.get('cmp')||'').split(',').filter(Boolean).slice(0,3)});
+    this.onP=e=>e.detail.locale&&this.setState({L:e.detail.locale});window.addEventListener('bw-prefs',this.onP);
+  }
+  componentWillUnmount(){window.removeEventListener('bw-prefs',this.onP);}
+  componentDidUpdate(){const s=this.state,key=[s.q,s.g,s.bill,s.ptype,s.cmp.join(',')].join('|');if(key===this._k)return;const first=this._k===undefined;this._k=key;if(first&&!location.search)return;
+    clearTimeout(this._ut);this._ut=setTimeout(()=>{try{const u=new URL(location.href),P=u.searchParams;
+    [['q',s.q,''],['cat',s.g,'all'],['bill',s.bill,'all'],['type',s.ptype,'all'],['cmp',s.cmp.join(','),'']].forEach(([k,v,d])=>v!==d?P.set(k,v):P.delete(k));
+    history.replaceState(history.state,'',u);}catch(e){}},300);}
+  toggle(c){const x=this.state.cmp;this.setState({cmp:x.includes(c)?x.filter(y=>y!==c):x.length<3?[...x,c]:x});}
+  renderVals(){
+    const s=this.state,L=s.L,t=T[L]||T.en,D=s.D,o=L==='id'?'id':'en';
+    const seg=on=>({bg:on?'var(--inv)':'transparent',fg:on?'var(--invtx)':'var(--tx)'});
+    const base={t,q:s.q,bill:s.bill,ptype:s.ptype,onQ:e=>this.setState({q:e.target.value}),onBill:e=>this.setState({bill:e.target.value}),onType:e=>this.setState({ptype:e.target.value}),
+      billOpts:[['all',t.all],['o',t.once],['m',t.month],['y',t.year]].map(([v,l])=>({v,l})),
+      legend:t.lg.map(([k,v])=>({k,v})),
+      reset:()=>this.setState({q:'',g:'all',bill:'all',ptype:'all'}),filtered:s.q||s.g!=='all'||s.bill!=='all'||s.ptype!=='all'};
+    if(!D)return {...base,typeOpts:[],groupChips:[],sections:[],renewals:[],countLabel:'',empty:false,hasCmp:false};
+    const ql=s.q.trim().toLowerCase();
+    const pass=(it,ignoreG)=>(ignoreG||s.g==='all'||D.groupOf(it.code)===s.g)&&(s.bill==='all'||it.bill===s.bill)&&(s.ptype==='all'||it.type===s.ptype)&&(!ql||[it.code,it.en,it.id,it.sen,it.sid].some(x=>x.toLowerCase().includes(ql)));
+    const all=D.ITEMS.filter(it=>pass(it));
+    const sections=D.SECTIONS.map(sc=>{const rows=all.filter(it=>it.sec===sc.k);return {k:sc.k,anchor:'s-'+sc.k.replace('.','-'),hid:'h-'+sc.k.replace('.','-'),name:sc[o],count:rows.length,
+      rows:rows.map(it=>{const inC=s.cmp.includes(it.code);return {code:it.code,name:it[o],scope:it[o==='id'?'sid':'sen'],price:D.price(it,L),type:D.typeLabel(it.type,L),
+        hasRenew:!!D.RENEW[it.code],renew:(L==='id'?'Tahun ke-2: ':'Year 2: ')+D.renewLabel(it.code,L),href:D.page('Service',{code:it.code}),
+        inCmp:inC,cmpDis:!inC&&s.cmp.length>=3,cmpAria:(inC?t.rm:t.add).replace('{c}',it.code),toggleCmp:()=>this.toggle(it.code)};})};}).filter(x=>x.rows.length);
+    const cmpItems=s.cmp.map(c=>D.BY[c]).filter(Boolean);
+    const billName={o:t.once,m:t.month,y:t.year};
+    const row=(label,fn,w)=>({label,cells:cmpItems.map(it=>({v:fn(it),w:w||400}))});
+    return {...base,
+      typeOpts:[['all',t.all],['f',t.lg[0][0]],['s',t.lg[1][0]],['r',t.lg[2][0]],['q',t.lg[3][0]],['a',t.lg[4][0]]].map(([v,l])=>({v,l})),
+      groupChips:[{k:'all',label:t.all,n:D.ITEMS.filter(it=>pass(it,true)).length},...D.GROUPS.map(g=>({k:g.k,label:g[o],n:D.ITEMS.filter(it=>pass(it,true)&&D.groupOf(it.code)===g.k).length}))].map(c=>({...c,on:s.g===c.k,...seg(s.g===c.k),pick:()=>this.setState({g:c.k})})),
+      sections,empty:all.length===0,countLabel:t.count.replace('{n}',all.length).replace('{t}',D.ITEMS.length),
+      renewals:Object.keys(D.RENEW).map(c=>({code:c,name:D.BY[c][o],note:D.RENEW[c][o],price:D.renewLabel(c,L)})),
+      hasCmp:s.cmp.length>0,cmpOpen:s.cmpOpen&&s.cmp.length>0,cmpCount:t.cmpN.replace('{n}',s.cmp.length),cmpBtn:s.cmpOpen?t.hide:t.open,
+      toggleCmpPanel:()=>this.setState({cmpOpen:!s.cmpOpen}),clearCmp:()=>this.setState({cmp:[],cmpOpen:false}),
+      cmpList:cmpItems.map(it=>({code:it.code,aria:t.rm.replace('{c}',it.code),remove:()=>this.toggle(it.code)})),
+      cmpRows:[row(t.rName,it=>it.code+' · '+it[o],600),row(t.rPrice,it=>D.price(it,L),600),row(t.rType,it=>D.typeLabel(it.type,L)),row(t.rBill,it=>billName[it.bill]),row(t.rScope,it=>it[o==='id'?'sid':'sen']),row(t.rRenew,it=>D.RENEW[it.code]?D.renewLabel(it.code,L):t.none)]};
+  }
+}
+</script>
+</body>
+</html>

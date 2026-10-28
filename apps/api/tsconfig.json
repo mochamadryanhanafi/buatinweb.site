@@ -1,0 +1,8 @@
+{
+  "compilerOptions": {
+    "target": "ESNext", "module": "ESNext", "moduleResolution": "Bundler",
+    "strict": true, "noEmit": true, "skipLibCheck": true, "allowJs": true,
+    "types": ["@cloudflare/workers-types", "bun-types"]
+  },
+  "include": ["src"]
+}

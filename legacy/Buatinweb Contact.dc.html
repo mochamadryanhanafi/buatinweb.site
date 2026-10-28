@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;600&family=Geist+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+body{margin:0;--bg:#FFFFFF;--sf:#F5F5F5;--tx:#111111;--tx2:#525252;--bd:#E5E5E5;--bd2:#8A8A8A;--inv:#111111;--invtx:#FFFFFF;--err:#B42318;--ok:#146C34;--logo-f:none;--logo-b:multiply;background:var(--bg);color:var(--tx);font-family:'Geist',system-ui,sans-serif;font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased}
+body[data-theme="dark"]{--bg:#0A0A0A;--sf:#151515;--tx:#F5F5F5;--tx2:#B3B3B3;--bd:#333333;--bd2:#8C8C8C;--inv:#F5F5F5;--invtx:#0A0A0A;--err:#FF8A80;--ok:#6FDC8C;--logo-f:invert(1);--logo-b:screen}
+*{box-sizing:border-box}
+a{color:var(--tx);text-decoration-thickness:1px;text-underline-offset:3px}
+a:hover{color:var(--tx2)}
+::placeholder{color:var(--tx2);opacity:1}
+</style>
+</helmet>
+<div style="min-height:100vh;background:var(--bg);color:var(--tx)">
+<dc-import name="BW Header" active="" hint-size="100%,68px"></dc-import>
+<main id="main" style="max-width:1280px;margin:0 auto;padding:0 clamp(20px,4vw,40px)">
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,380px),1fr));gap:clamp(32px,6vw,80px);padding-top:clamp(48px,7vw,88px);align-items:start">
+<div>
+<p style="font:400 13px/1.4 'Geist Mono',monospace;color:var(--tx2);margin:0 0 24px;letter-spacing:0.02em;text-transform:uppercase">{{ t.eyebrow }}</p>
+<h1 style="font-size:clamp(40px,6vw,80px);line-height:0.98;letter-spacing:-0.045em;font-weight:600;margin:0;max-width:10ch">{{ t.title }}</h1>
+<p style="margin:24px 0 0;color:var(--tx2);max-width:28em;text-wrap:pretty">{{ t.sub }}</p>
+<ol style="list-style:none;margin:40px 0 0;padding:0;border-top:1px solid var(--tx)">
+<sc-for list="{{ next }}" as="n" hint-placeholder-count="3"><li style="display:flex;gap:16px;padding:14px 0;border-bottom:1px solid var(--bd)"><span style="font:400 12px 'Geist Mono',monospace;color:var(--tx2);width:24px;padding-top:3px">{{ n.num }}</span><span><span style="font-weight:600;display:block">{{ n.k }}</span><span style="font-size:14px;color:var(--tx2)">{{ n.v }}</span></span></li></sc-for>
+</ol>
+<dl style="margin:40px 0 0;border-top:1px solid var(--bd);font-size:15px">
+<div style="display:flex;justify-content:space-between;gap:16px;padding:12px 0;border-bottom:1px solid var(--bd)"><dt style="color:var(--tx2)">Email</dt><dd style="margin:0;font-family:'Geist Mono',monospace;font-size:13px">[ {{ t.ownerSet }} ]</dd></div>
+<div style="display:flex;justify-content:space-between;gap:16px;padding:12px 0;border-bottom:1px solid var(--bd)"><dt style="color:var(--tx2)">WhatsApp</dt><dd style="margin:0;font-family:'Geist Mono',monospace;font-size:13px">[ {{ t.ownerSet }} ]</dd></div>
+<div style="display:flex;justify-content:space-between;gap:16px;padding:12px 0;border-bottom:1px solid var(--bd)"><dt style="color:var(--tx2)">{{ t.hours }}</dt><dd style="margin:0;font-family:'Geist Mono',monospace;font-size:13px">{{ t.hoursV }}</dd></div>
+</dl>
+</div>
+
+<div style="border:1px solid var(--tx);border-radius:12px;padding:clamp(20px,3vw,32px)">
+<div role="status" aria-live="polite">
+<sc-if value="{{ fs.received }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;flex-direction:column;gap:16px;padding:8px 0">
+<span style="font:400 12px 'Geist Mono',monospace;text-transform:uppercase;letter-spacing:0.04em;color:var(--ok)">✓ {{ t.savedTag }}</span>
+<h2 style="margin:0;font-size:28px;font-weight:600;letter-spacing:-0.02em">{{ t.saved }}</h2>
+<p style="margin:0;color:var(--tx2)">{{ t.savedSub }}</p>
+<div style="display:flex;justify-content:space-between;gap:12px;border:1px solid var(--bd2);border-radius:6px;padding:14px 16px;font-family:'Geist Mono',monospace;font-size:14px"><span style="color:var(--tx2)">{{ t.ref }}</span><span>{{ ref }}</span></div>
+<div style="display:flex;gap:8px;flex-wrap:wrap">
+<a href="Buatinweb%20Pricing.dc.html" style="font-size:15px;min-height:44px;padding:0 16px;display:flex;align-items:center;border:1px solid var(--bd2);border-radius:6px;text-decoration:none">{{ t.backPricing }}</a>
+<button type="button" onClick="{{ resetForm }}" style="font:inherit;font-size:15px;min-height:44px;padding:0 16px;border:1px solid var(--bd2);border-radius:6px;background:var(--bg);color:var(--tx);cursor:pointer">{{ t.another }}</button>
+</div>
+</div>
+</sc-if>
+<sc-if value="{{ fs.alert }}" hint-placeholder-val="{{ false }}">
+<div role="alert" style="border:1px solid var(--err);border-radius:6px;padding:14px 16px;margin-bottom:20px;display:flex;gap:12px;align-items:flex-start">
+<span aria-hidden="true" style="font-weight:600;color:var(--err);font-family:'Geist Mono',monospace">!</span>
+<div><div style="font-weight:600">{{ fs.alertTitle }}</div><div style="font-size:14px;color:var(--tx2);margin-top:2px">{{ fs.alertBody }}</div></div>
+</div>
+</sc-if>
+</div>
+<sc-if value="{{ fs.showForm }}" hint-placeholder-val="{{ true }}">
+<form noValidate="{{ true }}" onSubmit="{{ submit }}" style="display:flex;flex-direction:column;gap:20px">
+<sc-if value="{{ hasEst }}" hint-placeholder-val="{{ false }}">
+<div style="border:1px solid var(--bd2);border-radius:6px;padding:14px 16px;display:flex;flex-direction:column;gap:6px;background:var(--sf)">
+<div style="display:flex;justify-content:space-between;gap:12px;font:400 12px 'Geist Mono',monospace;text-transform:uppercase;letter-spacing:0.04em"><span>{{ t.attached }}</span><button type="button" onClick="{{ dropEst }}" style="font:inherit;background:none;border:0;padding:0;color:var(--tx);text-decoration:underline;cursor:pointer;text-transform:none">{{ t.remove }}</button></div>
+<div style="font:400 13px/1.6 'Geist Mono',monospace">{{ est }}</div>
+<a href="{{ estHref }}" style="font-size:13px">{{ t.editEst }}</a>
+</div>
+</sc-if>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));gap:20px">
+<div style="display:flex;flex-direction:column;gap:6px">
+<label for="f-name" style="font-size:14px;font-weight:600">{{ t.fName }} <span style="color:var(--tx2);font-weight:400">*</span></label>
+<input id="f-name" maxLength="120" autoComplete="name" value="{{ form.name }}" onChange="{{ on.name }}" aria-invalid="{{ inv.name }}" aria-describedby="e-name" style="font:inherit;min-height:46px;padding:0 12px;border:1px solid {{ bc.name }};border-radius:6px;background:var(--bg);color:var(--tx)" style-focus="outline:2px solid var(--tx);outline-offset:2px">
+<span id="e-name" style="font-size:13px;color:var(--err)">{{ errors.name }}</span>
+</div>
+<div style="display:flex;flex-direction:column;gap:6px">
+<label for="f-company" style="font-size:14px;font-weight:600">{{ t.fCompany }} <span style="color:var(--tx2);font-weight:400">{{ t.optional }}</span></label>
+<input id="f-company" maxLength="160" autoComplete="organization" value="{{ form.company }}" onChange="{{ on.company }}" style="font:inherit;min-height:46px;padding:0 12px;border:1px solid var(--bd2);border-radius:6px;background:var(--bg);color:var(--tx)" style-focus="outline:2px solid var(--tx);outline-offset:2px">
+</div>
+</div>
+<fieldset style="border:0;margin:0;padding:0;display:flex;flex-direction:column;gap:6px">
+<legend style="font-size:14px;font-weight:600;padding:0;margin-bottom:6px">{{ t.fChannel }} <span style="color:var(--tx2);font-weight:400">*</span></legend>
+<div style="display:flex;gap:8px;flex-wrap:wrap">
+<sc-for list="{{ channels }}" as="c" hint-placeholder-count="2"><label style="display:flex;align-items:center;gap:8px;min-height:44px;padding:0 14px;border:1px solid {{ c.bc }};border-radius:6px;cursor:pointer;font-size:15px"><input type="radio" name="channel" checked="{{ c.on }}" onChange="{{ c.pick }}" style="accent-color:var(--tx);margin:0">{{ c.label }}</label></sc-for>
+</div>
+<label for="f-contact" style="font-size:14px;margin-top:8px;color:var(--tx2)">{{ contactLabel }}</label>
+<input id="f-contact" type="{{ contactType }}" autoComplete="{{ contactType }}" placeholder="{{ contactPh }}" value="{{ form.contact }}" onChange="{{ on.contact }}" aria-invalid="{{ inv.contact }}" aria-describedby="e-contact" style="font:inherit;min-height:46px;padding:0 12px;border:1px solid {{ bc.contact }};border-radius:6px;background:var(--bg);color:var(--tx)" style-focus="outline:2px solid var(--tx);outline-offset:2px">
+<span id="e-contact" style="font-size:13px;color:var(--err)">{{ errors.contact }}</span>
+</fieldset>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));gap:20px">
+<div style="display:flex;flex-direction:column;gap:6px">
+<label for="f-service" style="font-size:14px;font-weight:600">{{ t.fService }} <span style="color:var(--tx2);font-weight:400">*</span></label>
+<select id="f-service" value="{{ form.service }}" onChange="{{ on.service }}" aria-invalid="{{ inv.service }}" aria-describedby="e-service" style="font:inherit;min-height:46px;padding:0 10px;border:1px solid {{ bc.service }};border-radius:6px;background:var(--bg);color:var(--tx);min-width:0">
+<option value="">{{ t.choose }}</option><option value="not-sure">{{ t.notSure }}</option>
+<sc-for list="{{ serviceGroups }}" as="g" hint-placeholder-count="3"><optgroup label="{{ g.label }}"><sc-for list="{{ g.opts }}" as="o" hint-placeholder-count="3"><option value="{{ o.v }}">{{ o.l }}</option></sc-for></optgroup></sc-for>
+</select>
+<span id="e-service" style="font-size:13px;color:var(--err)">{{ errors.service }}</span>
+</div>
+<div style="display:flex;flex-direction:column;gap:6px">
+<label for="f-budget" style="font-size:14px;font-weight:600">{{ t.fBudget }} <span style="color:var(--tx2);font-weight:400">{{ t.optional }}</span></label>
+<select id="f-budget" value="{{ form.budget }}" onChange="{{ on.budget }}" style="font:inherit;min-height:46px;padding:0 10px;border:1px solid var(--bd2);border-radius:6px;background:var(--bg);color:var(--tx)">
+<sc-for list="{{ budgetOpts }}" as="o" hint-placeholder-count="6"><option value="{{ o.v }}">{{ o.l }}</option></sc-for>
+</select>
+</div>
+</div>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));gap:20px">
+<div style="display:flex;flex-direction:column;gap:6px">
+<label for="f-country" style="font-size:14px;font-weight:600">{{ t.fCountry }} <span style="color:var(--tx2);font-weight:400">{{ t.optional }}</span></label>
+<input id="f-country" maxLength="80" autoComplete="country-name" value="{{ form.country }}" onChange="{{ on.country }}" placeholder="{{ t.countryPh }}" style="font:inherit;min-height:46px;padding:0 12px;border:1px solid var(--bd2);border-radius:6px;background:var(--bg);color:var(--tx)" style-focus="outline:2px solid var(--tx);outline-offset:2px">
+</div>
+<div style="display:flex;flex-direction:column;gap:6px">
+<label for="f-deadline" style="font-size:14px;font-weight:600">{{ t.fDeadline }} <span style="color:var(--tx2);font-weight:400">{{ t.optional }}</span></label>
+<input id="f-deadline" type="date" value="{{ form.deadline }}" onChange="{{ on.deadline }}" style="font:inherit;min-height:46px;padding:0 12px;border:1px solid var(--bd2);border-radius:6px;background:var(--bg);color:var(--tx)">
+</div>
+</div>
+<div style="display:flex;flex-direction:column;gap:6px">
+<div style="display:flex;justify-content:space-between;gap:12px"><label for="f-brief" style="font-size:14px;font-weight:600">{{ t.fBrief }} <span style="color:var(--tx2);font-weight:400">*</span></label><span style="font:400 12px 'Geist Mono',monospace;color:var(--tx2)">{{ briefCount }}</span></div>
+<textarea id="f-brief" rows="6" maxLength="3000" placeholder="{{ t.fBriefPh }}" value="{{ form.brief }}" onChange="{{ on.brief }}" aria-invalid="{{ inv.brief }}" aria-describedby="e-brief h-brief" style="font:inherit;padding:12px;border:1px solid {{ bc.brief }};border-radius:6px;background:var(--bg);color:var(--tx);resize:vertical" style-focus="outline:2px solid var(--tx);outline-offset:2px"></textarea>
+<span id="h-brief" style="font-size:13px;color:var(--tx2)">{{ t.fBriefHint }}</span>
+<span id="e-brief" style="font-size:13px;color:var(--err)">{{ errors.brief }}</span>
+</div>
+<div style="display:flex;flex-direction:column;gap:10px;border-top:1px solid var(--bd);padding-top:18px">
+<label style="display:flex;gap:10px;align-items:flex-start;font-size:14px;cursor:pointer"><input id="f-privacy" type="checkbox" checked="{{ form.privacy }}" onChange="{{ on.privacy }}" aria-invalid="{{ inv.privacy }}" aria-describedby="e-privacy" style="width:18px;height:18px;margin:1px 0 0;accent-color:var(--tx);flex:none"><span>{{ t.fPrivacy }} <a href="Buatinweb%20About.dc.html#privacy">{{ t.privacyLink }}</a>. <span style="color:var(--tx2)">*</span></span></label>
+<span id="e-privacy" style="font-size:13px;color:var(--err)">{{ errors.privacy }}</span>
+<label style="display:flex;gap:10px;align-items:flex-start;font-size:14px;cursor:pointer;color:var(--tx2)"><input type="checkbox" checked="{{ form.marketing }}" onChange="{{ on.marketing }}" style="width:18px;height:18px;margin:1px 0 0;accent-color:var(--tx);flex:none"><span>{{ t.fMarketing }}</span></label>
+</div>
+<button type="submit" disabled="{{ fs.busy }}" style="font:inherit;font-weight:600;font-size:16px;min-height:50px;border:0;border-radius:6px;background:var(--inv);color:var(--invtx);cursor:pointer;opacity:{{ fs.op }}">{{ fs.label }}</button>
+</form>
+</sc-if>
+</div>
+</div>
+</main>
+<dc-import name="BW Footer" hint-size="100%,220px"></dc-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;simulateSubmit&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;success&quot;,&quot;unavailable&quot;,&quot;rate_limited&quot;],&quot;default&quot;:&quot;success&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Behaviour&quot;}}">
+const T={en:{eyebrow:'Contact · brief',title:'Tell us what you need.',sub:'A short brief is enough. We reply with questions or a quotation — never an automatic charge.',ownerSet:'set by owner',hours:'Service hours',hoursV:'Mon–Fri · WIB, UTC+7',
+next:[['We read your brief','Within service hours, usually the same or next working day.'],['We ask or scope','Missing details are asked once; scope is written down.'],['You get a quotation','Upfront, recurring and vendor costs, valid 14 days.']],
+attached:'Attached estimate',remove:'Remove',editEst:'Edit in estimator →',
+fName:'Name',fCompany:'Company',optional:'optional',fChannel:'How should we reach you?',fEmail:'Email address',fWa:'WhatsApp number, international format',fService:'Service',choose:'Choose a service',notSure:'Not sure yet — recommend one',fBudget:'Budget',fCountry:'Country',countryPh:'e.g. Indonesia, Singapore',fDeadline:'Target date',
+fBrief:'What do you need?',fBriefPh:'What you have now, what you want, and any deadline.',fBriefHint:'Never include passwords, API keys or private data.',fPrivacy:'I have read the',privacyLink:'privacy notice',fMarketing:'Send me occasional updates (optional).',submit:'Send brief',submitting:'Saving…',
+eName:'Enter your name.',eEmail:'Enter a valid email address.',eWa:'Enter a number with country code, e.g. +62 812 3456 7890.',eService:'Choose a service, or “Not sure yet”.',eBrief:'Add at least 20 characters so we can understand the request.',ePrivacy:'Please confirm you have read the privacy notice.',
+aVal:['Some fields need attention.','Check the highlighted fields below.'],aUn:['Your brief was not saved.','Nothing was sent. Your text is still here — try again, or email us directly.'],aRl:['Too many attempts.','Please wait a minute, then try again. Your text is kept.'],
+savedTag:'Saved',saved:'Brief received.',savedSub:'Keep this reference. We reply during service hours (WIB, UTC+7).',ref:'Reference',another:'Send another brief',backPricing:'Back to pricing',
+budgets:['—','Not sure — recommend','Under IDR 1 million','IDR 1–5 million','IDR 5–20 million','Over IDR 20 million'],estLabel:'Estimate'},
+id:{eyebrow:'Kontak · brief',title:'Ceritakan kebutuhan Anda.',sub:'Brief singkat sudah cukup. Kami membalas dengan pertanyaan atau quotation — tidak ada tagihan otomatis.',ownerSet:'diisi pemilik',hours:'Jam layanan',hoursV:'Sen–Jum · WIB, UTC+7',
+next:[['Kami membaca brief','Pada jam layanan, biasanya hari yang sama atau hari kerja berikutnya.'],['Kami bertanya atau menyusun scope','Detail yang kurang ditanyakan sekali; scope dituliskan.'],['Anda menerima quotation','Biaya awal, berulang dan vendor, berlaku 14 hari.']],
+attached:'Estimasi terlampir',remove:'Hapus',editEst:'Ubah di estimator →',
+fName:'Nama',fCompany:'Perusahaan',optional:'opsional',fChannel:'Hubungi Anda lewat?',fEmail:'Alamat email',fWa:'Nomor WhatsApp, format internasional',fService:'Layanan',choose:'Pilih layanan',notSure:'Belum tahu, minta rekomendasi',fBudget:'Budget',fCountry:'Negara',countryPh:'mis. Indonesia, Singapura',fDeadline:'Target tanggal',
+fBrief:'Apa yang Anda butuhkan?',fBriefPh:'Kondisi sekarang, yang diinginkan, dan tenggat bila ada.',fBriefHint:'Jangan sertakan password, API key atau data pribadi.',fPrivacy:'Saya telah membaca',privacyLink:'pemberitahuan privasi',fMarketing:'Kirimi saya kabar sesekali (opsional).',submit:'Kirim brief',submitting:'Menyimpan…',
+eName:'Isi nama Anda.',eEmail:'Isi alamat email yang valid.',eWa:'Isi nomor dengan kode negara, mis. +62 812 3456 7890.',eService:'Pilih layanan, atau “Belum tahu”.',eBrief:'Tulis minimal 20 karakter agar kami memahami kebutuhan.',ePrivacy:'Konfirmasi bahwa Anda telah membaca pemberitahuan privasi.',
+aVal:['Beberapa isian perlu diperbaiki.','Periksa isian yang ditandai di bawah.'],aUn:['Brief Anda belum tersimpan.','Tidak ada yang terkirim. Teks Anda masih ada — coba lagi, atau email kami langsung.'],aRl:['Terlalu banyak percobaan.','Tunggu satu menit lalu coba lagi. Teks Anda tetap tersimpan di sini.'],
+savedTag:'Tersimpan',saved:'Brief diterima.',savedSub:'Simpan referensi ini. Kami membalas pada jam layanan (WIB, UTC+7).',ref:'Referensi',another:'Kirim brief lain',backPricing:'Kembali ke harga',
+budgets:['—','Belum tahu, minta rekomendasi','Di bawah Rp1 juta','Rp1–5 juta','Rp5–20 juta','Di atas Rp20 juta'],estLabel:'Estimasi'}};
+const EMPTY={name:'',company:'',channel:'email',contact:'',service:'',budget:'',country:'',deadline:'',brief:'',privacy:false,marketing:false};
+class Component extends DCLogic {
+  state={L:'en',D:null,form:{...EMPTY},errors:{},status:'idle',ref:'',est:''};
+  componentDidMount(){
+    import(new URL('bw-data.js',location.href).href).then(D=>this.setState({D}));
+    const p=new URLSearchParams(location.search);let L='en',draft=null;try{L=localStorage.getItem('bw-locale')||'en';draft=JSON.parse(sessionStorage.getItem('bw-brief-draft')||'null');}catch(e){}
+    this.setState({L,est:p.get('est')||'',form:{...EMPTY,...(draft||{}),service:p.get('service')||(draft&&draft.service)||''}});
+    this.onP=e=>e.detail.locale&&this.setState({L:e.detail.locale});window.addEventListener('bw-prefs',this.onP);
+  }
+  componentWillUnmount(){window.removeEventListener('bw-prefs',this.onP);}
+  componentDidUpdate(){try{if(this.state.status!=='received'){const f={...this.state.form};delete f.privacy;sessionStorage.setItem('bw-brief-draft',JSON.stringify(f));}}catch(e){}}
+  validate(){const f=this.state.form,t=T[this.state.L]||T.en,e={};
+    if(!f.name.trim())e.name=t.eName;
+    if(f.channel==='email'){if(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(f.contact.trim()))e.contact=t.eEmail;}else if(!/^\+[1-9]\d{7,14}$/.test(f.contact.replace(/[\s\-()]/g,'')))e.contact=t.eWa;
+    if(!f.service)e.service=t.eService;if(f.brief.trim().length<20)e.brief=t.eBrief;if(!f.privacy)e.privacy=t.ePrivacy;return e;}
+  submit(ev){ev.preventDefault();if(this.state.status==='submitting')return;const e=this.validate();
+    if(Object.keys(e).length){this.setState({errors:e,status:'validation_error'},()=>{const k=['name','contact','service','brief','privacy'].find(x=>e[x]);const el=document.getElementById('f-'+k);el&&el.focus();});return;}
+    this.setState({errors:{},status:'submitting'});
+    setTimeout(()=>{const sim=this.props.simulateSubmit??'success';
+      if(sim==='success'){try{sessionStorage.removeItem('bw-brief-draft');}catch(x){}this.setState({status:'received',ref:'BW-'+new Date().toISOString().slice(2,10).replace(/-/g,'')+'-'+Math.random().toString(36).slice(2,6).toUpperCase()});}
+      else this.setState({status:sim});},1100);}
+  renderVals(){
+    const s=this.state,L=s.L,t=T[L]||T.en,D=s.D,o=L==='id'?'id':'en',f=s.form,errors=s.errors,st=s.status;
+    const on={};['name','company','contact','service','budget','country','deadline','brief'].forEach(k=>on[k]=e=>{const v=e.target.value;this.setState(x=>({form:{...x.form,[k]:v},errors:{...x.errors,[k]:undefined}}));});
+    ['privacy','marketing'].forEach(k=>on[k]=e=>{const v=e.target.checked;this.setState(x=>({form:{...x.form,[k]:v},errors:{...x.errors,[k]:undefined}}));});
+    const inv={},bc={};['name','contact','service','brief','privacy'].forEach(k=>{inv[k]=!!errors[k];bc[k]=errors[k]?'var(--err)':'var(--bd2)';});
+    const al=st==='validation_error'?t.aVal:st==='unavailable'?t.aUn:st==='rate_limited'?t.aRl:null;
+    let estHref='Buatinweb%20Estimator.dc.html';
+    return {t,form:f,errors,on,inv,bc,ref:s.ref,
+      next:t.next.map((x,i)=>({num:String(i+1).padStart(2,'0'),k:x[0],v:x[1]})),
+      hasEst:!!s.est&&st!=='received',est:s.est,estHref,dropEst:()=>this.setState({est:''}),
+      channels:[['email','Email'],['whatsapp','WhatsApp']].map(([k,l])=>({label:l,on:f.channel===k,bc:f.channel===k?'var(--tx)':'var(--bd2)',pick:()=>this.setState(x=>({form:{...x.form,channel:k},errors:{...x.errors,contact:undefined}}))})),
+      contactLabel:f.channel==='email'?t.fEmail:t.fWa,contactType:f.channel==='email'?'email':'tel',contactPh:f.channel==='email'?'name@company.com':'+62 812 3456 7890',
+      serviceGroups:D?D.SECTIONS.map(sc=>({label:sc.k+' · '+sc[o],opts:D.ITEMS.filter(i=>i.sec===sc.k).map(i=>({v:i.code,l:i.code+' — '+i[o]}))})):[],
+      budgetOpts:t.budgets.map((l,i)=>({v:i?'b'+i:'',l})),briefCount:f.brief.length+' / 3000',
+      fs:{received:st==='received',showForm:st!=='received',alert:!!al,alertTitle:al?al[0]:'',alertBody:al?al[1]:'',busy:st==='submitting',op:st==='submitting'?0.6:1,label:st==='submitting'?t.submitting:t.submit},
+      submit:e=>this.submit(e),resetForm:()=>this.setState({status:'idle',ref:'',errors:{},est:'',form:{...EMPTY}})};
+  }
+}
+</script>
+</body>
+</html>

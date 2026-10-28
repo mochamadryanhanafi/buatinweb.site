@@ -1,0 +1,151 @@
+---
+import Base from '~/layouts/Base.astro';
+import HomeMain from '~/components/islands/HomeMain.tsx';
+import BriefBtn from '~/components/islands/BriefBtn.tsx';
+import ContactForm from '~/components/islands/ContactForm.tsx';
+import { BY, VERSION, fmt, price, svc, page } from '@bw/shared';
+import { T, STEPS, PROBS, FAQ } from '~/i18n/home.js';
+import { paths, type L } from '~/lib/i18n';
+
+export const getStaticPaths = paths;
+const lang = Astro.params.lang as L;
+const t = T[lang];
+const id = lang === 'id';
+const nm = (c: string) => (BY as any)[c][lang];
+const SPEC = ['WEB-01', 'WEB-04', 'WEB-05', 'WEB-06', 'APP-05', 'BUG-01', 'DEP-02', 'SHT-05', 'MS-02'];
+const DEMOS = [
+  { code: 'WEB-01', name: id ? 'Template Compro Mini' : 'Compro Mini template', url: 'compro.buatinweb.site', href: 'https://compro.buatinweb.site', ph: 'template screenshot' },
+  { code: 'WEB-04', name: id ? 'Template landing page' : 'Landing page template', url: id ? 'Demo template · 7 section' : 'Template demo · 7 sections', href: page(lang, 'Portfolio'), ph: 'landing page screenshot' },
+  { code: 'WEB-08', name: id ? 'Template katalog produk' : 'Product catalogue template', url: id ? 'Demo template · pesan via WhatsApp' : 'Template demo · WhatsApp ordering', href: page(lang, 'Portfolio'), ph: 'catalogue screenshot' },
+];
+const AI = [
+  { code: 'SHT-05', range: 'SHT · DB', from: 99000, title: id ? 'Spreadsheet & database' : 'Spreadsheets & databases', desc: id ? 'Form ke Sheets, otomasi Apps Script, schema dan migrasi ke database.' : 'Forms to Sheets, Apps Script automation, schemas and migration to a database.' },
+  { code: 'AI-01', range: 'AI-01 – AI-07', from: 1499000, title: id ? 'Integrasi AI & otomasi' : 'AI integration & automation', desc: id ? 'Workflow, chatbot dengan batas biaya, RAG dan agent dengan persetujuan manusia.' : 'Workflows, cost-capped chatbots, RAG and agents with human approval.' },
+  { code: 'ML-01', range: 'ML-01 – ML-08', from: 2999000, title: 'Machine learning', desc: id ? 'Analisis data, proof of concept, prediksi dan MLOps — dimulai dari discovery.' : 'Data analysis, proofs of concept, forecasting and MLOps — starting with discovery.' },
+];
+const H2 = 'font-size:var(--h2);line-height:1.02;letter-spacing:-0.035em;font-weight:600;margin:0;max-width:16ch;text-wrap:balance';
+const HEAD = 'display:flex;flex-wrap:wrap;justify-content:space-between;gap:24px;align-items:end;margin:32px 0 48px';
+const SEC = 'padding-top:clamp(72px,10vw,128px)';
+const CSS = `
+.hero{position:relative;overflow:hidden;padding:clamp(56px,9vw,120px) 0 clamp(48px,7vw,88px)}
+.hero::before{content:"";position:absolute;inset:0;background-image:linear-gradient(var(--grid-c) 1px,transparent 1px),linear-gradient(90deg,var(--grid-c) 1px,transparent 1px);background-size:72px 72px;opacity:.5;pointer-events:none}
+.hero::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 30%,var(--bg) 100%);pointer-events:none}
+.hero .wrap{position:relative;z-index:1;display:grid;grid-template-columns:1fr;gap:48px;align-items:end}
+@media(min-width:900px){.hero .wrap{grid-template-columns:1.25fr 1fr}}
+.spec{border:1px solid var(--tx);border-radius:12px;background:var(--bg);overflow:hidden}
+.spec-row{display:flex;justify-content:space-between;gap:16px;padding:11px 18px;border-top:1px solid var(--bd);font-size:14px}
+.faq details{border-bottom:1px solid var(--bd)}
+.faq summary{list-style:none;display:flex;justify-content:space-between;gap:16px;align-items:center;font-size:17px;font-weight:600;padding:18px 0;min-height:56px;cursor:pointer}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"+";font-family:'Geist Mono',monospace;font-size:18px}
+.faq details[open] summary::after{content:"−"}
+.faq p{margin:0;padding:0 0 20px;color:var(--tx2);max-width:42em;text-wrap:pretty}
+`;
+---
+<Base lang={lang} home active="Home" title="Buatinweb.site — Website, aplikasi, technical support, data & AI" desc={t.heroSub} extraCss={CSS}>
+  <section class="hero" aria-labelledby="hero-h">
+    <div class="wrap">
+      <div>
+        <p class="eyebrow">{t.heroEyebrow}</p>
+        <h1 id="hero-h" class="h1" style="font-size:var(--h1)">{t.heroT1}<br /><span style="color:var(--tx2)">{t.heroT2}</span></h1>
+        <p style="margin:28px 0 0;font-size:clamp(17px,1.6vw,21px);color:var(--tx2);max-width:34em;text-wrap:pretty">{t.heroSub}</p>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:36px"><a href="#packages" class="btn">{t.heroCta1}</a><a href="#brief" class="btn2">{t.heroCta2}</a></div>
+      </div>
+      <aside class="spec" aria-label={t.specTitle}>
+        <div class="mono" style="display:flex;justify-content:space-between;padding:14px 18px;font-size:12px;text-transform:uppercase;letter-spacing:0.04em"><span>{t.specTitle}</span><span style="color:var(--tx2)">v {VERSION}</span></div>
+        {SPEC.map((c) => <a href={svc(lang, c)} class="spec-row hov-sf" style="text-decoration:none"><span><span class="mono" style="font-size:12px;color:var(--tx2);margin-right:10px">{c}</span>{nm(c)}</span><span class="mono" style="font-size:13px;white-space:nowrap">{price((BY as any)[c], lang)}</span></a>)}
+        <div style="padding:12px 18px;border-top:1px solid var(--bd);background:var(--sf);font-size:12px;color:var(--tx2)">{t.specFoot}</div>
+      </aside>
+    </div>
+  </section>
+
+  <HomeMain lang={lang} client:load />
+
+  <section id="portfolio" aria-labelledby="pf-h" class="wrap" style={SEC}>
+    <div class="rule"><span>05</span><span>{t.sPortfolio}</span></div>
+    <div style={HEAD}><h2 id="pf-h" style={H2}>{t.pfTitle}</h2><p style="margin:0;color:var(--tx2);max-width:28em">{t.pfSub}</p></div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:16px">
+      {DEMOS.map((d) => (
+        <a href={d.href} target={d.href.startsWith('http') ? '_blank' : undefined} rel="noopener" class="hov-sf" style="display:flex;flex-direction:column;gap:14px;border:1px solid var(--bd2);border-radius:12px;padding:20px;text-decoration:none;color:var(--tx)">
+          <div style="aspect-ratio:16/10;border:1px solid var(--bd);border-radius:8px;background:var(--sf);display:grid;place-items:center;color:var(--tx2)" class="mono"><span style="font-size:12px">{d.ph}</span></div>
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:12px"><span><span class="mono" style="font-size:12px;color:var(--tx2);margin-right:8px">{d.code}</span><strong>{d.name}</strong></span><span class="mono" style="font-size:11px;text-transform:uppercase;letter-spacing:0.04em;border:1px solid var(--bd2);border-radius:4px;padding:2px 6px">{t.demoTag}</span></div>
+          <span class="mono" style="font-size:12px;color:var(--tx2)">{d.url}</span>
+        </a>
+      ))}
+    </div>
+    <div style="margin-top:24px"><a href={page(lang, 'Portfolio')} style="font-weight:600">{id ? 'Semua demo →' : 'All demos →'}</a></div>
+  </section>
+
+  <section id="process" aria-labelledby="pr-h" class="wrap" style={SEC}>
+    <div class="rule"><span>06</span><span>{t.sProcess}</span></div>
+    <div style={HEAD}><h2 id="pr-h" style={H2}>{t.prTitle}</h2><p style="margin:0;color:var(--tx2);max-width:28em">{t.prSub}</p></div>
+    <ol style="margin:0;padding:0;list-style:none;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,200px),1fr));gap:1px;background:var(--bd);border:1px solid var(--bd);border-radius:12px;overflow:hidden">
+      {STEPS[lang].map(([title, desc]: string[], i: number) => (
+        <li style="background:var(--bg);padding:24px;display:flex;flex-direction:column;gap:10px;min-height:180px">
+          <span class="mono" style="font-size:12px;color:var(--tx2)">{String(i + 1).padStart(2, '0')}</span>
+          <strong style="font-size:18px;letter-spacing:-0.01em;margin-top:auto">{title}</strong>
+          <span style="font-size:14px;color:var(--tx2);text-wrap:pretty">{desc}</span>
+        </li>
+      ))}
+    </ol>
+  </section>
+
+  <section id="support" aria-labelledby="sp-h" style={`margin-top:clamp(72px,10vw,128px);background:var(--inv);color:var(--invtx);padding:clamp(56px,8vw,96px) 0`}>
+    <div class="wrap">
+      <div class="rule" style="border-top-color:var(--invtx)"><span style="color:var(--invtx);opacity:.6">07</span><span>{t.sSupport}</span></div>
+      <div style={HEAD}><h2 id="sp-h" style={H2}>{t.spTitle}</h2><p style="margin:0;opacity:.7;max-width:28em">{t.spSub}</p></div>
+      <div style="border-top:1px solid var(--invtx)">
+        {PROBS.map(([code, en, idl]: string[]) => (
+          <div style="display:flex;flex-wrap:wrap;align-items:center;gap:12px 20px;padding:14px 0;border-bottom:1px solid rgba(128,128,128,.4)">
+            <span class="mono" style="font-size:12px;opacity:.6;width:64px;flex:none">{code}</span>
+            <span style="flex:1 1 240px;font-size:16px">{id ? idl : en}</span>
+            <span class="mono" style="font-size:13px;opacity:.85">{price((BY as any)[code], lang)}</span>
+            <BriefBtn client:load service={code} label={t.spBrief} style="font:inherit;font-size:14px;font-weight:600;min-height:38px;padding:0 14px;border:1px solid var(--invtx);border-radius:6px;background:transparent;color:var(--invtx);cursor:pointer" />
+          </div>
+        ))}
+      </div>
+      <p style="margin:20px 0 0;font-size:14px;opacity:.7;max-width:60em">{t.spCredit}</p>
+    </div>
+  </section>
+
+  <section id="data-ai" aria-labelledby="ai-h" class="wrap" style={SEC}>
+    <div class="rule"><span>08</span><span>{t.sAi}</span></div>
+    <div style={HEAD}><h2 id="ai-h" style={H2}>{t.aiTitle}</h2><p style="margin:0;color:var(--tx2);max-width:28em">{t.aiSub}</p></div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));gap:16px">
+      {AI.map((a) => (
+        <article style="border:1px solid var(--bd2);border-radius:12px;padding:24px;display:flex;flex-direction:column;gap:12px">
+          <span class="mono" style="font-size:12px;color:var(--tx2)">{a.range}</span>
+          <h3 style="margin:0;font-size:22px;letter-spacing:-0.02em;font-weight:600">{a.title}</h3>
+          <p style="margin:0;color:var(--tx2);font-size:15px;text-wrap:pretty">{a.desc}</p>
+          <div class="mono" style="font-size:13px;margin-top:auto;padding-top:12px;border-top:1px solid var(--bd)">{t.from} {fmt(a.from, lang)}</div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap"><BriefBtn client:load service={a.code} label={t.aiCta} class="btn2" style="font-size:14px;padding:10px 16px" /><a href={svc(lang, a.code)} class="lnk" style="font-size:14px;align-self:center">{id ? 'Detail' : 'Details'}</a></div>
+        </article>
+      ))}
+    </div>
+    <p style="margin:20px 0 0;font-size:13px;color:var(--tx2);max-width:60em">{t.aiNote}</p>
+  </section>
+
+  <section id="faq" aria-labelledby="faq-h" class="wrap faq" style={SEC}>
+    <div class="rule"><span>09</span><span>FAQ</span></div>
+    <div style={HEAD}><h2 id="faq-h" style={H2}>{t.faqTitle}</h2><a href={page(lang, 'FAQ')} style="font-weight:600">{id ? 'Semua FAQ →' : 'All FAQ →'}</a></div>
+    <div style="border-top:1px solid var(--tx)">
+      {FAQ[lang].map(([q, a]: string[], i: number) => <details open={i === 0}><summary>{q}</summary><p>{a}</p></details>)}
+    </div>
+  </section>
+
+  <section id="brief" aria-labelledby="br-h" class="wrap" style={SEC + ';padding-bottom:clamp(72px,10vw,128px)'}>
+    <div class="rule"><span>10</span><span>{t.sBrief}</span></div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,380px),1fr));gap:48px;margin-top:32px;align-items:start">
+      <div>
+        <h2 id="br-h" style={H2}>{t.brTitle}</h2>
+        <p style="margin:20px 0 0;color:var(--tx2);max-width:30em;text-wrap:pretty">{t.brSub}</p>
+        <dl style="margin:40px 0 0;display:grid;grid-template-columns:auto 1fr;gap:10px 24px;font-size:15px">
+          <dt class="mono" style="font-size:12px;color:var(--tx2);text-transform:uppercase;letter-spacing:0.04em;padding-top:2px">Email</dt><dd style="margin:0">[ {t.ownerSet} ]</dd>
+          <dt class="mono" style="font-size:12px;color:var(--tx2);text-transform:uppercase;letter-spacing:0.04em;padding-top:2px">WhatsApp</dt><dd style="margin:0">[ {t.ownerSet} ]</dd>
+          <dt class="mono" style="font-size:12px;color:var(--tx2);text-transform:uppercase;letter-spacing:0.04em;padding-top:2px">{t.hours}</dt><dd style="margin:0" class="mono">WIB · UTC+7</dd>
+        </dl>
+      </div>
+      <div style="border:1px solid var(--bd2);border-radius:12px;padding:28px;background:var(--bg)"><ContactForm lang={lang} compact client:load /></div>
+    </div>
+  </section>
+</Base>

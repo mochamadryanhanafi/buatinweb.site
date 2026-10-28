@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;600&family=Geist+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+body{margin:0;--bg:#FFFFFF;--sf:#F5F5F5;--tx:#111111;--tx2:#525252;--bd:#E5E5E5;--bd2:#8A8A8A;--inv:#111111;--invtx:#FFFFFF;--err:#B42318;--ok:#146C34;--logo-f:none;--logo-b:multiply;background:var(--bg);color:var(--tx);font-family:'Geist',system-ui,sans-serif;font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased}
+body[data-theme="dark"]{--bg:#0A0A0A;--sf:#151515;--tx:#F5F5F5;--tx2:#B3B3B3;--bd:#333333;--bd2:#8C8C8C;--inv:#F5F5F5;--invtx:#0A0A0A;--err:#FF8A80;--ok:#6FDC8C;--logo-f:invert(1);--logo-b:screen}
+*{box-sizing:border-box}
+a{color:var(--tx);text-decoration-thickness:1px;text-underline-offset:3px}
+a:hover{color:var(--tx2)}
+</style>
+</helmet>
+<div style="min-height:100vh;background:var(--bg);color:var(--tx)">
+<dc-import name="BW Header" active="Service" hint-size="100%,68px"></dc-import>
+<main id="main" style="max-width:1280px;margin:0 auto;padding:0 clamp(20px,4vw,40px)">
+<nav aria-label="Breadcrumb" style="padding:28px 0 0;font:400 12px 'Geist Mono',monospace;color:var(--tx2)">
+<ol style="list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:8px">
+<li><a href="Buatinweb%20Pricing.dc.html" style="color:var(--tx2)">{{ t.pricing }}</a></li><li aria-hidden="true">/</li>
+<li><a href="{{ secHref }}" style="color:var(--tx2)">{{ secName }}</a></li><li aria-hidden="true">/</li>
+<li aria-current="page" style="color:var(--tx)">{{ code }}</li>
+</ol>
+</nav>
+
+<section aria-labelledby="sv-h" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:clamp(32px,6vw,80px);padding:clamp(32px,5vw,64px) 0 clamp(48px,6vw,72px);border-bottom:1px solid var(--bd);align-items:start">
+<div>
+<p style="font:400 13px 'Geist Mono',monospace;color:var(--tx2);margin:0 0 20px;text-transform:uppercase;letter-spacing:0.03em">{{ code }} · {{ groupName }}</p>
+<h1 id="sv-h" style="font-size:clamp(40px,6vw,80px);line-height:0.98;letter-spacing:-0.045em;font-weight:600;margin:0;text-wrap:balance">{{ name }}</h1>
+<p style="font-size:clamp(17px,1.6vw,20px);color:var(--tx2);max-width:32em;margin:24px 0 0;text-wrap:pretty">{{ scope }}</p>
+<div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:32px">
+<a href="{{ briefHref }}" style="background:var(--inv);color:var(--invtx);text-decoration:none;padding:14px 22px;border-radius:6px;font-weight:600">{{ t.brief }}</a>
+<sc-if value="{{ canEstimate }}" hint-placeholder-val="{{ false }}"><a href="{{ estHref }}" style="border:1px solid var(--tx);text-decoration:none;padding:13px 22px;border-radius:6px;font-weight:600">{{ t.estimate }}</a></sc-if>
+<a href="{{ cmpHref }}" style="text-decoration:none;padding:13px 6px;font-weight:600;color:var(--tx2)">{{ t.compare }}</a>
+</div>
+</div>
+<div style="border:1px solid var(--tx);border-radius:12px;overflow:hidden">
+<div style="padding:24px;border-bottom:1px solid var(--tx)">
+<div style="font:400 12px 'Geist Mono',monospace;color:var(--tx2);text-transform:uppercase;letter-spacing:0.04em">{{ t.price }}</div>
+<div style="font-size:clamp(32px,3.6vw,46px);font-weight:600;letter-spacing:-0.03em;line-height:1.05;margin-top:8px">{{ price }}</div>
+<div style="font-size:14px;color:var(--tx2);margin-top:8px">{{ typeNote }}</div>
+</div>
+<dl style="margin:0">
+<sc-for list="{{ facts }}" as="f" hint-placeholder-count="4"><div style="display:flex;justify-content:space-between;gap:16px;padding:13px 24px;border-bottom:1px solid var(--bd);font-size:15px"><dt style="color:var(--tx2)">{{ f.k }}</dt><dd style="margin:0;text-align:right;font-weight:600">{{ f.v }}</dd></div></sc-for>
+</dl>
+<div style="padding:14px 24px;background:var(--sf);font-size:13px;color:var(--tx2)">{{ t.quoteNote }}</div>
+</div>
+</section>
+
+<section aria-label="{{ t.detail }}" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));gap:1px;background:var(--bd);border:1px solid var(--bd);border-radius:12px;overflow:hidden;margin-top:clamp(48px,6vw,72px)">
+<sc-for list="{{ blocks }}" as="b" hint-placeholder-count="3">
+<div style="background:var(--bg);padding:28px 24px;display:flex;flex-direction:column;gap:14px">
+<h2 style="margin:0;font:400 12px 'Geist Mono',monospace;text-transform:uppercase;letter-spacing:0.04em;color:var(--tx2)">{{ b.title }}</h2>
+<ul style="margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:10px">
+<sc-for list="{{ b.items }}" as="x" hint-placeholder-count="3"><li style="display:flex;gap:10px;font-size:15px"><span aria-hidden="true" style="width:6px;height:6px;margin-top:9px;flex:none;background:{{ b.dot }};border:1px solid var(--tx)"></span><span style="text-wrap:pretty">{{ x }}</span></li></sc-for>
+</ul>
+</div>
+</sc-for>
+</section>
+
+<section aria-labelledby="rel-h" style="padding-top:clamp(64px,8vw,104px)">
+<div style="display:flex;gap:16px;align-items:baseline;border-top:1px solid var(--tx);padding-top:14px;flex-wrap:wrap"><span style="font:400 12px 'Geist Mono',monospace;color:var(--tx2)">{{ secKey }}</span><h2 id="rel-h" style="margin:0;font-size:clamp(22px,2.4vw,30px);letter-spacing:-0.02em;font-weight:600">{{ t.related }}</h2></div>
+<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,260px),1fr));gap:12px;margin-top:24px">
+<sc-for list="{{ related }}" as="r" hint-placeholder-count="6">
+<a href="{{ r.href }}" style="border:1px solid var(--bd2);border-radius:12px;padding:18px;display:flex;flex-direction:column;gap:8px;text-decoration:none;min-height:140px" style-hover="border-color:var(--tx)">
+<span style="font:400 12px 'Geist Mono',monospace;color:var(--tx2)">{{ r.code }}</span>
+<span style="font-size:17px;font-weight:600;letter-spacing:-0.01em;color:var(--tx)">{{ r.name }}</span>
+<span style="font:400 13px 'Geist Mono',monospace;margin-top:auto;border-top:1px solid var(--bd);padding-top:10px;color:var(--tx)">{{ r.price }}</span>
+</a>
+</sc-for>
+</div>
+<div style="display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-top:32px;border-top:1px solid var(--bd);padding-top:20px">
+<a href="{{ prevHref }}" style="text-decoration:none;display:flex;flex-direction:column;gap:2px"><span style="font:400 12px 'Geist Mono',monospace;color:var(--tx2)">← {{ prevCode }}</span><span style="font-weight:600">{{ prevName }}</span></a>
+<a href="{{ nextHref }}" style="text-decoration:none;display:flex;flex-direction:column;gap:2px;text-align:right"><span style="font:400 12px 'Geist Mono',monospace;color:var(--tx2)">{{ nextCode }} →</span><span style="font-weight:600">{{ nextName }}</span></a>
+</div>
+</section>
+</main>
+<dc-import name="BW Footer" hint-size="100%,220px"></dc-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;code&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;WEB-01&quot;,&quot;tsType&quot;:&quot;string&quot;}}">
+const T={en:{pricing:'Pricing',brief:'Send a brief',estimate:'Estimate with add-ons',compare:'Compare in pricing →',price:'Price',quoteNote:'Indicative. The final price and scope are set in a written quotation, valid for 14 days.',detail:'Service detail',related:'Others in this section',
+inc:'Included',lim:'Limits & billed separately',need:'Before we start',bill:'Billing',once:'One-time',month:'Monthly',year:'Yearly',renew:'Renewal, from year 2',pay:'Payment',hours:'Service hours',wib:'WIB, UTC+7',
+pFull:'Paid in full once scope is approved',p50:'50% upfront, 50% before handover',pMs:'By milestone',pMonth:'Billed monthly, in advance',
+tn:{f:'Fixed price for the stated scope.',s:'Starting price — confirmed after scope review.',r:'Range — final price depends on the agreed scope.',q:'Priced after a needs assessment.',a:'Charged at the vendor’s actual cost.'},
+fallback:'Anything outside the stated scope is quoted separately.',
+need:'Before we start',needs:{web:['Logo, text and images, or a request for copywriting','Your preferred domain or subdomain name','One contact who approves revisions'],app:['Written use cases and acceptance criteria','Who the users and roles are','Access to any existing systems or data'],tech:['Legitimate access to the affected system','Steps to reproduce, or error messages','Permission to test in a safe environment'],data:['A sample of the data, with personal data removed','Who owns the data and who may access it','Expected volume and retention'],ai:['Example inputs and expected outputs','Your own API accounts and a cost ceiling','Data usage rights, confirmed in writing'],care:['Admin access for the agreed scope','A recent backup, or permission to create one','Your preferred alert channel'],extra:['The website or system it attaches to','Any accounts the add-on needs','Content or translations, if relevant']}},
+id:{pricing:'Harga',brief:'Kirim brief',estimate:'Hitung dengan add-on',compare:'Bandingkan di halaman harga →',price:'Harga',quoteNote:'Indikatif. Harga dan scope final ditetapkan dalam quotation tertulis, berlaku 14 hari.',detail:'Detail layanan',related:'Lainnya di bagian ini',
+inc:'Termasuk',lim:'Batasan & ditagih terpisah',need:'Sebelum mulai',bill:'Penagihan',once:'Sekali bayar',month:'Bulanan',year:'Tahunan',renew:'Perpanjangan, mulai tahun ke-2',pay:'Pembayaran',hours:'Jam layanan',wib:'WIB, UTC+7',
+pFull:'Dibayar penuh setelah scope disetujui',p50:'50% di awal, 50% sebelum serah terima',pMs:'Per milestone',pMonth:'Ditagih bulanan, di muka',
+tn:{f:'Harga tetap untuk scope yang tertulis.',s:'Harga awal — dikonfirmasi setelah review scope.',r:'Rentang — harga final mengikuti scope yang disepakati.',q:'Ditentukan setelah analisis kebutuhan.',a:'Ditagih sesuai biaya aktual vendor.'},
+fallback:'Apa pun di luar scope tertulis diberi penawaran terpisah.',
+needs:{web:['Logo, teks dan gambar, atau permintaan copywriting','Nama domain atau subdomain pilihan','Satu kontak yang menyetujui revisi'],app:['Use case dan acceptance criteria tertulis','Siapa pengguna dan perannya','Akses ke sistem atau data yang ada'],tech:['Akses sah ke sistem yang bermasalah','Langkah reproduksi atau pesan error','Izin menguji di lingkungan aman'],data:['Sampel data, tanpa data pribadi','Pemilik data dan siapa yang boleh mengakses','Perkiraan volume dan retensi'],ai:['Contoh input dan output yang diharapkan','Akun API milik Anda dan batas biaya','Hak pemakaian data, dikonfirmasi tertulis'],care:['Akses admin sesuai scope','Backup terbaru, atau izin membuatnya','Kanal notifikasi pilihan'],extra:['Website atau sistem yang dipasangi','Akun yang dibutuhkan add-on','Konten atau terjemahan, bila relevan']}}};
+// keep in sync with BASES/ONE/MON/INT in Buatinweb Estimator.dc.html
+const EST=['WEB-01','WEB-02','WEB-03','WEB-04','WEB-05','WEB-06','WEB-07','WEB-08','WEB-09','WEB-10','BND-03'];
+const EST_ADD=['ADD-01','ADD-02','ADD-03','ADD-07','ADD-08','ADD-12','ADD-06','ADD-17','SEC-09','SEC-08','SHT-14','MS-01','MS-02','MS-03','MS-04','SHT-05','INF-05','INF-11','SEC-06','ADD-15'];
+class Component extends DCLogic {
+  state={L:'en',D:null,code:'WEB-01'};
+  componentDidMount(){
+    import(new URL('bw-data.js',location.href).href).then(D=>this.setState({D}));
+    let L='en';try{L=localStorage.getItem('bw-locale')||'en';}catch(e){}
+    this.setState({L,code:(new URLSearchParams(location.search).get('code')||this.props.code||'WEB-01').toUpperCase()});
+    this.onP=e=>e.detail.locale&&this.setState({L:e.detail.locale});window.addEventListener('bw-prefs',this.onP);
+  }
+  componentWillUnmount(){window.removeEventListener('bw-prefs',this.onP);}
+  renderVals(){
+    const s=this.state,L=s.L,t=T[L]||T.en,D=s.D,o=L==='id'?'id':'en',tn=t.tn,needs=t.needs||T.en.needs;
+    if(!D)return {t,code:s.code,blocks:[],facts:[],related:[]};
+    const it=D.BY[s.code]||D.BY['WEB-01'],sec=D.SECTIONS.find(x=>x.k===it.sec),g=D.groupOf(it.code),grp=D.GROUPS.find(x=>x.k===g);
+    const scope=it[o==='id'?'sid':'sen'],parts=scope.replace(/\.$/,'').split(/;\s*/);
+    const inc=parts[0].split(/,\s*(?![^()]*\))/).map(x=>x.charAt(0).toUpperCase()+x.slice(1)).filter(Boolean);
+    const lim=parts.slice(1).map(x=>x.charAt(0).toUpperCase()+x.slice(1));lim.push(t.fallback);
+    const pay=it.bill==='m'?t.pMonth:it.p<=99000&&it.type==='f'?t.pFull:it.p>=10000000?t.pMs:t.p50;
+    const facts=[{k:t.bill,v:{o:t.once,m:t.month,y:t.year}[it.bill]},...(D.RENEW[it.code]?[{k:t.renew,v:D.renewLabel(it.code,L)}]:[]),{k:t.pay,v:pay},{k:t.hours,v:t.wib}];
+    const sib=D.ITEMS.filter(x=>x.sec===it.sec),i=sib.indexOf(it),prev=sib[(i-1+sib.length)%sib.length],next=sib[(i+1)%sib.length];
+    return {t,code:it.code,name:it[o],scope,groupName:grp[o],secName:sec[o],secKey:sec.k,secHref:D.page('Pricing')+'#s-'+sec.k.replace('.','-'),
+      price:D.price(it,L),typeNote:tn[it.type],facts,
+      blocks:[{title:t.inc,items:inc,dot:'var(--tx)'},{title:t.lim,items:lim,dot:'transparent'},{title:t.need||T.en.need,items:needs[g],dot:'transparent'}],
+      briefHref:D.page('Contact',{service:it.code}),canEstimate:EST.includes(it.code)||EST_ADD.includes(it.code),estHref:D.page('Estimator',EST.includes(it.code)?{base:it.code}:{add:it.code}),cmpHref:D.page('Pricing',{cmp:it.code,q:it.code}),
+      related:sib.filter(x=>x!==it).slice(0,6).map(x=>({code:x.code,name:x[o],price:D.price(x,L),href:D.page('Service',{code:x.code})})),
+      prevHref:D.page('Service',{code:prev.code}),prevCode:prev.code,prevName:prev[o],nextHref:D.page('Service',{code:next.code}),nextCode:next.code,nextName:next[o]};
+  }
+}
+</script>
+</body>
+</html>

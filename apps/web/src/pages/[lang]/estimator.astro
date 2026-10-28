@@ -1,0 +1,21 @@
+---
+import Base from '~/layouts/Base.astro';
+import Estimator from '~/components/islands/Estimator';
+import { paths, type L } from '~/lib/i18n';
+import { T } from '~/i18n/estimator.js';
+export const getStaticPaths = paths;
+const lang = Astro.params.lang as L;
+const t = T[lang];
+---
+<Base lang={lang} active="Estimator" title={`${t.title} — Buatinweb.site`} desc={t.sub}>
+<div class="wrap">
+<section aria-labelledby="es-h" style="padding:clamp(48px,7vw,88px) 0 40px;border-bottom:1px solid var(--bd)">
+<p class="eyebrow">{t.eyebrow}</p>
+<div style="display:flex;flex-wrap:wrap;justify-content:space-between;gap:24px;align-items:end">
+<h1 id="es-h" class="h1" style="max-width:12ch">{t.title}</h1>
+<p style="margin:0;color:var(--tx2);max-width:30em;text-wrap:pretty">{t.sub}</p>
+</div>
+</section>
+<Estimator lang={lang} client:load />
+</div>
+</Base>

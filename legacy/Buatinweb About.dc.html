@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;600&family=Geist+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+body{margin:0;--bg:#FFFFFF;--sf:#F5F5F5;--tx:#111111;--tx2:#525252;--bd:#E5E5E5;--bd2:#8A8A8A;--inv:#111111;--invtx:#FFFFFF;--err:#B42318;--ok:#146C34;--logo-f:none;--logo-b:multiply;background:var(--bg);color:var(--tx);font-family:'Geist',system-ui,sans-serif;font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased}
+body[data-theme="dark"]{--bg:#0A0A0A;--sf:#151515;--tx:#F5F5F5;--tx2:#B3B3B3;--bd:#333333;--bd2:#8C8C8C;--inv:#F5F5F5;--invtx:#0A0A0A;--err:#FF8A80;--ok:#6FDC8C;--logo-f:invert(1);--logo-b:screen}
+*{box-sizing:border-box}
+a{color:var(--tx);text-decoration-thickness:1px;text-underline-offset:3px}
+a:hover{color:var(--tx2)}
+html{scroll-behavior:smooth}
+@media (max-width:719px){.step-desc{grid-column:2 / 4}}
+@media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}}
+</style>
+</helmet>
+<div style="min-height:100vh;background:var(--bg);color:var(--tx)">
+<dc-import name="BW Header" active="About" hint-size="100%,68px"></dc-import>
+<main id="main" style="max-width:1280px;margin:0 auto;padding:0 clamp(20px,4vw,40px)">
+<section aria-labelledby="ab-h" style="padding:clamp(48px,7vw,88px) 0 clamp(56px,7vw,88px);border-bottom:1px solid var(--bd)">
+<p style="font:400 13px/1.4 'Geist Mono',monospace;color:var(--tx2);margin:0 0 24px;letter-spacing:0.02em;text-transform:uppercase">{{ t.eyebrow }}</p>
+<h1 id="ab-h" style="font-size:clamp(40px,6.4vw,88px);line-height:0.98;letter-spacing:-0.045em;font-weight:600;margin:0;max-width:14ch;text-wrap:balance">{{ t.title }}</h1>
+<p style="font-size:clamp(17px,1.6vw,20px);color:var(--tx2);max-width:36em;margin:28px 0 0;text-wrap:pretty">{{ t.sub }}</p>
+</section>
+
+<section aria-labelledby="pp-h" style="padding-top:clamp(64px,8vw,104px)">
+<div style="display:flex;gap:16px;align-items:baseline;border-top:1px solid var(--tx);padding-top:14px;font:400 12px 'Geist Mono',monospace;text-transform:uppercase;letter-spacing:0.04em"><span style="color:var(--tx2)">01</span><h2 id="pp-h" style="margin:0;font:inherit">{{ t.sPrinciples }}</h2></div>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:1px;background:var(--bd);border:1px solid var(--bd);border-radius:12px;overflow:hidden;margin-top:32px">
+<sc-for list="{{ principles }}" as="p" hint-placeholder-count="4"><div style="background:var(--bg);padding:28px 24px;display:flex;flex-direction:column;gap:12px;min-height:200px"><span style="font:400 12px 'Geist Mono',monospace;color:var(--tx2)">{{ p.num }}</span><h3 style="margin:auto 0 0;font-size:20px;font-weight:600;letter-spacing:-0.015em">{{ p.title }}</h3><p style="margin:0;color:var(--tx2);font-size:15px;text-wrap:pretty">{{ p.desc }}</p></div></sc-for>
+</div>
+</section>
+
+<section id="process" aria-labelledby="ps-h" style="padding-top:clamp(64px,8vw,104px)">
+<div style="display:flex;gap:16px;align-items:baseline;border-top:1px solid var(--tx);padding-top:14px;font:400 12px 'Geist Mono',monospace;text-transform:uppercase;letter-spacing:0.04em"><span style="color:var(--tx2)">02</span><span>{{ t.sProcess }}</span></div>
+<h2 id="ps-h" style="font-size:clamp(32px,4.4vw,56px);line-height:1.02;letter-spacing:-0.035em;font-weight:600;margin:32px 0 40px;max-width:16ch">{{ t.prTitle }}</h2>
+<ol style="list-style:none;margin:0;padding:0;border-top:1px solid var(--tx)">
+<sc-for list="{{ steps }}" as="s" hint-placeholder-count="6">
+<li style="display:grid;grid-template-columns:48px minmax(0,1fr) minmax(0,1.4fr);gap:8px 24px;padding:22px 0;border-bottom:1px solid var(--bd);align-items:baseline">
+<span style="font:400 12px 'Geist Mono',monospace;color:var(--tx2)">{{ s.num }}</span>
+<span style="font-size:clamp(18px,1.8vw,22px);font-weight:600;letter-spacing:-0.01em">{{ s.title }}</span>
+<span class="step-desc" style="color:var(--tx2);text-wrap:pretty">{{ s.desc }}</span>
+</li>
+</sc-for>
+</ol>
+</section>
+
+<section aria-labelledby="pay-h" style="padding-top:clamp(64px,8vw,104px);display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,380px),1fr));gap:clamp(32px,6vw,80px)">
+<div>
+<div style="display:flex;gap:16px;align-items:baseline;border-top:1px solid var(--tx);padding-top:14px;font:400 12px 'Geist Mono',monospace;text-transform:uppercase;letter-spacing:0.04em"><span style="color:var(--tx2)">03</span><h2 id="pay-h" style="margin:0;font:inherit">{{ t.sPay }}</h2></div>
+<dl style="margin:24px 0 0">
+<sc-for list="{{ pay }}" as="p" hint-placeholder-count="4"><div style="display:flex;flex-wrap:wrap;justify-content:space-between;gap:6px 16px;padding:14px 0;border-bottom:1px solid var(--bd)"><dt style="font-weight:600">{{ p.k }}</dt><dd style="margin:0;color:var(--tx2);text-align:right;max-width:24em">{{ p.v }}</dd></div></sc-for>
+</dl>
+</div>
+<div>
+<div style="display:flex;gap:16px;align-items:baseline;border-top:1px solid var(--tx);padding-top:14px;font:400 12px 'Geist Mono',monospace;text-transform:uppercase;letter-spacing:0.04em"><span style="color:var(--tx2)">04</span><span>{{ t.sIntl }}</span></div>
+<dl style="margin:24px 0 0">
+<sc-for list="{{ intl }}" as="p" hint-placeholder-count="4"><div style="display:flex;flex-wrap:wrap;justify-content:space-between;gap:6px 16px;padding:14px 0;border-bottom:1px solid var(--bd)"><dt style="font-weight:600">{{ p.k }}</dt><dd style="margin:0;color:var(--tx2);text-align:right;max-width:24em">{{ p.v }}</dd></div></sc-for>
+</dl>
+</div>
+</section>
+
+<section id="privacy" aria-labelledby="pv-h" style="padding-top:clamp(64px,8vw,104px);display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,380px),1fr));gap:clamp(32px,6vw,80px)">
+<sc-for list="{{ legal }}" as="l" hint-placeholder-count="2">
+<div id="{{ l.id }}">
+<div style="display:flex;gap:16px;align-items:baseline;border-top:1px solid var(--tx);padding-top:14px;font:400 12px 'Geist Mono',monospace;text-transform:uppercase;letter-spacing:0.04em"><span style="color:var(--tx2)">{{ l.num }}</span><h2 style="margin:0;font:inherit">{{ l.title }}</h2></div>
+<ul style="margin:24px 0 0;padding:0;list-style:none;display:flex;flex-direction:column;gap:12px">
+<sc-for list="{{ l.items }}" as="x" hint-placeholder-count="4"><li style="display:flex;gap:10px;color:var(--tx2);text-wrap:pretty"><span aria-hidden="true" style="width:6px;height:6px;background:var(--tx);margin-top:9px;flex:none"></span><span>{{ x }}</span></li></sc-for>
+</ul>
+<p style="margin:16px 0 0;font:400 12px 'Geist Mono',monospace;color:var(--tx2)">{{ t.draft }}</p>
+</div>
+</sc-for>
+</section>
+
+<section aria-label="CTA" style="margin-top:clamp(64px,8vw,104px);background:var(--inv);color:var(--invtx);border-radius:12px;padding:clamp(32px,5vw,56px);display:flex;flex-wrap:wrap;gap:24px;justify-content:space-between;align-items:center">
+<h2 style="margin:0;font-size:clamp(26px,3vw,40px);letter-spacing:-0.03em;font-weight:600;max-width:18ch">{{ t.ctaTitle }}</h2>
+<div style="display:flex;gap:12px;flex-wrap:wrap">
+<a href="Buatinweb%20Contact.dc.html" style="background:var(--invtx);color:var(--inv);text-decoration:none;padding:14px 22px;border-radius:6px;font-weight:600">{{ t.cta1 }}</a>
+<a href="Buatinweb%20Pricing.dc.html" style="border:1px solid var(--invtx);color:var(--invtx);text-decoration:none;padding:13px 22px;border-radius:6px;font-weight:600">{{ t.cta2 }}</a>
+</div>
+</section>
+</main>
+<dc-import name="BW Footer" hint-size="100%,220px"></dc-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+const T={en:{eyebrow:'About · Buatinweb.site',title:'A small studio with a published price book.',sub:'We build websites, applications and data tools for businesses in Indonesia and abroad — and we write down what each price covers before any work starts.',
+sPrinciples:'Principles',pr:[['Prices are public','Every service has a code, a scope and a price type. The same price book drives the website, the estimator and the quotation.'],['Scope is written','Pages, features, limits and exclusions are agreed in writing. Anything outside is quoted, not absorbed.'],['Recurring costs stay separate','Renewals, subscriptions and vendor costs are shown on their own line — never folded into the first payment.'],['No promises we can’t measure','No 24/7 claims, no guaranteed rankings, no accuracy figures before experiments.']],
+sProcess:'Process',prTitle:'How a project runs.',steps:[['Brief','You describe the need. We ask once for anything missing.'],['Scope','Pages, features, limits and exclusions are written and agreed.'],['Quotation','Upfront, recurring and vendor costs, valid for 14 days.'],['Build','Work starts once materials, access and the agreed payment are in.'],['Review','You test against the agreed scope; defects within scope are fixed.'],['Handover','Access, documentation and support limits are handed to you.']],
+sPay:'Payment terms',pay:[['Compro Mini','Paid in full once scope is approved.'],['Standard projects','50% upfront, 50% before handover.'],['Large projects','Paid by milestone, as set in the quotation.'],['Subscriptions','Billed monthly or yearly, in advance.']],
+sIntl:'International clients',intl:[['Language','English or Indonesian, chosen in the header.'],['Currency','Prices are in IDR in every language.'],['USD','Shown only once an approved exchange rate is set.'],['Time zone','Service hours are WIB, UTC+7.']],
+legal:[['privacy','05','Privacy notice',['We collect only what the brief form asks for, to reply and prepare a quotation.','Briefs are never shared with third parties for marketing.','Never send passwords or API keys in a brief; access is arranged separately.','You may ask for your data to be corrected or deleted.']],['terms','06','Terms',['Quotations are valid for 14 days.','Work starts once materials, access and payment are in.','Domains are registered in the client’s name.','Support covers the purchased hours only, during service hours.']]],
+draft:'Summary — the full text is set by the owner before launch.',ctaTitle:'Have something in mind?',cta1:'Send a brief',cta2:'See pricing'},
+id:{eyebrow:'Tentang · Buatinweb.site',title:'Studio kecil dengan daftar harga terbuka.',sub:'Kami membuat website, aplikasi dan solusi data untuk bisnis di Indonesia maupun luar negeri — dan menuliskan cakupan setiap harga sebelum pekerjaan dimulai.',
+sPrinciples:'Prinsip',pr:[['Harga terbuka','Setiap layanan punya kode, scope dan jenis harga. Daftar harga yang sama dipakai di website, estimator dan quotation.'],['Scope tertulis','Halaman, fitur, batas dan pengecualian disepakati tertulis. Di luar itu diberi penawaran, bukan ditanggung diam-diam.'],['Biaya berulang terpisah','Perpanjangan, langganan dan biaya vendor ditampilkan pada barisnya sendiri — tidak digabung ke pembayaran awal.'],['Tanpa janji yang tak terukur','Tidak ada klaim 24/7, jaminan peringkat, atau angka akurasi sebelum eksperimen.']],
+sProcess:'Proses',prTitle:'Cara proyek berjalan.',steps:[['Brief','Anda jelaskan kebutuhan. Kami tanyakan sekali hal yang kurang.'],['Scope','Halaman, fitur, batas dan pengecualian ditulis dan disepakati.'],['Quotation','Biaya awal, berulang dan vendor, berlaku 14 hari.'],['Pengerjaan','Dimulai setelah materi, akses dan pembayaran yang disepakati lengkap.'],['Review','Anda menguji sesuai scope; defect dalam scope diperbaiki.'],['Serah terima','Akses, dokumentasi dan batas support diserahkan kepada Anda.']],
+sPay:'Ketentuan pembayaran',pay:[['Compro Mini','Dibayar penuh setelah scope disetujui.'],['Proyek standar','50% di awal, 50% sebelum serah terima.'],['Proyek besar','Per milestone, sesuai quotation.'],['Langganan','Ditagih bulanan atau tahunan, di muka.']],
+sIntl:'Klien internasional',intl:[['Bahasa','Inggris atau Indonesia, dipilih di header.'],['Mata uang','Harga dalam rupiah untuk semua bahasa.'],['USD','Ditampilkan hanya setelah kurs disetujui.'],['Zona waktu','Jam layanan WIB, UTC+7.']],
+legal:[['privacy','05','Pemberitahuan privasi',['Kami hanya mengumpulkan isian form brief, untuk membalas dan menyusun quotation.','Brief tidak pernah dibagikan ke pihak ketiga untuk pemasaran.','Jangan kirim password atau API key di brief; akses diatur terpisah.','Anda dapat meminta data diperbaiki atau dihapus.']],['terms','06','Ketentuan',['Quotation berlaku 14 hari.','Pengerjaan dimulai setelah materi, akses dan pembayaran lengkap.','Domain didaftarkan atas nama klien.','Support hanya mencakup jam yang dibeli, pada jam layanan.']]],
+draft:'Ringkasan — teks lengkap ditetapkan pemilik sebelum rilis.',ctaTitle:'Punya rencana?',cta1:'Kirim brief',cta2:'Lihat harga'}};
+class Component extends DCLogic {
+  state={L:'en'};
+  componentDidMount(){let L='en';try{L=localStorage.getItem('bw-locale')||'en';}catch(e){}
+    this.setState({L});this.onP=e=>e.detail.locale&&this.setState({L:e.detail.locale});window.addEventListener('bw-prefs',this.onP);}
+  componentWillUnmount(){window.removeEventListener('bw-prefs',this.onP);}
+  renderVals(){const t=T[this.state.L]||T.en,n=i=>String(i+1).padStart(2,'0');
+    return {t,principles:t.pr.map((p,i)=>({num:n(i),title:p[0],desc:p[1]})),steps:t.steps.map((p,i)=>({num:n(i),title:p[0],desc:p[1]})),
+      pay:t.pay.map(([k,v])=>({k,v})),intl:t.intl.map(([k,v])=>({k,v})),legal:t.legal.map(l=>({id:l[0],num:l[1],title:l[2],items:l[3]}))};}
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,25 @@
+---
+import Base from '~/layouts/Base.astro';
+import PortfolioGrid from '~/components/islands/PortfolioGrid';
+import { paths, type L } from '~/lib/i18n';
+import { T } from '~/i18n/portfolio.js';
+export const getStaticPaths = paths;
+const lang = Astro.params.lang as L;
+const t = T[lang];
+---
+<Base lang={lang} active="Portfolio" title={`Portfolio — Buatinweb.site`} desc={t.sub}>
+<div class="wrap">
+<section aria-labelledby="pf-h" style="padding:clamp(48px,7vw,88px) 0 40px">
+<p class="eyebrow">{t.eyebrow}</p>
+<div style="display:flex;flex-wrap:wrap;justify-content:space-between;gap:24px;align-items:end">
+<h1 id="pf-h" class="h1" style="max-width:11ch">{t.title}</h1>
+<p style="margin:0;color:var(--tx2);max-width:30em;text-wrap:pretty">{t.sub}</p>
+</div>
+</section>
+<PortfolioGrid lang={lang} client:load />
+<section aria-labelledby="cw-h" style="margin-top:clamp(64px,8vw,104px);border:1px solid var(--bd2);border-radius:12px;padding:clamp(24px,4vw,40px);display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));gap:24px;align-items:center">
+<div><span class="mono" style="font-size:12px;color:var(--tx2);text-transform:uppercase;letter-spacing:0.04em">{t.cwTag}</span><h2 id="cw-h" style="margin:8px 0 0;font-size:clamp(24px,2.6vw,32px);letter-spacing:-0.02em;font-weight:600">{t.cwTitle}</h2></div>
+<p style="margin:0;color:var(--tx2);text-wrap:pretty">{t.cwBody}</p>
+</section>
+</div>
+</Base>

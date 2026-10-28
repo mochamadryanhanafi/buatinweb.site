@@ -1,0 +1,7 @@
+---
+import { paths, type L } from '~/lib/i18n';
+import { page } from '@bw/shared';
+export const getStaticPaths = paths;
+const lang = Astro.params.lang as L;
+return Astro.redirect(page(lang, 'Pricing'));
+---

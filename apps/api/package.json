@@ -1,0 +1,13 @@
+{
+  "name": "@bw/api",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "db:init": "wrangler d1 execute bw-briefs --remote --file=./schema.sql",
+    "db:init:local": "wrangler d1 execute bw-briefs --local --file=./schema.sql"
+  },
+  "dependencies": { "hono": "^4.6.0", "@bw/shared": "workspace:*" },
+  "devDependencies": { "wrangler": "^3.90.0", "@cloudflare/workers-types": "^4.20241106.0" }
+}

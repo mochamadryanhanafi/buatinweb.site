@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<header style="position:sticky;top:0;z-index:50;background:var(--bg);border-bottom:1px solid var(--bd)">
+<div style="max-width:1280px;margin:0 auto;padding:0 clamp(20px,4vw,40px);height:68px;display:flex;align-items:center;gap:24px">
+<a href="Buatinweb%20Home.dc.html" aria-label="Buatinweb.site — Home" style="display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--tx)">
+<span style="width:30px;height:30px;overflow:hidden;display:block;flex:none"><img src="assets/logo.jpeg" alt="" width="30" height="30" style="width:30px;height:30px;transform:scale(1.55);filter:var(--logo-f);mix-blend-mode:var(--logo-b);display:block"></span>
+<span style="font-weight:600;font-size:16px;letter-spacing:-0.01em">buatinweb<span style="color:var(--tx2)">.site</span></span>
+</a>
+<sc-if value="{{ desktop }}" hint-placeholder-val="{{ true }}">
+<nav aria-label="Primary" style="display:flex;gap:24px;margin-left:16px">
+<sc-for list="{{ nav }}" as="n" hint-placeholder-count="5"><a href="{{ n.href }}" aria-current="{{ n.cur }}" style="text-decoration:{{ n.deco }};text-underline-offset:6px;text-decoration-thickness:2px;font-size:15px;color:var(--tx)">{{ n.label }}</a></sc-for>
+</nav>
+<div style="margin-left:auto;display:flex;align-items:center;gap:12px">
+<div role="group" aria-label="{{ t.langLabel }}" style="display:flex;border:1px solid var(--bd2);border-radius:6px;padding:2px;gap:2px">
+<sc-for list="{{ langs }}" as="o" hint-placeholder-count="2"><button type="button" aria-pressed="{{ o.on }}" onClick="{{ o.pick }}" style="font:inherit;font-size:13px;padding:5px 10px;border:0;border-radius:4px;cursor:pointer;background:{{ o.bg }};color:{{ o.fg }}">{{ o.label }}</button></sc-for>
+</div>
+<div role="group" aria-label="{{ t.themeLabel }}" style="display:flex;border:1px solid var(--bd2);border-radius:6px;padding:2px;gap:2px">
+<sc-for list="{{ themes }}" as="o" hint-placeholder-count="3"><button type="button" aria-pressed="{{ o.on }}" onClick="{{ o.pick }}" style="font:inherit;font-size:13px;padding:5px 10px;border:0;border-radius:4px;cursor:pointer;background:{{ o.bg }};color:{{ o.fg }}">{{ o.label }}</button></sc-for>
+</div>
+<a href="Buatinweb%20Contact.dc.html" style="background:var(--inv);color:var(--invtx);text-decoration:none;padding:9px 16px;border-radius:6px;font-weight:600;font-size:14px">{{ t.cta }}</a>
+</div>
+</sc-if>
+<sc-if value="{{ mobile }}" hint-placeholder-val="{{ false }}">
+<button type="button" aria-expanded="{{ menuOpen }}" aria-controls="mnav" onClick="{{ toggleMenu }}" style="margin-left:auto;font:inherit;font-size:14px;min-height:44px;padding:0 14px;border:1px solid var(--bd2);border-radius:6px;background:var(--bg);color:var(--tx);cursor:pointer">{{ menuLabel }}</button>
+</sc-if>
+</div>
+<sc-if value="{{ showMobileNav }}" hint-placeholder-val="{{ false }}">
+<div id="mnav" style="border-top:1px solid var(--bd);padding:16px 20px 24px;display:flex;flex-direction:column;gap:4px;background:var(--bg)">
+<sc-for list="{{ nav }}" as="n" hint-placeholder-count="5"><a href="{{ n.href }}" aria-current="{{ n.cur }}" style="text-decoration:none;font-size:18px;padding:10px 0;border-bottom:1px solid var(--bd);font-weight:{{ n.w }}">{{ n.label }}</a></sc-for>
+<div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:16px">
+<div role="group" aria-label="{{ t.langLabel }}" style="display:flex;border:1px solid var(--bd2);border-radius:6px;padding:2px;gap:2px">
+<sc-for list="{{ langs }}" as="o" hint-placeholder-count="2"><button type="button" aria-pressed="{{ o.on }}" onClick="{{ o.pick }}" style="font:inherit;font-size:14px;min-height:40px;padding:0 12px;border:0;border-radius:4px;cursor:pointer;background:{{ o.bg }};color:{{ o.fg }}">{{ o.label }}</button></sc-for>
+</div>
+<div role="group" aria-label="{{ t.themeLabel }}" style="display:flex;border:1px solid var(--bd2);border-radius:6px;padding:2px;gap:2px">
+<sc-for list="{{ themes }}" as="o" hint-placeholder-count="3"><button type="button" aria-pressed="{{ o.on }}" onClick="{{ o.pick }}" style="font:inherit;font-size:14px;min-height:40px;padding:0 12px;border:0;border-radius:4px;cursor:pointer;background:{{ o.bg }};color:{{ o.fg }}">{{ o.label }}</button></sc-for>
+</div>
+</div>
+<a href="Buatinweb%20Contact.dc.html" style="margin-top:16px;background:var(--inv);color:var(--invtx);text-decoration:none;padding:14px 16px;border-radius:6px;font-weight:600;text-align:center">{{ t.cta }}</a>
+</div>
+</sc-if>
+</header>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:&quot;1280px&quot;,&quot;height&quot;:&quot;80px&quot;},&quot;active&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Service&quot;,&quot;Pricing&quot;,&quot;Estimator&quot;,&quot;Portfolio&quot;,&quot;About&quot;,&quot;FAQ&quot;,&quot;&quot;],&quot;default&quot;:&quot;&quot;,&quot;tsType&quot;:&quot;string&quot;}}">
+const HT={en:{cta:'Consultation',menu:'Menu',close:'Close',langLabel:'Language',themeLabel:'Theme',light:'Light',dark:'Dark',system:'System',nav:['Services','Pricing','Estimator','Portfolio','About','FAQ']},
+id:{cta:'Konsultasi',menu:'Menu',close:'Tutup',langLabel:'Bahasa',themeLabel:'Tema',light:'Terang',dark:'Gelap',system:'Sistem',nav:['Layanan','Harga','Estimator','Portfolio','Tentang','FAQ']}};
+const PAGES=['Service','Pricing','Estimator','Portfolio','About','FAQ'];
+class Component extends DCLogic {
+  state={theme:'system',locale:'en',w:1280,menu:false,sysDark:false};
+  componentDidMount(){
+    let th,lo;try{th=localStorage.getItem('bw-theme');lo=localStorage.getItem('bw-locale');}catch(e){}
+    this.mq=window.matchMedia('(prefers-color-scheme: dark)');
+    this.onMq=()=>this.setState({sysDark:this.mq.matches});this.mq.addEventListener&&this.mq.addEventListener('change',this.onMq);
+    this.onRs=()=>{const w=window.innerWidth;if((w<960)!==(this.state.w<960))this.setState({w,menu:false});};window.addEventListener('resize',this.onRs);
+    this.setState({theme:th||'system',locale:lo||'en',sysDark:this.mq.matches,w:window.innerWidth},()=>this.apply());
+  }
+  componentDidUpdate(){this.apply();}
+  componentWillUnmount(){window.removeEventListener('resize',this.onRs);this.mq&&this.mq.removeEventListener&&this.mq.removeEventListener('change',this.onMq);}
+  apply(){const s=this.state,th=(s.theme==='dark'||(s.theme==='system'&&s.sysDark))?'dark':'light';if(document.body.dataset.theme!==th)document.body.dataset.theme=th;if(document.documentElement.lang!==s.locale)document.documentElement.lang=s.locale;}
+  set(k,v){this.setState({[k]:v});try{localStorage.setItem('bw-'+k,v);}catch(e){}
+    window.dispatchEvent(new CustomEvent('bw-prefs',{detail:{[k]:v}}));}
+  renderVals(){
+    const s=this.state,t=HT[s.locale]||HT.en,mobile=s.w<960,act=this.props.active;
+    const seg=on=>({bg:on?'var(--inv)':'transparent',fg:on?'var(--invtx)':'var(--tx)'});
+    return {t,mobile,desktop:!mobile,menuOpen:s.menu,showMobileNav:mobile&&s.menu,menuLabel:s.menu?t.close:t.menu,
+      toggleMenu:()=>this.setState({menu:!s.menu}),
+      nav:PAGES.map((p,i)=>({href:encodeURI('Buatinweb '+p+'.dc.html'),label:t.nav[i],cur:act===p?'page':undefined,deco:act===p?'underline':'none',w:act===p?600:400})),
+      langs:[['en','English'],['id','Indonesia']].map(([k,l])=>({label:l,on:s.locale===k,...seg(s.locale===k),pick:()=>this.set('locale',k)})),
+      themes:[['light',t.light],['dark',t.dark],['system',t.system]].map(([k,l])=>({label:l,on:s.theme===k,...seg(s.theme===k),pick:()=>this.set('theme',k)}))};
+  }
+}
+</script>
+</body>
+</html>

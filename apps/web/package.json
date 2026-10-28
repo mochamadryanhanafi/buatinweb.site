@@ -1,0 +1,18 @@
+{
+  "name": "@bw/web",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "deploy": "astro build && wrangler pages deploy dist --project-name buatinweb-site"
+  },
+  "dependencies": {
+    "@bw/shared": "workspace:*",
+    "@astrojs/preact": "^3.5.0",
+    "astro": "^4.16.0",
+    "preact": "^10.24.0"
+  },
+  "devDependencies": { "wrangler": "^3.90.0" }
+}

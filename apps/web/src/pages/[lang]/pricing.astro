@@ -1,0 +1,24 @@
+---
+import Base from '~/layouts/Base.astro';
+import Pricing from '~/components/islands/Pricing';
+import { paths, type L } from '~/lib/i18n';
+import { T } from '~/i18n/pricing.js';
+export const getStaticPaths = paths;
+const lang = Astro.params.lang as L;
+const t = T[lang];
+---
+<Base lang={lang} active="Pricing" title={`${t.title} — Buatinweb.site`} desc={t.sub}>
+<div class="wrap">
+<section aria-labelledby="pr-h" style="padding:clamp(48px,7vw,88px) 0 40px;border-bottom:1px solid var(--bd)">
+<p class="eyebrow">{t.eyebrow}</p>
+<div style="display:flex;flex-wrap:wrap;justify-content:space-between;gap:24px;align-items:end">
+<h1 id="pr-h" class="h1" style="max-width:12ch">{t.title}</h1>
+<p style="margin:0;color:var(--tx2);max-width:30em;text-wrap:pretty">{t.sub}</p>
+</div>
+<dl style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,200px),1fr));gap:1px;background:var(--bd);border:1px solid var(--bd);border-radius:12px;overflow:hidden;margin:40px 0 0">
+{t.lg.map(([k, v]: string[]) => <div style="background:var(--bg);padding:16px 18px"><dt class="mono" style="font-size:12px;text-transform:uppercase;letter-spacing:0.04em">{k}</dt><dd style="margin:6px 0 0;font-size:14px;color:var(--tx2)">{v}</dd></div>)}
+</dl>
+</section>
+<Pricing lang={lang} client:load />
+</div>
+</Base>

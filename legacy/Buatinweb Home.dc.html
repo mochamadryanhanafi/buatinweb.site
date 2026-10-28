@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;600&family=Geist+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+body{margin:0;--bg:#FFFFFF;--sf:#F5F5F5;--tx:#111111;--tx2:#525252;--bd:#E5E5E5;--bd2:#8A8A8A;--inv:#111111;--invtx:#FFFFFF;--err:#B42318;--ok:#146C34;--logo-f:none;--logo-b:multiply;--h1:clamp(44px,7.4vw,104px);--h2:clamp(32px,4.4vw,56px);--grid-c:var(--bd);background:var(--bg);color:var(--tx);font-family:'Geist',system-ui,sans-serif;font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased}
+body[data-theme="dark"]{--bg:#0A0A0A;--sf:#151515;--tx:#F5F5F5;--tx2:#B3B3B3;--bd:#333333;--bd2:#8C8C8C;--inv:#F5F5F5;--invtx:#0A0A0A;--err:#FF8A80;--ok:#6FDC8C;--logo-f:invert(1);--logo-b:screen}
+*{box-sizing:border-box}
+a{color:var(--tx);text-decoration-thickness:1px;text-underline-offset:3px}
+a:hover{color:var(--tx2)}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}*{transition:none!important}}
+::placeholder{color:var(--tx2);opacity:1}
+</style>
+</helmet>
+<div style="min-height:100vh;background:var(--bg);color:var(--tx)">
+<a href="#main" style="position:absolute;left:-9999px;top:8px;z-index:100;background:var(--inv);color:var(--invtx);padding:10px 14px;border-radius:6px" style-focus="left:8px">{{ t.skip }}</a>
+
+<header style="position:sticky;top:0;z-index:50;background:var(--bg);border-bottom:1px solid var(--bd)">
+<div style="max-width:1280px;margin:0 auto;padding:0 clamp(20px,4vw,40px);height:68px;display:flex;align-items:center;gap:24px">
+<a href="Buatinweb%20Home.dc.html" aria-label="Buatinweb.site" style="display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--tx)">
+<span style="width:30px;height:30px;overflow:hidden;display:block;flex:none"><img src="assets/logo.jpeg" alt="" width="30" height="30" style="width:30px;height:30px;transform:scale(1.55);filter:var(--logo-f);mix-blend-mode:var(--logo-b);display:block"></span>
+<span style="font-weight:600;font-size:16px;letter-spacing:-0.01em">buatinweb<span style="color:var(--tx2)">.site</span></span>
+</a>
+<sc-if value="{{ desktop }}" hint-placeholder-val="{{ true }}">
+<nav aria-label="Primary" style="display:flex;gap:28px;margin-left:16px">
+<a href="Buatinweb%20Service.dc.html" style="text-decoration:none;font-size:15px">{{ t.navServices }}</a>
+<a href="Buatinweb%20Pricing.dc.html" style="text-decoration:none;font-size:15px">{{ t.navPricing }}</a>
+<a href="Buatinweb%20Estimator.dc.html" style="text-decoration:none;font-size:15px">Estimator</a>
+<a href="Buatinweb%20Portfolio.dc.html" style="text-decoration:none;font-size:15px">{{ t.navPortfolio }}</a>
+<a href="Buatinweb%20About.dc.html" style="text-decoration:none;font-size:15px">{{ t.navAbout }}</a>
+<a href="Buatinweb%20FAQ.dc.html" style="text-decoration:none;font-size:15px">FAQ</a>
+</nav>
+<div style="margin-left:auto;display:flex;align-items:center;gap:12px">
+<div role="group" aria-label="{{ t.langLabel }}" style="display:flex;border:1px solid var(--bd2);border-radius:6px;padding:2px;gap:2px">
+<sc-for list="{{ langs }}" as="o" hint-placeholder-count="2"><button type="button" aria-pressed="{{ o.on }}" onClick="{{ o.pick }}" style="font:inherit;font-size:13px;padding:5px 10px;border:0;border-radius:4px;cursor:pointer;background:{{ o.bg }};color:{{ o.fg }}">{{ o.label }}</button></sc-for>
+</div>
+<div role="group" aria-label="{{ t.themeLabel }}" style="display:flex;border:1px solid var(--bd2);border-radius:6px;padding:2px;gap:2px">
+<sc-for list="{{ themes }}" as="o" hint-placeholder-count="3"><button type="button" aria-pressed="{{ o.on }}" onClick="{{ o.pick }}" style="font:inherit;font-size:13px;padding:5px 10px;border:0;border-radius:4px;cursor:pointer;background:{{ o.bg }};color:{{ o.fg }}">{{ o.label }}</button></sc-for>
+</div>
+<a href="Buatinweb%20Contact.dc.html" style="background:var(--inv);color:var(--invtx);text-decoration:none;padding:9px 16px;border-radius:6px;font-weight:600;font-size:14px">{{ t.cta }}</a>
+</div>
+</sc-if>
+<sc-if value="{{ mobile }}" hint-placeholder-val="{{ false }}">
+<button type="button" aria-expanded="{{ menuOpen }}" aria-controls="mnav" onClick="{{ toggleMenu }}" style="margin-left:auto;font:inherit;font-size:14px;min-height:44px;padding:0 14px;border:1px solid var(--bd2);border-radius:6px;background:var(--bg);color:var(--tx);cursor:pointer">{{ menuLabel }}</button>
+</sc-if>
+</div>
+<sc-if value="{{ showMobileNav }}" hint-placeholder-val="{{ false }}">
+<div id="mnav" style="border-top:1px solid var(--bd);padding:16px 20px 24px;display:flex;flex-direction:column;gap:4px;background:var(--bg)">
+<sc-for list="{{ navItems }}" as="n" hint-placeholder-count="4"><a href="{{ n.href }}" onClick="{{ closeMenu }}" style="text-decoration:none;font-size:18px;padding:10px 0;border-bottom:1px solid var(--bd)">{{ n.label }}</a></sc-for>
+<div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:16px">
+<div role="group" aria-label="{{ t.langLabel }}" style="display:flex;border:1px solid var(--bd2);border-radius:6px;padding:2px;gap:2px">
+<sc-for list="{{ langs }}" as="o" hint-placeholder-count="2"><button type="button" aria-pressed="{{ o.on }}" onClick="{{ o.pick }}" style="font:inherit;font-size:14px;min-height:40px;padding:0 12px;border:0;border-radius:4px;cursor:pointer;background:{{ o.bg }};color:{{ o.fg }}">{{ o.label }}</button></sc-for>
+</div>
+<div role="group" aria-label="{{ t.themeLabel }}" style="display:flex;border:1px solid var(--bd2);border-radius:6px;padding:2px;gap:2px">
+<sc-for list="{{ themes }}" as="o" hint-placeholder-count="3"><button type="button" aria-pressed="{{ o.on }}" onClick="{{ o.pick }}" style="font:inherit;font-size:14px;min-height:40px;padding:0 12px;border:0;border-radius:4px;cursor:pointer;background:{{ o.bg }};color:{{ o.fg }}">{{ o.label }}</button></sc-for>
+</div>
+</div>
+<a href="Buatinweb%20Contact.dc.html" onClick="{{ closeMenu }}" style="margin-top:16px;background:var(--inv);color:var(--invtx);text-decoration:none;padding:14px 16px;border-radius:6px;font-weight:600;text-align:center">{{ t.cta }}</a>
+</div>
+</sc-if>
+</header>
+
+<main id="main">
+<section aria-labelledby="hero-h" style="position:relative;border-bottom:1px solid var(--bd);background-image:linear-gradient(var(--grid-c) 1px,transparent 1px),linear-gradient(90deg,var(--grid-c) 1px,transparent 1px);background-size:72px 72px;background-position:-1px -1px">
+<div style="position:absolute;inset:0;background:linear-gradient(180deg,transparent 40%,var(--bg) 100%);pointer-events:none"></div>
+<div style="position:relative;max-width:1280px;margin:0 auto;padding:clamp(56px,9vw,120px) clamp(20px,4vw,40px) clamp(56px,8vw,104px)">
+
+<sc-if value="{{ heroSplit }}" hint-placeholder-val="{{ true }}">
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,440px),1fr));gap:clamp(40px,6vw,80px);align-items:end">
+<div>
+<p style="font:400 13px/1.4 'Geist Mono',monospace;color:var(--tx2);margin:0 0 28px;letter-spacing:0.02em;text-transform:uppercase">{{ t.heroEyebrow }}</p>
+<h1 id="hero-h" style="font-size:var(--h1);line-height:0.98;letter-spacing:-0.045em;font-weight:600;margin:0;text-wrap:balance">{{ t.heroT1 }} <span style="color:var(--tx2)">{{ t.heroT2 }}</span></h1>
+<p style="font-size:clamp(17px,1.6vw,20px);color:var(--tx2);max-width:34em;margin:28px 0 0;text-wrap:pretty">{{ t.heroSub }}</p>
+<div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:36px">
+<a href="#packages" style="background:var(--inv);color:var(--invtx);text-decoration:none;padding:14px 22px;border-radius:6px;font-weight:600">{{ t.heroCta1 }}</a>
+<a href="#brief" style="border:1px solid var(--tx);color:var(--tx);text-decoration:none;padding:13px 22px;border-radius:6px;font-weight:600;background:var(--bg)">{{ t.heroCta2 }}</a>
+</div>
+</div>
+<div style="border:1px solid var(--tx);border-radius:12px;background:var(--bg);overflow:hidden">
+<div style="display:flex;justify-content:space-between;gap:12px;padding:14px 18px;border-bottom:1px solid var(--tx);font:400 12px/1.3 'Geist Mono',monospace;text-transform:uppercase;letter-spacing:0.04em"><span>{{ t.specTitle }}</span><span style="color:var(--tx2)">v 2026-10-27.1</span></div>
+<sc-for list="{{ specRows }}" as="r" hint-placeholder-count="8">
+<div style="display:flex;align-items:baseline;gap:12px;padding:11px 18px;border-bottom:1px solid var(--bd);font-size:14px">
+<span style="font:400 12px 'Geist Mono',monospace;color:var(--tx2);width:56px;flex:none">{{ r.code }}</span>
+<span style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ r.name }}</span>
+<span style="font:400 13px 'Geist Mono',monospace;white-space:nowrap">{{ r.price }}</span>
+</div>
+</sc-for>
+<div style="padding:12px 18px;font-size:12px;color:var(--tx2);background:var(--sf)">{{ t.specFoot }}</div>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ heroIndex }}" hint-placeholder-val="{{ false }}">
+<p style="font:400 13px/1.4 'Geist Mono',monospace;color:var(--tx2);margin:0 0 28px;letter-spacing:0.02em;text-transform:uppercase">{{ t.heroEyebrow }}</p>
+<h1 id="hero-h" style="font-size:calc(var(--h1) * 1.12);line-height:0.94;letter-spacing:-0.05em;font-weight:600;margin:0;max-width:12ch">{{ t.heroT1 }} <span style="color:var(--tx2)">{{ t.heroT2 }}</span></h1>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,380px),1fr));gap:clamp(32px,6vw,80px);margin-top:clamp(40px,6vw,72px);align-items:start">
+<div>
+<p style="font-size:clamp(17px,1.6vw,20px);color:var(--tx2);max-width:30em;margin:0;text-wrap:pretty">{{ t.heroSub }}</p>
+<div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:32px">
+<a href="#packages" style="background:var(--inv);color:var(--invtx);text-decoration:none;padding:14px 22px;border-radius:6px;font-weight:600">{{ t.heroCta1 }}</a>
+<a href="#brief" style="border:1px solid var(--tx);color:var(--tx);text-decoration:none;padding:13px 22px;border-radius:6px;font-weight:600;background:var(--bg)">{{ t.heroCta2 }}</a>
+</div>
+</div>
+<ol style="list-style:none;margin:0;padding:0;border-top:1px solid var(--tx)">
+<sc-for list="{{ groupCards }}" as="g" hint-placeholder-count="7">
+<li><button type="button" onClick="{{ g.browse }}" style="width:100%;display:flex;align-items:baseline;gap:16px;padding:13px 0;border:0;border-bottom:1px solid var(--bd);background:transparent;color:var(--tx);font:inherit;cursor:pointer;text-align:left" style-hover="padding-left:8px"><span style="font:400 12px 'Geist Mono',monospace;color:var(--tx2);width:24px">{{ g.num }}</span><span style="flex:1;font-size:17px">{{ g.name }}</span><span style="font:400 13px 'Geist Mono',monospace;color:var(--tx2)">{{ g.from }}</span></button></li>
+</sc-for>
+</ol>
+</div>
+</sc-if>
+
+<sc-if value="{{ heroCentered }}" hint-placeholder-val="{{ false }}">
+<div style="text-align:center;display:flex;flex-direction:column;align-items:center">
+<p style="font:400 13px/1.4 'Geist Mono',monospace;color:var(--tx2);margin:0 0 28px;letter-spacing:0.02em;text-transform:uppercase">{{ t.heroEyebrow }}</p>
+<h1 id="hero-h" style="font-size:var(--h1);line-height:0.98;letter-spacing:-0.045em;font-weight:600;margin:0;max-width:14ch;text-wrap:balance">{{ t.heroT1 }} <span style="color:var(--tx2)">{{ t.heroT2 }}</span></h1>
+<p style="font-size:clamp(17px,1.6vw,20px);color:var(--tx2);max-width:34em;margin:28px 0 0;text-wrap:pretty">{{ t.heroSub }}</p>
+<div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:36px;justify-content:center">
+<a href="#packages" style="background:var(--inv);color:var(--invtx);text-decoration:none;padding:14px 22px;border-radius:6px;font-weight:600">{{ t.heroCta1 }}</a>
+<a href="#brief" style="border:1px solid var(--tx);color:var(--tx);text-decoration:none;padding:13px 22px;border-radius:6px;font-weight:600;background:var(--bg)">{{ t.heroCta2 }}</a>
+</div>
+<div style="display:flex;flex-wrap:wrap;justify-content:center;gap:1px;margin-top:56px;background:var(--tx);border:1px solid var(--tx);border-radius:12px;overflow:hidden">
+<sc-for list="{{ heroChips }}" as="c" hint-placeholder-count="3"><div style="background:var(--bg);padding:16px 22px;text-align:left;min-width:200px;flex:1"><div style="font:400 12px 'Geist Mono',monospace;color:var(--tx2)">{{ c.code }} · {{ c.name }}</div><div style="font-size:20px;font-weight:600;margin-top:4px;letter-spacing:-0.01em">{{ c.price }}</div></div></sc-for>
+</div>
+</div>
+</sc-if>
+
+</div>
+</section>
+
+<section id="services" aria-labelledby="svc-h" style="max-width:1280px;margin:0 auto;padding:clamp(72px,10vw,128px) clamp(20px,4vw,40px) 0">
+<div style="display:flex;gap:16px;align-items:baseline;border-top:1px solid var(--tx);padding-top:14px;font:400 12px 'Geist Mono',monospace;text-transform:uppercase;letter-spacing:0.04em"><span style="color:var(--tx2)">01</span><span>{{ t.sServices }}</span></div>
+<div style="display:flex;flex-wrap:wrap;justify-content:space-between;gap:24px;align-items:end;margin:32px 0 48px">
+<h2 id="svc-h" style="font-size:var(--h2);line-height:1.02;letter-spacing:-0.035em;font-weight:600;margin:0;max-width:16ch;text-wrap:balance">{{ t.svcTitle }}</h2>
+<p style="margin:0;color:var(--tx2);max-width:28em">{{ t.svcSub }}</p>
+</div>
+<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,270px),1fr));gap:1px;background:var(--bd);border:1px solid var(--bd);border-radius:12px;overflow:hidden">
+<sc-for list="{{ groupCards }}" as="g" hint-placeholder-count="7">
+<button type="button" onClick="{{ g.browse }}" style="font:inherit;color:var(--tx);text-align:left;background:var(--bg);border:0;padding:24px;cursor:pointer;display:flex;flex-direction:column;gap:10px;min-height:210px" style-hover="background:var(--sf)">
+<span style="font:400 12px 'Geist Mono',monospace;color:var(--tx2)">{{ g.num }}</span>
+<span style="font-size:21px;font-weight:600;letter-spacing:-0.015em;margin-top:auto">{{ g.name }}</span>
+<span style="color:var(--tx2);font-size:15px;text-wrap:pretty">{{ g.desc }}</span>
+<span style="display:flex;justify-content:space-between;gap:8px;font:400 13px 'Geist Mono',monospace;border-top:1px solid var(--bd);padding-top:12px;margin-top:4px"><span>{{ g.from }}</span><span style="color:var(--tx2)">{{ g.count }}</span></span>
+</button>
+</sc-for>
+</div>
+</section>
+
+<section id="packages" aria-labelledby="pkg-h" style="max-width:1280px;margin:0 auto;padding:clamp(72px,10vw,128px) clamp(20px,4vw,40px) 0">
+<div style="display:flex;gap:16px;align-items:baseline;border-top:1px solid var(--tx);padding-top:14px;font:400 12px 'Geist Mono',monospace;text-transform:uppercase;letter-spacing:0.04em"><span style="color:var(--tx2)">02</span><span>{{ t.sPackages }}</span></div>
+<div style="display:flex;flex-wrap:wrap;justify-content:space-between;gap:24px;align-items:end;margin:32px 0 48px">
+<h2 id="pkg-h" style="font-size:var(--h2);line-height:1.02;letter-spacing:-0.035em;font-weight:600;margin:0;max-width:16ch;text-wrap:balance">{{ t.pkgTitle }}</h2>
+<p style="margin:0;color:var(--tx2);max-width:28em">{{ t.pkgSub }}</p>
+</div>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:16px">
+<sc-for list="{{ featured }}" as="p" hint-placeholder-count="3">
+<article style="border:1px solid var(--bd2);border-radius:12px;padding:28px;display:flex;flex-direction:column;gap:20px;background:var(--bg)">
+<div style="display:flex;justify-content:space-between;font:400 12px 'Geist Mono',monospace;color:var(--tx2)"><span>{{ p.code }}</span><span>{{ p.type }}</span></div>
+<div><h3 style="margin:0;font-size:24px;letter-spacing:-0.02em;font-weight:600">{{ p.name }}</h3><p style="margin:6px 0 0;color:var(--tx2);font-size:15px">{{ p.lede }}</p></div>
+<div><div style="font-size:clamp(30px,3vw,38px);font-weight:600;letter-spacing:-0.03em;line-height:1">{{ p.price }}</div><div style="font-size:14px;color:var(--tx2);margin-top:8px">{{ p.renew }}</div></div>
+<ul style="margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px;border-top:1px solid var(--bd);padding-top:18px;font-size:15px">
+<sc-for list="{{ p.bullets }}" as="b" hint-placeholder-count="4"><li style="display:flex;gap:10px"><span aria-hidden="true" style="width:6px;height:6px;background:var(--tx);margin-top:9px;flex:none"></span><span>{{ b }}</span></li></sc-for>
+</ul>
+<p style="margin:0;font-size:13px;color:var(--tx2)">{{ p.excl }}</p>
+<div style="display:flex;gap:8px;margin-top:auto;flex-wrap:wrap">
+<button type="button" onClick="{{ p.estimate }}" style="flex:1;font:inherit;font-weight:600;font-size:15px;min-height:44px;border:0;border-radius:6px;background:var(--inv);color:var(--invtx);cursor:pointer">{{ t.pkgEstimate }}</button>
+<button type="button" aria-pressed="{{ p.inCmp }}" onClick="{{ p.toggleCmp }}" style="font:inherit;font-size:14px;min-height:44px;padding:0 14px;border:1px solid var(--bd2);border-radius:6px;background:var(--bg);color:var(--tx);cursor:pointer">{{ p.cmpLabel }}</button>
+</div>
+</article>
+</sc-for>
+</div>
+
+<div style="margin-top:56px;border:1px solid var(--bd2);border-radius:12px;overflow:hidden">
+<div style="padding:22px 24px;display:flex;flex-wrap:wrap;gap:16px;justify-content:space-between;align-items:center;border-bottom:1px solid var(--bd2)">
+<div><h3 style="margin:0;font-size:19px;font-weight:600">{{ t.cmpTitle }}</h3><p style="margin:4px 0 0;font-size:14px;color:var(--tx2)" aria-live="polite">{{ cmpHint }}</p></div>
+<div role="group" aria-label="{{ t.cmpTitle }}" style="display:flex;flex-wrap:wrap;gap:6px">
+<sc-for list="{{ cmpChips }}" as="c" hint-placeholder-count="8"><button type="button" aria-pressed="{{ c.on }}" disabled="{{ c.disabled }}" onClick="{{ c.toggle }}" style="font:400 12px 'Geist Mono',monospace;min-height:36px;padding:0 10px;border:1px solid var(--bd2);border-radius:6px;cursor:pointer;background:{{ c.bg }};color:{{ c.fg }};opacity:{{ c.op }}">{{ c.code }}</button></sc-for>
+</div>
+</div>
+<div role="region" aria-label="{{ t.cmpTitle }}" tabindex="0" style="overflow-x:auto">
+<div style="min-width:640px">
+<sc-for list="{{ cmpRows }}" as="r" hint-placeholder-count="7">
+<div style="display:flex;border-bottom:1px solid var(--bd)">
+<div style="width:180px;flex:none;padding:14px 24px;font:400 12px/1.5 'Geist Mono',monospace;color:var(--tx2);text-transform:uppercase;letter-spacing:0.03em">{{ r.label }}</div>
+<sc-for list="{{ r.cells }}" as="c" hint-placeholder-count="3"><div style="flex:1 1 0;min-width:150px;padding:14px 20px;border-left:1px solid var(--bd);font-size:15px;font-weight:{{ c.w }}">{{ c.v }}</div></sc-for>
+</div>
+</sc-for>
+</div>
+</div>
+</div>
+</section>
+
+<section id="catalog" aria-labelledby="cat-h" style="max-width:1280px;margin:0 auto;padding:clamp(72px,10vw,128px) clamp(20px,4vw,40px) 0">
+<div style="display:flex;gap:16px;align-items:baseline;border-top:1px solid var(--tx);padding-top:14px;font:400 12px 'Geist Mono',monospace;text-transform:uppercase;letter-spacing:0.04em"><span style="color:var(--tx2)">03</span><span>{{ t.sCatalog }}</span></div>
+<div style="display:flex;flex-wrap:wrap;justify-content:space-between;gap:24px;align-items:end;margin:32px 0 32px">
+<h2 id="cat-h" style="font-size:var(--h2);line-height:1.02;letter-spacing:-0.035em;font-weight:600;margin:0;max-width:16ch;text-wrap:balance">{{ t.catTitle }}</h2>
+<p style="margin:0;color:var(--tx2);max-width:28em">{{ t.catSub }}</p>
+</div>
+<div style="display:flex;flex-wrap:wrap;gap:12px;align-items:center">
+<label style="flex:1 1 280px;display:flex;align-items:center;gap:10px;border:1px solid var(--bd2);border-radius:6px;padding:0 14px;min-height:46px;background:var(--bg)">
+<span style="font:400 12px 'Geist Mono',monospace;color:var(--tx2)">{{ t.searchLabel }}</span>
+<input type="search" value="{{ q }}" onChange="{{ onQ }}" placeholder="{{ t.searchPh }}" style="flex:1;min-width:0;border:0;outline:0;background:transparent;color:var(--tx);font:inherit;font-size:16px;height:44px">
+</label>
+<div role="group" aria-label="{{ t.billLabel }}" style="display:flex;flex-wrap:wrap;border:1px solid var(--bd2);border-radius:6px;padding:2px;gap:2px">
+<sc-for list="{{ billChips }}" as="o" hint-placeholder-count="4"><button type="button" aria-pressed="{{ o.on }}" onClick="{{ o.pick }}" style="font:inherit;font-size:14px;min-height:40px;padding:0 12px;border:0;border-radius:4px;cursor:pointer;background:{{ o.bg }};color:{{ o.fg }}">{{ o.label }}</button></sc-for>
+</div>
+</div>
+<div role="group" aria-label="{{ t.catLabel }}" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:12px">
+<sc-for list="{{ catChips }}" as="o" hint-placeholder-count="8"><button type="button" aria-pressed="{{ o.on }}" onClick="{{ o.pick }}" style="font:inherit;font-size:14px;min-height:38px;padding:0 14px;border:1px solid var(--bd2);border-radius:999px;cursor:pointer;background:{{ o.bg }};color:{{ o.fg }}">{{ o.label }} <span style="opacity:0.65;font-family:'Geist Mono',monospace;font-size:12px">{{ o.n }}</span></button></sc-for>
+</div>
+<div style="display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;margin:28px 0 12px;font:400 12px 'Geist Mono',monospace;color:var(--tx2)"><span aria-live="polite">{{ resultCount }}</span><span>{{ t.priceUpdated }}</span></div>
+
+<sc-if value="{{ catTable }}" hint-placeholder-val="{{ true }}">
+<div style="border-top:1px solid var(--tx)">
+<sc-for list="{{ items }}" as="it" hint-placeholder-count="8">
+<div style="display:flex;flex-wrap:wrap;align-items:baseline;column-gap:20px;row-gap:4px;padding:14px 0;border-bottom:1px solid var(--bd)">
+<span style="font:400 12px 'Geist Mono',monospace;color:var(--tx2);width:64px;flex:none">{{ it.code }}</span>
+<span style="flex:1 1 220px;font-size:16px">{{ it.name }} <span style="font-size:13px;color:var(--tx2);margin-left:6px">{{ it.group }}</span></span>
+<span style="font:400 11px 'Geist Mono',monospace;text-transform:uppercase;letter-spacing:0.04em;border:1px solid var(--bd2);border-radius:4px;padding:2px 6px;color:var(--tx2)">{{ it.type }}</span>
+<span style="font:400 14px 'Geist Mono',monospace;min-width:210px;text-align:right;margin-left:auto">{{ it.price }}</span>
+</div>
+</sc-for>
+</div>
+</sc-if>
+<sc-if value="{{ catCards }}" hint-placeholder-val="{{ false }}">
+<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,240px),1fr));gap:12px">
+<sc-for list="{{ items }}" as="it" hint-placeholder-count="8">
+<div style="border:1px solid var(--bd2);border-radius:12px;padding:18px;display:flex;flex-direction:column;gap:10px;min-height:150px">
+<div style="display:flex;justify-content:space-between;font:400 12px 'Geist Mono',monospace;color:var(--tx2)"><span>{{ it.code }}</span><span>{{ it.type }}</span></div>
+<div style="font-size:17px;font-weight:600;letter-spacing:-0.01em">{{ it.name }}</div>
+<div style="font-size:13px;color:var(--tx2)">{{ it.group }}</div>
+<div style="font:400 14px 'Geist Mono',monospace;margin-top:auto;border-top:1px solid var(--bd);padding-top:10px">{{ it.price }}</div>
+</div>
+</sc-for>
+</div>
+</sc-if>
+<sc-if value="{{ noResults }}" hint-placeholder-val="{{ false }}">
+<div style="padding:40px 0;text-align:center;color:var(--tx2)">{{ t.empty }} <button type="button" onClick="{{ resetFilters }}" style="font:inherit;background:none;border:0;color:var(--tx);text-decoration:underline;cursor:pointer">{{ t.reset }}</button></div>
+</sc-if>
+<div style="margin-top:24px"><a href="Buatinweb%20Pricing.dc.html" style="font-weight:600">{{ t.fullPricing }}</a></div>
+</section>
+
+<section id="estimator" aria-labelledby="est-h" style="max-width:1280px;margin:0 auto;padding:clamp(72px,10vw,128px) clamp(20px,4vw,40px) 0">
+<div style="display:flex;gap:16px;align-items:baseline;border-top:1px solid var(--tx);padding-top:14px;font:400 12px 'Geist Mono',monospace;text-transform:uppercase;letter-spacing:0.04em"><span style="color:var(--tx2)">04</span><span>{{ t.sEstimator }}</span></div>
+<div style="display:flex;flex-wrap:wrap;justify-content:space-between;gap:24px;align-items:end;margin:32px 0 48px">
+<h2 id="est-h" style="font-size:var(--h2);line-height:1.02;letter-spacing:-0.035em;font-weight:600;margin:0;max-width:16ch;text-wrap:balance">{{ t.estTitle }}</h2>
+<p style="margin:0;color:var(--tx2);max-width:28em">{{ t.estSub }}</p>
+</div>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:24px;align-items:start">
+<div style="display:flex;flex-direction:column;gap:32px">
+<fieldset style="border:0;margin:0;padding:0">
+<legend style="font:400 12px 'Geist Mono',monospace;text-transform:uppercase;letter-spacing:0.04em;color:var(--tx2);margin-bottom:12px;padding:0">{{ t.estBase }}</legend>
+<div style="border-top:1px solid var(--tx)">
+<sc-for list="{{ baseOpts }}" as="b" hint-placeholder-count="7">
+<label style="display:flex;align-items:center;gap:14px;padding:13px 4px;border-bottom:1px solid var(--bd);cursor:pointer;min-height:48px">
+<input type="radio" name="base" checked="{{ b.on }}" onChange="{{ b.pick }}" style="width:18px;height:18px;accent-color:var(--tx);margin:0">
+<span style="font:400 12px 'Geist Mono',monospace;color:var(--tx2);width:56px">{{ b.code }}</span>
+<span style="flex:1">{{ b.name }}</span>
+<span style="font:400 13px 'Geist Mono',monospace;white-space:nowrap">{{ b.price }}</span>
+</label>
+</sc-for>
+</div>
+</fieldset>
+<fieldset style="border:0;margin:0;padding:0">
+<legend style="font:400 12px 'Geist Mono',monospace;text-transform:uppercase;letter-spacing:0.04em;color:var(--tx2);margin-bottom:12px;padding:0">{{ t.estAdd }}</legend>
+<div style="border-top:1px solid var(--tx)">
+<sc-for list="{{ addOpts }}" as="a" hint-placeholder-count="8">
+<label style="display:flex;align-items:center;gap:14px;padding:13px 4px;border-bottom:1px solid var(--bd);cursor:pointer;min-height:48px;opacity:{{ a.op }}">
+<input type="checkbox" checked="{{ a.on }}" disabled="{{ a.disabled }}" onChange="{{ a.toggle }}" style="width:18px;height:18px;accent-color:var(--tx);margin:0">
+<span style="font:400 12px 'Geist Mono',monospace;color:var(--tx2);width:56px">{{ a.code }}</span>
+<span style="flex:1">{{ a.name }}<span style="display:block;font-size:13px;color:var(--tx2)">{{ a.note }}</span></span>
+<span style="font:400 13px 'Geist Mono',monospace;white-space:nowrap;text-align:right">{{ a.price }}</span>
+</label>
+</sc-for>
+</div>
+</fieldset>
+</div>
+<aside aria-label="{{ t.estResult }}" style="position:sticky;top:88px;border:1px solid var(--tx);border-radius:12px;overflow:hidden;background:var(--bg)">
+<div style="display:flex;justify-content:space-between;align-items:center;gap:12px;padding:16px 20px;border-bottom:1px solid var(--tx);flex-wrap:wrap">
+<span style="font:400 12px 'Geist Mono',monospace;text-transform:uppercase;letter-spacing:0.04em">{{ t.estResult }}</span>
+<span style="font:400 12px 'Geist Mono',monospace;padding:4px 8px;border-radius:4px;border:1px solid var(--tx);background:{{ est.pillBg }};color:{{ est.pillFg }}">{{ est.pill }}</span>
+</div>
+<div aria-live="polite">
+<sc-for list="{{ est.groups }}" as="g" hint-placeholder-count="4">
+<div style="padding:18px 20px;border-bottom:1px solid var(--bd)">
+<div style="display:flex;justify-content:space-between;gap:12px;align-items:baseline;flex-wrap:wrap"><span style="font-size:14px;color:var(--tx2)">{{ g.label }}</span><span style="font-size:clamp(20px,2vw,26px);font-weight:600;letter-spacing:-0.02em">{{ g.value }}</span></div>
+<sc-for list="{{ g.lines }}" as="l" hint-placeholder-count="1"><div style="display:flex;justify-content:space-between;gap:12px;font:400 12px/1.6 'Geist Mono',monospace;color:var(--tx2);margin-top:4px"><span>{{ l.k }}</span><span style="text-align:right">{{ l.v }}</span></div></sc-for>
+</div>
+</sc-for>
+</div>
+<div style="padding:16px 20px;background:var(--sf);font-size:13px;color:var(--tx2);display:flex;flex-direction:column;gap:14px">
+<span>{{ t.estNote }}</span>
+<button type="button" onClick="{{ sendEstimate }}" style="font:inherit;font-weight:600;font-size:15px;min-height:46px;border:0;border-radius:6px;background:var(--inv);color:var(--invtx);cursor:pointer">{{ t.estSend }}</button>
+</div>
+</aside>
+</div>
+</section>
+
+<section id="portfolio" aria-labelledby="pf-h" style="max-width:1280px;margin:0 auto;padding:clamp(72px,10vw,128px) clamp(20px,4vw,40px) 0">
+<div style="display:flex;gap:16px;align-items:baseline;border-top:1px solid var(--tx);padding-top:14px;font:400 12px 'Geist Mono',monospace;text-transform:uppercase;letter-spacing:0.04em"><span style="color:var(--tx2)">05</span><span>{{ t.sPortfolio }}</span></div>
+<div style="display:flex;flex-wrap:wrap;justify-content:space-between;gap:24px;align-items:end;margin:32px 0 48px">
+<h2 id="pf-h" style="font-size:var(--h2);line-height:1.02;letter-spacing:-0.035em;font-weight:600;margin:0;max-width:16ch;text-wrap:balance">{{ t.pfTitle }}</h2>
+<p style="margin:0;color:var(--tx2);max-width:28em">{{ t.pfSub }}</p>
+</div>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));gap:16px">
+<sc-for list="{{ demos }}" as="d" hint-placeholder-count="3">
+<article style="display:flex;flex-direction:column;gap:14px">
+<div style="aspect-ratio:4/3;border:1px solid var(--bd2);border-radius:12px;background:repeating-linear-gradient(135deg,var(--sf) 0 10px,var(--bg) 10px 20px);display:flex;align-items:center;justify-content:center;position:relative">
+<span style="position:absolute;top:12px;left:12px;font:400 11px 'Geist Mono',monospace;text-transform:uppercase;letter-spacing:0.05em;background:var(--inv);color:var(--invtx);padding:3px 7px;border-radius:4px">{{ t.demoTag }}</span>
+<span style="font:400 12px 'Geist Mono',monospace;color:var(--tx2);background:var(--bg);padding:4px 8px">{{ d.ph }}</span>
+</div>
+<div style="display:flex;justify-content:space-between;gap:12px;align-items:baseline"><h3 style="margin:0;font-size:18px;font-weight:600">{{ d.name }}</h3><span style="font:400 12px 'Geist Mono',monospace;color:var(--tx2)">{{ d.code }}</span></div>
+<p style="margin:-6px 0 0;color:var(--tx2);font-size:15px">{{ d.url }}</p>
+</article>
+</sc-for>
+</div>
+</section>
+
+<section id="process" aria-labelledby="pr-h" style="max-width:1280px;margin:0 auto;padding:clamp(72px,10vw,128px) clamp(20px,4vw,40px) 0">
+<div style="display:flex;gap:16px;align-items:baseline;border-top:1px solid var(--tx);padding-top:14px;font:400 12px 'Geist Mono',monospace;text-transform:uppercase;letter-spacing:0.04em"><span style="color:var(--tx2)">06</span><span>{{ t.sProcess }}</span></div>
+<div style="display:flex;flex-wrap:wrap;justify-content:space-between;gap:24px;align-items:end;margin:32px 0 48px">
+<h2 id="pr-h" style="font-size:var(--h2);line-height:1.02;letter-spacing:-0.035em;font-weight:600;margin:0;max-width:16ch;text-wrap:balance">{{ t.prTitle }}</h2>
+<p style="margin:0;color:var(--tx2);max-width:28em">{{ t.prSub }}</p>
+</div>
+<ol style="list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,180px),1fr));gap:1px;background:var(--bd);border:1px solid var(--bd);border-radius:12px;overflow:hidden">
+<sc-for list="{{ steps }}" as="s" hint-placeholder-count="6">
+<li style="background:var(--bg);padding:24px 20px;display:flex;flex-direction:column;gap:12px;min-height:200px">
+<span style="font:400 12px 'Geist Mono',monospace;color:var(--tx2)">{{ s.num }}</span>
+<span style="font-size:18px;font-weight:600;margin-top:auto">{{ s.title }}</span>
+<span style="font-size:14px;color:var(--tx2);text-wrap:pretty">{{ s.desc }}</span>
+</li>
+</sc-for>
+</ol>
+</section>
+
+<section id="support" aria-labelledby="sp-h" style="margin-top:clamp(72px,10vw,128px);background:var(--inv);color:var(--invtx)">
+<div style="max-width:1280px;margin:0 auto;padding:clamp(64px,9vw,112px) clamp(20px,4vw,40px)">
+<div style="display:flex;gap:16px;align-items:baseline;border-top:1px solid var(--invtx);padding-top:14px;font:400 12px 'Geist Mono',monospace;text-transform:uppercase;letter-spacing:0.04em"><span>07</span><span>{{ t.sSupport }}</span></div>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,380px),1fr));gap:clamp(32px,6vw,80px);margin-top:32px">
+<div>
+<h2 id="sp-h" style="font-size:var(--h2);line-height:1.02;letter-spacing:-0.035em;font-weight:600;margin:0;text-wrap:balance">{{ t.spTitle }}</h2>
+<p style="margin:24px 0 0;max-width:28em">{{ t.spSub }}</p>
+<p style="margin:16px 0 0;max-width:28em;font-size:14px;border-left:0;padding-top:16px;border-top:1px solid var(--invtx)">{{ t.spCredit }}</p>
+</div>
+<ul style="list-style:none;margin:0;padding:0;border-top:1px solid var(--invtx)">
+<sc-for list="{{ problems }}" as="p" hint-placeholder-count="6">
+<li style="display:flex;flex-wrap:wrap;align-items:center;gap:12px 20px;padding:14px 0;border-bottom:1px solid var(--invtx)">
+<span style="font:400 12px 'Geist Mono',monospace;width:56px">{{ p.code }}</span>
+<span style="flex:1 1 200px;font-size:17px">{{ p.label }}</span>
+<span style="font:400 13px 'Geist Mono',monospace">{{ p.price }}</span>
+<button type="button" onClick="{{ p.brief }}" style="font:inherit;font-size:14px;min-height:40px;padding:0 14px;border:1px solid var(--invtx);border-radius:6px;background:transparent;color:var(--invtx);cursor:pointer">{{ t.spBrief }}</button>
+</li>
+</sc-for>
+</ul>
+</div>
+</div>
+</section>
+
+<section id="data-ai" aria-labelledby="ai-h" style="max-width:1280px;margin:0 auto;padding:clamp(72px,10vw,128px) clamp(20px,4vw,40px) 0">
+<div style="display:flex;gap:16px;align-items:baseline;border-top:1px solid var(--tx);padding-top:14px;font:400 12px 'Geist Mono',monospace;text-transform:uppercase;letter-spacing:0.04em"><span style="color:var(--tx2)">08</span><span>{{ t.sAi }}</span></div>
+<div style="display:flex;flex-wrap:wrap;justify-content:space-between;gap:24px;align-items:end;margin:32px 0 48px">
+<h2 id="ai-h" style="font-size:var(--h2);line-height:1.02;letter-spacing:-0.035em;font-weight:600;margin:0;max-width:16ch;text-wrap:balance">{{ t.aiTitle }}</h2>
+<p style="margin:0;color:var(--tx2);max-width:28em">{{ t.aiSub }}</p>
+</div>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:16px">
+<sc-for list="{{ aiCards }}" as="c" hint-placeholder-count="3">
+<article style="border:1px solid var(--bd2);border-radius:12px;padding:28px;display:flex;flex-direction:column;gap:16px">
+<span style="font:400 12px 'Geist Mono',monospace;color:var(--tx2)">{{ c.codes }}</span>
+<h3 style="margin:0;font-size:22px;font-weight:600;letter-spacing:-0.015em">{{ c.title }}</h3>
+<p style="margin:0;color:var(--tx2);font-size:15px;text-wrap:pretty">{{ c.desc }}</p>
+<div style="font:400 14px 'Geist Mono',monospace;border-top:1px solid var(--bd);padding-top:14px;margin-top:auto">{{ c.from }}</div>
+<button type="button" onClick="{{ c.brief }}" style="font:inherit;font-weight:600;font-size:15px;min-height:44px;border:1px solid var(--tx);border-radius:6px;background:var(--bg);color:var(--tx);cursor:pointer">{{ t.aiCta }}</button>
+</article>
+</sc-for>
+</div>
+<p style="margin:20px 0 0;font-size:14px;color:var(--tx2);max-width:48em">{{ t.aiNote }}</p>
+</section>
+
+<section id="faq" aria-labelledby="faq-h" style="max-width:1280px;margin:0 auto;padding:clamp(72px,10vw,128px) clamp(20px,4vw,40px) 0">
+<div style="display:flex;gap:16px;align-items:baseline;border-top:1px solid var(--tx);padding-top:14px;font:400 12px 'Geist Mono',monospace;text-transform:uppercase;letter-spacing:0.04em"><span style="color:var(--tx2)">09</span><span>FAQ</span></div>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,360px),1fr));gap:clamp(32px,6vw,80px);margin-top:32px">
+<h2 id="faq-h" style="font-size:var(--h2);line-height:1.02;letter-spacing:-0.035em;font-weight:600;margin:0;max-width:12ch">{{ t.faqTitle }}</h2>
+<div style="border-top:1px solid var(--tx)">
+<sc-for list="{{ faqs }}" as="f" hint-placeholder-count="5">
+<div style="border-bottom:1px solid var(--bd)">
+<h3 style="margin:0"><button type="button" aria-expanded="{{ f.open }}" onClick="{{ f.toggle }}" style="width:100%;display:flex;justify-content:space-between;gap:16px;align-items:center;font:inherit;font-size:17px;font-weight:600;text-align:left;padding:18px 0;min-height:56px;border:0;background:transparent;color:var(--tx);cursor:pointer"><span>{{ f.q }}</span><span aria-hidden="true" style="font-family:'Geist Mono',monospace;font-weight:400;font-size:18px">{{ f.sign }}</span></button></h3>
+<sc-if value="{{ f.open }}" hint-placeholder-val="{{ false }}"><p style="margin:0 0 20px;color:var(--tx2);max-width:40em;text-wrap:pretty">{{ f.a }}</p></sc-if>
+</div>
+</sc-for>
+</div>
+</div>
+</section>
+
+<section id="brief" aria-labelledby="br-h" style="max-width:1280px;margin:0 auto;padding:clamp(72px,10vw,128px) clamp(20px,4vw,40px)">
+<div style="display:flex;gap:16px;align-items:baseline;border-top:1px solid var(--tx);padding-top:14px;font:400 12px 'Geist Mono',monospace;text-transform:uppercase;letter-spacing:0.04em"><span style="color:var(--tx2)">10</span><span>{{ t.sBrief }}</span></div>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,380px),1fr));gap:clamp(32px,6vw,80px);margin-top:32px;align-items:start">
+<div>
+<h2 id="br-h" style="font-size:var(--h2);line-height:1.02;letter-spacing:-0.035em;font-weight:600;margin:0;max-width:12ch;text-wrap:balance">{{ t.brTitle }}</h2>
+<p style="margin:24px 0 0;color:var(--tx2);max-width:28em">{{ t.brSub }}</p>
+<dl style="margin:40px 0 0;border-top:1px solid var(--bd);font-size:15px">
+<div style="display:flex;justify-content:space-between;gap:16px;padding:12px 0;border-bottom:1px solid var(--bd)"><dt style="color:var(--tx2)">Email</dt><dd style="margin:0;font-family:'Geist Mono',monospace;font-size:13px">[ {{ t.ownerSet }} ]</dd></div>
+<div style="display:flex;justify-content:space-between;gap:16px;padding:12px 0;border-bottom:1px solid var(--bd)"><dt style="color:var(--tx2)">WhatsApp</dt><dd style="margin:0;font-family:'Geist Mono',monospace;font-size:13px">[ {{ t.ownerSet }} ]</dd></div>
+<div style="display:flex;justify-content:space-between;gap:16px;padding:12px 0;border-bottom:1px solid var(--bd)"><dt style="color:var(--tx2)">{{ t.hours }}</dt><dd style="margin:0;font-family:'Geist Mono',monospace;font-size:13px">WIB · UTC+7</dd></div>
+</dl>
+</div>
+
+<div style="border:1px solid var(--tx);border-radius:12px;padding:clamp(20px,3vw,32px)">
+<div role="status" aria-live="polite">
+<sc-if value="{{ fs.received }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;flex-direction:column;gap:16px;padding:8px 0">
+<span style="font:400 12px 'Geist Mono',monospace;text-transform:uppercase;letter-spacing:0.04em;color:var(--ok)">✓ {{ t.stReceivedTag }}</span>
+<h3 style="margin:0;font-size:26px;font-weight:600;letter-spacing:-0.02em">{{ t.stReceived }}</h3>
+<p style="margin:0;color:var(--tx2)">{{ t.stReceivedSub }}</p>
+<div style="display:flex;justify-content:space-between;gap:12px;border:1px solid var(--bd2);border-radius:6px;padding:14px 16px;font-family:'Geist Mono',monospace;font-size:14px"><span style="color:var(--tx2)">{{ t.refLabel }}</span><span>{{ ref }}</span></div>
+<button type="button" onClick="{{ resetForm }}" style="align-self:flex-start;font:inherit;font-size:15px;min-height:44px;padding:0 16px;border:1px solid var(--bd2);border-radius:6px;background:var(--bg);color:var(--tx);cursor:pointer">{{ t.another }}</button>
+</div>
+</sc-if>
+<sc-if value="{{ fs.alert }}" hint-placeholder-val="{{ false }}">
+<div role="alert" style="border:1px solid var(--err);border-radius:6px;padding:14px 16px;margin-bottom:20px;display:flex;gap:12px;align-items:flex-start">
+<span aria-hidden="true" style="font-weight:600;color:var(--err);font-family:'Geist Mono',monospace">!</span>
+<div><div style="font-weight:600">{{ fs.alertTitle }}</div><div style="font-size:14px;color:var(--tx2);margin-top:2px">{{ fs.alertBody }}</div></div>
+</div>
+</sc-if>
+</div>
+<sc-if value="{{ fs.showForm }}" hint-placeholder-val="{{ true }}">
+<form noValidate="{{ true }}" onSubmit="{{ submit }}" style="display:flex;flex-direction:column;gap:20px">
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));gap:20px">
+<div style="display:flex;flex-direction:column;gap:6px">
+<label for="f-name" style="font-size:14px;font-weight:600">{{ t.fName }} <span style="color:var(--tx2);font-weight:400">*</span></label>
+<input id="f-name" maxLength="120" autoComplete="name" value="{{ form.name }}" onChange="{{ on.name }}" aria-invalid="{{ inv.name }}" aria-describedby="e-name" style="font:inherit;min-height:46px;padding:0 12px;border:1px solid {{ bc.name }};border-radius:6px;background:var(--bg);color:var(--tx)" style-focus="outline:2px solid var(--tx);outline-offset:2px">
+<span id="e-name" style="font-size:13px;color:var(--err)">{{ errors.name }}</span>
+</div>
+<div style="display:flex;flex-direction:column;gap:6px">
+<label for="f-company" style="font-size:14px;font-weight:600">{{ t.fCompany }} <span style="color:var(--tx2);font-weight:400">{{ t.optional }}</span></label>
+<input id="f-company" maxLength="160" autoComplete="organization" value="{{ form.company }}" onChange="{{ on.company }}" style="font:inherit;min-height:46px;padding:0 12px;border:1px solid var(--bd2);border-radius:6px;background:var(--bg);color:var(--tx)" style-focus="outline:2px solid var(--tx);outline-offset:2px">
+</div>
+</div>
+<fieldset style="border:0;margin:0;padding:0;display:flex;flex-direction:column;gap:6px">
+<legend style="font-size:14px;font-weight:600;padding:0;margin-bottom:6px">{{ t.fChannel }} <span style="color:var(--tx2);font-weight:400">*</span></legend>
+<div style="display:flex;gap:8px;flex-wrap:wrap">
+<sc-for list="{{ channels }}" as="c" hint-placeholder-count="2"><label style="display:flex;align-items:center;gap:8px;min-height:44px;padding:0 14px;border:1px solid {{ c.bc }};border-radius:6px;cursor:pointer;font-size:15px"><input type="radio" name="channel" checked="{{ c.on }}" onChange="{{ c.pick }}" style="accent-color:var(--tx);margin:0">{{ c.label }}</label></sc-for>
+</div>
+<label for="f-contact" style="font-size:14px;margin-top:8px;color:var(--tx2)">{{ contactLabel }}</label>
+<input id="f-contact" type="{{ contactType }}" autoComplete="{{ contactAuto }}" placeholder="{{ contactPh }}" value="{{ form.contact }}" onChange="{{ on.contact }}" aria-invalid="{{ inv.contact }}" aria-describedby="e-contact" style="font:inherit;min-height:46px;padding:0 12px;border:1px solid {{ bc.contact }};border-radius:6px;background:var(--bg);color:var(--tx)" style-focus="outline:2px solid var(--tx);outline-offset:2px">
+<span id="e-contact" style="font-size:13px;color:var(--err)">{{ errors.contact }}</span>
+</fieldset>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));gap:20px">
+<div style="display:flex;flex-direction:column;gap:6px">
+<label for="f-service" style="font-size:14px;font-weight:600">{{ t.fService }} <span style="color:var(--tx2);font-weight:400">*</span></label>
+<select id="f-service" value="{{ form.service }}" onChange="{{ on.service }}" aria-invalid="{{ inv.service }}" aria-describedby="e-service" style="font:inherit;min-height:46px;padding:0 10px;border:1px solid {{ bc.service }};border-radius:6px;background:var(--bg);color:var(--tx)">
+<sc-for list="{{ serviceOpts }}" as="o" hint-placeholder-count="6"><option value="{{ o.v }}">{{ o.l }}</option></sc-for>
+</select>
+<span id="e-service" style="font-size:13px;color:var(--err)">{{ errors.service }}</span>
+</div>
+<div style="display:flex;flex-direction:column;gap:6px">
+<label for="f-budget" style="font-size:14px;font-weight:600">{{ t.fBudget }} <span style="color:var(--tx2);font-weight:400">{{ t.optional }}</span></label>
+<select id="f-budget" value="{{ form.budget }}" onChange="{{ on.budget }}" style="font:inherit;min-height:46px;padding:0 10px;border:1px solid var(--bd2);border-radius:6px;background:var(--bg);color:var(--tx)">
+<sc-for list="{{ budgetOpts }}" as="o" hint-placeholder-count="5"><option value="{{ o.v }}">{{ o.l }}</option></sc-for>
+</select>
+</div>
+</div>
+<div style="display:flex;flex-direction:column;gap:6px">
+<div style="display:flex;justify-content:space-between;gap:12px"><label for="f-brief" style="font-size:14px;font-weight:600">{{ t.fBrief }} <span style="color:var(--tx2);font-weight:400">*</span></label><span style="font:400 12px 'Geist Mono',monospace;color:var(--tx2)">{{ briefCount }}</span></div>
+<textarea id="f-brief" rows="5" maxLength="3000" placeholder="{{ t.fBriefPh }}" value="{{ form.brief }}" onChange="{{ on.brief }}" aria-invalid="{{ inv.brief }}" aria-describedby="e-brief h-brief" style="font:inherit;padding:12px;border:1px solid {{ bc.brief }};border-radius:6px;background:var(--bg);color:var(--tx);resize:vertical" style-focus="outline:2px solid var(--tx);outline-offset:2px"></textarea>
+<span id="h-brief" style="font-size:13px;color:var(--tx2)">{{ t.fBriefHint }}</span>
+<span id="e-brief" style="font-size:13px;color:var(--err)">{{ errors.brief }}</span>
+</div>
+<div style="display:flex;flex-direction:column;gap:10px;border-top:1px solid var(--bd);padding-top:18px">
+<label style="display:flex;gap:10px;align-items:flex-start;font-size:14px;cursor:pointer"><input id="f-privacy" type="checkbox" checked="{{ form.privacy }}" onChange="{{ on.privacy }}" aria-invalid="{{ inv.privacy }}" aria-describedby="e-privacy" style="width:18px;height:18px;margin:1px 0 0;accent-color:var(--tx);flex:none"><span>{{ t.fPrivacy }} <a href="#brief">{{ t.privacyLink }}</a>. <span style="color:var(--tx2)">*</span></span></label>
+<span id="e-privacy" style="font-size:13px;color:var(--err)">{{ errors.privacy }}</span>
+<label style="display:flex;gap:10px;align-items:flex-start;font-size:14px;cursor:pointer;color:var(--tx2)"><input type="checkbox" checked="{{ form.marketing }}" onChange="{{ on.marketing }}" style="width:18px;height:18px;margin:1px 0 0;accent-color:var(--tx);flex:none"><span>{{ t.fMarketing }}</span></label>
+</div>
+<button type="submit" disabled="{{ fs.busy }}" style="font:inherit;font-weight:600;font-size:16px;min-height:50px;border:0;border-radius:6px;background:var(--inv);color:var(--invtx);cursor:pointer;opacity:{{ fs.op }}">{{ fs.submitLabel }}</button>
+</form>
+</sc-if>
+</div>
+</div>
+</section>
+</main>
+
+<footer style="border-top:1px solid var(--tx)">
+<div style="max-width:1280px;margin:0 auto;padding:40px clamp(20px,4vw,40px) 48px;display:flex;flex-wrap:wrap;gap:32px;justify-content:space-between;align-items:flex-start">
+<div style="display:flex;flex-direction:column;gap:14px;max-width:340px">
+<div style="display:flex;align-items:center;gap:10px"><span style="width:28px;height:28px;overflow:hidden;display:block"><img src="assets/logo.jpeg" alt="" width="28" height="28" style="width:28px;height:28px;transform:scale(1.55);filter:var(--logo-f);mix-blend-mode:var(--logo-b);display:block"></span><span style="font-weight:600">buatinweb<span style="color:var(--tx2)">.site</span></span></div>
+<p style="margin:0;font-size:14px;color:var(--tx2)">{{ t.footTag }}</p>
+</div>
+<nav aria-label="Footer" style="display:flex;flex-wrap:wrap;gap:12px 28px;font-size:14px">
+<a href="Buatinweb%20Service.dc.html">{{ t.navServices }}</a><a href="Buatinweb%20Pricing.dc.html">{{ t.navPricing }}</a><a href="Buatinweb%20Estimator.dc.html">Estimator</a><a href="Buatinweb%20Portfolio.dc.html">{{ t.navPortfolio }}</a><a href="Buatinweb%20About.dc.html">{{ t.navAbout }}</a><a href="Buatinweb%20FAQ.dc.html">FAQ</a><a href="Buatinweb%20Contact.dc.html">{{ t.cta }}</a><a href="Buatinweb%20About.dc.html#privacy">{{ t.privacy }}</a><a href="Buatinweb%20About.dc.html#terms">{{ t.terms }}</a>
+</nav>
+</div>
+<div style="max-width:1280px;margin:0 auto;padding:16px clamp(20px,4vw,40px) 32px;display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between;font:400 12px 'Geist Mono',monospace;color:var(--tx2);border-top:1px solid var(--bd)">
+<span>© 2026 Buatinweb.site</span><span>{{ t.footPrices }}</span>
+</div>
+</footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;heroLayout&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;split&quot;,&quot;index&quot;,&quot;centered&quot;],&quot;default&quot;:&quot;split&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Layout&quot;},&quot;typeScale&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;display&quot;,&quot;restrained&quot;],&quot;default&quot;:&quot;display&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Layout&quot;},&quot;gridDetail&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Layout&quot;},&quot;catalogView&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;table&quot;,&quot;cards&quot;],&quot;default&quot;:&quot;table&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Catalogue&quot;},&quot;defaultLocale&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;en&quot;,&quot;id&quot;],&quot;default&quot;:&quot;en&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Behaviour&quot;},&quot;simulateSubmit&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;success&quot;,&quot;unavailable&quot;,&quot;rate_limited&quot;],&quot;default&quot;:&quot;success&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Behaviour&quot;}}">
+const CAT=[
+['WEB-01','web','Compro Mini','Compro Mini',99000,'f','o'],['WEB-02','web','Mini — own domain','Mini Domain Sendiri',249000,'f','o'],['WEB-03','web','Mini — new domain','Mini Domain Baru',399000,'s','o'],['WEB-04','web','Landing page','Landing Page',299000,'s','o'],['WEB-05','web','Compro Starter','Compro Starter',699000,'s','o'],['WEB-06','web','Compro Business','Compro Business',1699000,'s','o'],['WEB-07','web','Compro Professional','Compro Professional',4999000,'s','o'],['WEB-08','web','Product catalogue','Katalog Produk',1499000,'s','o'],['WEB-09','web','Blog / CMS','Blog / CMS',2999000,'s','o'],['WEB-10','web','E-commerce basic','E-Commerce Basic',5999000,'s','o'],['WEB-11','web','Custom frontend','Custom Frontend',3000000,'s','o'],
+['APP-01','app','Booking system','Booking System',4499000,'s','o'],['APP-02','app','Custom API / backend','Custom API / Backend',3999000,'s','o'],['APP-03','app','Analytics dashboard','Dashboard Analytics',5999000,'s','o'],['APP-04','app','Inventory system','Inventory System',7999000,'s','o'],['APP-05','app','Web application MVP','Web Application MVP',9999000,'s','o'],['APP-06','app','LMS / e-learning','LMS / E-Learning',12999000,'s','o'],['APP-07','app','SaaS MVP','SaaS MVP',19999000,'s','o'],['APP-08','app','Enterprise system','Enterprise System',49999000,'s','o'],
+['BUG-01','tech','Error diagnosis','Diagnosis Error',99000,'s','o'],['BUG-02','tech','Fix HTML / CSS / responsive','Fix HTML / CSS / Responsive',99000,'s','o'],['BUG-03','tech','Fix JavaScript','Fix JavaScript',149000,'s','o'],['BUG-04','tech','Fix API','Fix API',199000,'s','o'],['BUG-05','tech','Fix PHP / Laravel','Fix PHP / Laravel',199000,'s','o'],['BUG-08','tech','Fix login / auth','Fix Login / Auth',299000,'s','o'],['BUG-10','tech','Fix failed deployment','Fix Deployment Gagal',249000,'s','o'],['BUG-11','tech','Fix payment gateway','Fix Payment Gateway',399000,'s','o'],['BUG-12','tech','Web performance optimisation','Optimasi Performa Web',499000,'s','o'],
+['DEP-01','tech','Deploy static website','Deploy Website Statis',99000,'s','o'],['DEP-02','tech','Deploy Cloudflare Workers','Deploy Cloudflare Workers',149000,'s','o'],['DEP-08','tech','Deploy full-stack','Deploy Fullstack',599000,'s','o'],['DEP-09','tech','Docker Compose setup','Setup Docker Compose',499000,'s','o'],['DEP-11','tech','CI/CD with GitHub Actions','CI/CD GitHub Actions',599000,'s','o'],
+['INF-01','tech','DNS setup','Setup DNS',99000,'s','o'],['INF-02','tech','SSL / HTTPS setup','Setup SSL / HTTPS',99000,'s','o'],['INF-05','tech','Domain email / SMTP','Email Domain / SMTP',249000,'s','o'],['INF-06','tech','Linux VPS setup','Setup VPS Linux',399000,'s','o'],['INF-14','tech','Production server setup','Production Server Setup',1499000,'s','o'],
+['SHT-01','data','Simple spreadsheet','Spreadsheet Sederhana',99000,'s','o'],['SHT-05','data','Web form to Sheets','Form Web ke Sheets',299000,'s','o'],['SHT-07','data','Apps Script automation','Apps Script Automation',499000,'s','o'],['SHT-14','data','Managed Sheets support','Managed Sheets Support',49000,'s','m'],
+['DB-02','data','Cloudflare D1 setup','Setup Cloudflare D1',249000,'s','o'],['DB-04','data','PostgreSQL setup','Setup PostgreSQL',349000,'s','o'],['DB-06','data','Database schema','Database Schema',399000,'s','o'],['DB-11','data','DB backup & restore','Backup & Restore DB',399000,'s','o'],['DBM-04','data','DB basic management','DB Basic Management',99000,'s','m'],
+['MS-01','data','Storage Mini — 1 GB','Storage Mini — 1 GB',19000,'f','m'],['MS-02','data','Storage Basic — 5 GB','Storage Basic — 5 GB',39000,'f','m'],['MS-03','data','Storage Business — 20 GB','Storage Business — 20 GB',99000,'f','m'],['MS-04','data','Storage Pro — 50 GB','Storage Pro — 50 GB',199000,'f','m'],['MS-05','data','Storage Enterprise','Storage Enterprise',0,'q','m'],
+['AI-01','ai','Workflow automation','Workflow Automation',1499000,'s','o'],['AI-02','ai','AI chatbot basic','AI Chatbot Basic',2999000,'s','o'],['AI-04','ai','AI document processing','AI Document Processing',5999000,'s','o'],['AI-05','ai','RAG knowledge assistant','RAG Knowledge Assistant',7999000,'s','o'],['AI-06','ai','Custom AI agent','AI Agent Custom',14999000,'s','o'],
+['ML-01','ai','Data analysis','Data Analysis',2999000,'s','o'],['ML-02','ai','ML proof of concept','ML Proof of Concept',5999000,'s','o'],['ML-03','ai','Predictive analytics','Predictive Analytics',9999000,'s','o'],['ML-08','ai','ML production / MLOps','ML Production / MLOps',39999000,'s','o'],
+['SEC-01','care','Basic security check','Basic Security Check',299000,'s','o'],['SEC-04','care','Web security audit','Web Security Audit',1499000,'s','o'],['SEC-08','care','Security monitoring basic','Security Monitoring Basic',199000,'s','m'],['SEC-09','care','Website maintenance','Website Maintenance',149000,'s','m'],['SEC-10','care','Web app maintenance','Web App Maintenance',499000,'s','m'],['SEC-11','care','Managed VPS','Managed VPS',399000,'s','m'],
+['ADD-01','extra','Custom domain setup','Setup Custom Domain',150000,'f','o'],['ADD-02','extra','Domain registration','Registrasi Domain',0,'a','y'],['ADD-03','extra','Extra static page','Halaman Statis Tambahan',150000,'r','o',350000],['ADD-07','extra','Analytics & Search Console','Analytics & Search Console',200000,'r','o',400000],['ADD-08','extra','Technical SEO','Technical SEO',500000,'r','o',1500000],['ADD-12','extra','Additional language','Bahasa Tambahan',500000,'r','o',1500000],['ADD-17','extra','Mini content change','Perubahan Konten Mini',49000,'s','o'],
+['BND-01','extra','Tech support starter','Tech Support Starter',149000,'s','o'],['BND-02','extra','Website go-live','Website Go Live',399000,'s','o'],['BND-03','extra','Website + spreadsheet','Website + Spreadsheet',449000,'s','o'],['BND-05','extra','Production ready','Production Ready',2999000,'s','o']
+].map(r=>({code:r[0],g:r[1],en:r[2],id:r[3],p:r[4],type:r[5],bill:r[6],max:r[7]}));
+const BY=Object.fromEntries(CAT.map(c=>[c.code,c]));
+const GROUPS=[
+{k:'web',en:'Websites',id:'Website',den:'Company profiles, landing pages, catalogues and CMS.',did:'Company profile, landing page, katalog dan CMS.'},
+{k:'app',en:'Applications',id:'Aplikasi',den:'Booking, dashboards, APIs, MVPs and SaaS.',did:'Booking, dashboard, API, MVP dan SaaS.'},
+{k:'tech',en:'Technical support',id:'Technical support',den:'Diagnosis, bug fixing, deployment, servers and DNS.',did:'Diagnosis, perbaikan bug, deployment, server dan DNS.'},
+{k:'data',en:'Data & storage',id:'Data & penyimpanan',den:'Spreadsheets, databases and managed storage.',did:'Spreadsheet, database dan penyimpanan terkelola.'},
+{k:'ai',en:'AI & machine learning',id:'AI & machine learning',den:'Automation, assistants, analysis and models.',did:'Otomasi, asisten, analisis dan model.'},
+{k:'care',en:'Security & maintenance',id:'Keamanan & maintenance',den:'Checks, audits, monitoring and monthly care.',did:'Pemeriksaan, audit, monitoring dan perawatan bulanan.'},
+{k:'extra',en:'Add-ons & bundles',id:'Add-on & bundel',den:'Domains, SEO, languages and ready-to-buy bundles.',did:'Domain, SEO, bahasa dan bundel siap beli.'}];
+const RENEW={'WEB-01':99000,'WEB-02':199000,'WEB-03':199000,'WEB-04':149000,'WEB-05':299000,'WEB-06':599000,'WEB-07':1499000,'WEB-08':399000};
+const DOMAIN_INCL=['WEB-02','WEB-03','WEB-06','WEB-07'];
+const PKG={
+'WEB-01':{pages:['1 page, template','1 halaman, template'],sec:['Up to 5 sections','Maks. 5 section'],dom:['Subdomain','Subdomain'],rev:['1 minor revision','1 revisi minor'],ex:['CMS, blog, own domain, copywriting','CMS, blog, domain sendiri, copywriting']},
+'WEB-02':{pages:['1 page, template','1 halaman, template'],sec:['Up to 5 sections','Maks. 5 section'],dom:['Your existing domain','Domain milik Anda'],rev:['1 minor revision','1 revisi minor'],ex:['Domain renewal (registrar)','Perpanjangan domain (registrar)']},
+'WEB-03':{pages:['1 page, template','1 halaman, template'],sec:['Up to 5 sections','Maks. 5 section'],dom:['New .com, IDR 150k budget','.com baru, anggaran Rp150rb'],rev:['1 minor revision','1 revisi minor'],ex:['Domain cost above budget','Biaya domain di atas anggaran']},
+'WEB-04':{pages:['1 page, template','1 halaman, template'],sec:['6–8 sections','6–8 section'],dom:['Subdomain','Subdomain'],rev:['2 minor revisions','2 revisi minor'],ex:['Custom design, CMS','Desain custom, CMS']},
+'WEB-05':{pages:['Up to 3 pages','Maks. 3 halaman'],sec:['Semi-custom','Semi-custom'],dom:['Subdomain','Subdomain'],rev:['2 minor revisions','2 revisi minor'],ex:['Own domain, CMS, blog','Domain sendiri, CMS, blog']},
+'WEB-06':{pages:['Up to 5 pages','Maks. 5 halaman'],sec:['Semi-custom','Semi-custom'],dom:['.com, IDR 249k budget','.com, anggaran Rp249rb'],rev:['3 minor revisions','3 revisi minor'],ex:['CMS, login, copywriting','CMS, login, copywriting']},
+'WEB-07':{pages:['Up to 10 pages','Maks. 10 halaman'],sec:['Custom design','Desain khusus'],dom:['.com, IDR 249k budget','.com, anggaran Rp249rb'],rev:['3 review stages','3 tahap review'],ex:['CMS, payments','CMS, pembayaran']},
+'WEB-08':{pages:['Up to 30 products','Maks. 30 produk'],sec:['Categories, WhatsApp order','Kategori, pesan via WhatsApp'],dom:['Subdomain','Subdomain'],rev:['—','—'],ex:['Cart, payments','Keranjang, pembayaran']}};
+const T={
+en:{skip:'Skip to content',navServices:'Services',navPricing:'Pricing',navPortfolio:'Portfolio',navAbout:'About',cta:'Consultation',menu:'Menu',close:'Close',langLabel:'Language',themeLabel:'Theme',light:'Light',dark:'Dark',system:'System',
+heroEyebrow:'Websites · Applications · Technical support · Data & AI',heroT1:'The right website.',heroT2:'Systems built to grow.',heroSub:'From template-based business websites to custom applications, automation, and data solutions.',heroCta1:'View packages',heroCta2:'Discuss a project',specTitle:'Price book',specFoot:'All prices in IDR. “From” prices are confirmed after scope review.',
+sServices:'Services',svcTitle:'One studio, seven kinds of work.',svcSub:'Pick a category to filter the catalogue below. Every price comes from the same versioned price book.',from:'From',items:'items',
+sPackages:'Website packages',pkgTitle:'Three ways to get online.',pkgSub:'Year one hosting is included. Recurring costs are always shown separately, never folded into the first payment.',pkgEstimate:'Estimate this',cmpAdd:'Compare',cmpOn:'Comparing',
+cmpTitle:'Compare packages',cmpHintN:'Select up to 3. {n} selected.',cmpHintMax:'Maximum of 3 — remove one to add another.',rUp:'Upfront',rRen:'Year 2 onward',rPages:'Pages',rDesign:'Sections / design',rDom:'Domain',rRev:'Revisions',rEx:'Not included',
+sCatalog:'Catalogue',catTitle:'Find the exact service.',catSub:'A preview of the price book. The pricing page lists every item with scope, exclusions and renewals.',searchLabel:'SEARCH',searchPh:'Name or code, e.g. “deploy”, “BUG-08”',billLabel:'Billing',catLabel:'Category',all:'All',once:'One-time',month:'Monthly',year:'Yearly',results:'{n} services',empty:'No services match these filters.',reset:'Reset filters',fullPricing:'Open full pricing →',priceUpdated:'Prices updated 27 Oct 2026 · v1',
+tF:'Fixed',tS:'From',tR:'Range',tQ:'Quote',tA:'Actual',
+sEstimator:'Estimator',estTitle:'Estimate before you ask.',estSub:'Costs are grouped by when you pay them. Nothing is summed into one misleading total.',estBase:'Website package — choose one',estNone:'No website package',estAdd:'Add-ons & subscriptions',estIncl:'Included in your package',estResult:'Indicative estimate',gOnce:'Upfront',gMonth:'Monthly',gYear:'Yearly, from year 2',gVendor:'Vendor / not yet estimated',pillQuote:'Needs final quotation',pillFixed:'Fixed scope',estNote:'An estimate, not an invoice. Final pricing is set in a quotation valid for 14 days.',estSend:'Send this estimate with a brief',none:'—',nothing:'Nothing selected',domReg:'Domain registration',domRenew:'Domain renewal',domDiff:'Domain cost above package budget',actual:'actual cost',
+sPortfolio:'Portfolio',pfTitle:'Demos, clearly labelled.',pfSub:'Client work appears here only with written permission. Until then, these are template demos you can open and test.',demoTag:'Demo',
+sProcess:'Process',prTitle:'How a project runs.',prSub:'Work starts once the brief, materials, access and agreed payment are in place.',
+sSupport:'Technical support',spTitle:'Something broken? Start with a diagnosis.',spSub:'Pick the closest problem. We investigate with your authorisation, report the cause, and quote the fix.',spCredit:'If you continue with the same fix, the paid diagnosis is credited once. Example: fix IDR 299,000 − diagnosis IDR 99,000 = IDR 200,000 remaining.',spBrief:'Brief this',
+sAi:'Data, AI & ML',aiTitle:'Data and AI, by consultation.',aiSub:'We check data quality, usage rights and cost before promising anything.',aiCta:'Discuss requirements',aiNote:'API tokens, GPU compute, data labelling and licensed datasets are billed separately unless a quotation says otherwise. No accuracy figure is promised before experiments.',
+faqTitle:'Common questions.',sBrief:'Brief',brTitle:'Tell us what you need.',brSub:'A short brief is enough. We reply with questions or a quotation — never an automatic charge.',ownerSet:'set by owner',hours:'Service hours',
+fName:'Name',fCompany:'Company',optional:'optional',fChannel:'How should we reach you?',fEmail:'Email address',fWa:'WhatsApp number, international format',fService:'Service',fBudget:'Budget',fBrief:'What do you need?',fBriefPh:'What you have now, what you want, and any deadline.',fBriefHint:'Never include passwords, API keys or private data.',fPrivacy:'I have read the',privacyLink:'privacy notice',fMarketing:'Send me occasional updates (optional).',submit:'Send brief',submitting:'Saving…',
+eName:'Enter your name.',eEmail:'Enter a valid email address.',eWa:'Enter a number with country code, e.g. +62 812 3456 7890.',eService:'Choose a service, or “Not sure yet”.',eBrief:'Add at least 20 characters so we can understand the request.',ePrivacy:'Please confirm you have read the privacy notice.',
+aValTitle:'Some fields need attention.',aValBody:'Check the highlighted fields below.',aUnTitle:'Your brief was not saved.',aUnBody:'Nothing was sent. Your text is still here — try again, or email us directly.',aRlTitle:'Too many attempts.',aRlBody:'Please wait a minute, then try again. Your text is kept.',
+stReceivedTag:'Saved',stReceived:'Brief received.',stReceivedSub:'Keep this reference. We reply during service hours (WIB, UTC+7).',refLabel:'Reference',another:'Send another brief',notSure:'Not sure yet — recommend one',chooseSvc:'Choose a service',
+bNs:'Not sure — recommend',b1:'Under IDR 1 million',b2:'IDR 1–5 million',b3:'IDR 5–20 million',b4:'Over IDR 20 million',
+footTag:'Websites, applications, technical support, data and AI for clients in Indonesia and abroad.',privacy:'Privacy',terms:'Terms',footPrices:'Prices in IDR · price book 2026-10-27.v1'},
+id:{skip:'Lewati ke konten',navServices:'Layanan',navPricing:'Harga',navPortfolio:'Portfolio',navAbout:'Tentang',cta:'Konsultasi',menu:'Menu',close:'Tutup',langLabel:'Bahasa',themeLabel:'Tema',light:'Terang',dark:'Gelap',system:'Sistem',
+heroEyebrow:'Website · Aplikasi · Technical support · Data & AI',heroT1:'Website yang tepat.',heroT2:'Sistem yang siap berkembang.',heroSub:'Dari company profile mulai Rp99.000 hingga aplikasi, otomasi, dan solusi data sesuai kebutuhan bisnis.',heroCta1:'Lihat Paket',heroCta2:'Diskusikan Proyek',specTitle:'Daftar harga',specFoot:'Semua harga dalam rupiah. Harga “Mulai” dikonfirmasi setelah review scope.',
+sServices:'Layanan',svcTitle:'Satu studio, tujuh jenis pekerjaan.',svcSub:'Pilih kategori untuk memfilter katalog di bawah. Semua harga berasal dari satu daftar harga berversi.',from:'Mulai',items:'layanan',
+sPackages:'Paket website',pkgTitle:'Tiga cara mulai online.',pkgSub:'Hosting tahun pertama sudah termasuk. Biaya berulang selalu ditampilkan terpisah, tidak digabung ke pembayaran awal.',pkgEstimate:'Hitung paket ini',cmpAdd:'Bandingkan',cmpOn:'Dibandingkan',
+cmpTitle:'Bandingkan paket',cmpHintN:'Pilih hingga 3. {n} dipilih.',cmpHintMax:'Maksimal 3 — hapus satu untuk menambah yang lain.',rUp:'Biaya awal',rRen:'Mulai tahun ke-2',rPages:'Halaman',rDesign:'Section / desain',rDom:'Domain',rRev:'Revisi',rEx:'Tidak termasuk',
+sCatalog:'Katalog',catTitle:'Temukan layanan yang tepat.',catSub:'Cuplikan daftar harga. Halaman pricing memuat semua item lengkap dengan scope, pengecualian dan perpanjangan.',searchLabel:'CARI',searchPh:'Nama atau kode, mis. “deploy”, “BUG-08”',billLabel:'Penagihan',catLabel:'Kategori',all:'Semua',once:'Sekali bayar',month:'Bulanan',year:'Tahunan',results:'{n} layanan',empty:'Tidak ada layanan yang cocok.',reset:'Reset filter',fullPricing:'Buka halaman pricing →',priceUpdated:'Harga diperbarui 27 Okt 2026 · v1',
+tF:'Tetap',tS:'Mulai',tR:'Rentang',tQ:'Penawaran',tA:'Aktual',
+sEstimator:'Estimator',estTitle:'Hitung sebelum bertanya.',estSub:'Biaya dikelompokkan menurut waktu pembayaran. Tidak dijumlah menjadi satu total yang menyesatkan.',estBase:'Paket website — pilih satu',estNone:'Tanpa paket website',estAdd:'Add-on & langganan',estIncl:'Sudah termasuk dalam paket',estResult:'Indikasi biaya',gOnce:'Biaya awal',gMonth:'Bulanan',gYear:'Tahunan, mulai tahun ke-2',gVendor:'Vendor / belum ditaksir',pillQuote:'Perlu penawaran final',pillFixed:'Scope tetap',estNote:'Estimasi, bukan invoice. Harga final ditetapkan dalam quotation yang berlaku 14 hari.',estSend:'Kirim estimasi ini bersama brief',none:'—',nothing:'Belum ada pilihan',domReg:'Registrasi domain',domRenew:'Perpanjangan domain',domDiff:'Biaya domain di atas anggaran paket',actual:'biaya aktual',
+sPortfolio:'Portfolio',pfTitle:'Demo, berlabel jelas.',pfSub:'Proyek klien hanya tampil dengan izin tertulis. Sementara itu, berikut demo template yang dapat dibuka dan dicoba.',demoTag:'Demo',
+sProcess:'Proses',prTitle:'Cara proyek berjalan.',prSub:'Pengerjaan dimulai setelah brief, materi, akses dan pembayaran yang disepakati lengkap.',
+sSupport:'Technical support',spTitle:'Ada yang rusak? Mulai dari diagnosis.',spSub:'Pilih masalah yang paling mirip. Kami menyelidiki dengan izin Anda, melaporkan penyebab, lalu memberi penawaran perbaikan.',spCredit:'Jika dilanjutkan ke perbaikan yang sama, diagnosis yang sudah dibayar dikreditkan satu kali. Contoh: fix Rp299.000 − diagnosis Rp99.000 = sisa Rp200.000.',spBrief:'Buat brief',
+sAi:'Data, AI & ML',aiTitle:'Data dan AI, berbasis konsultasi.',aiSub:'Kami memeriksa kualitas data, hak pemakaian dan biaya sebelum menjanjikan apa pun.',aiCta:'Konsultasi Kebutuhan',aiNote:'Token API, compute GPU, anotasi data dan dataset berlisensi ditagih terpisah kecuali quotation menyatakan lain. Tidak ada janji akurasi sebelum eksperimen.',
+faqTitle:'Pertanyaan umum.',sBrief:'Brief',brTitle:'Ceritakan kebutuhan Anda.',brSub:'Brief singkat sudah cukup. Kami membalas dengan pertanyaan atau quotation — tidak ada tagihan otomatis.',ownerSet:'diisi pemilik',hours:'Jam layanan',
+fName:'Nama',fCompany:'Perusahaan',optional:'opsional',fChannel:'Hubungi Anda lewat?',fEmail:'Alamat email',fWa:'Nomor WhatsApp, format internasional',fService:'Layanan',fBudget:'Budget',fBrief:'Apa yang Anda butuhkan?',fBriefPh:'Kondisi sekarang, yang diinginkan, dan tenggat bila ada.',fBriefHint:'Jangan sertakan password, API key atau data pribadi.',fPrivacy:'Saya telah membaca',privacyLink:'pemberitahuan privasi',fMarketing:'Kirimi saya kabar sesekali (opsional).',submit:'Kirim brief',submitting:'Menyimpan…',
+eName:'Isi nama Anda.',eEmail:'Isi alamat email yang valid.',eWa:'Isi nomor dengan kode negara, mis. +62 812 3456 7890.',eService:'Pilih layanan, atau “Belum tahu”.',eBrief:'Tulis minimal 20 karakter agar kami memahami kebutuhan.',ePrivacy:'Konfirmasi bahwa Anda telah membaca pemberitahuan privasi.',
+aValTitle:'Beberapa isian perlu diperbaiki.',aValBody:'Periksa isian yang ditandai di bawah.',aUnTitle:'Brief Anda belum tersimpan.',aUnBody:'Tidak ada yang terkirim. Teks Anda masih ada — coba lagi, atau email kami langsung.',aRlTitle:'Terlalu banyak percobaan.',aRlBody:'Tunggu satu menit lalu coba lagi. Teks Anda tetap tersimpan di sini.',
+stReceivedTag:'Tersimpan',stReceived:'Brief diterima.',stReceivedSub:'Simpan referensi ini. Kami membalas pada jam layanan (WIB, UTC+7).',refLabel:'Referensi',another:'Kirim brief lain',notSure:'Belum tahu, minta rekomendasi',chooseSvc:'Pilih layanan',
+bNs:'Belum tahu, minta rekomendasi',b1:'Di bawah Rp1 juta',b2:'Rp1–5 juta',b3:'Rp5–20 juta',b4:'Di atas Rp20 juta',
+footTag:'Website, aplikasi, technical support, data dan AI untuk klien Indonesia maupun internasional.',privacy:'Privasi',terms:'Ketentuan',footPrices:'Harga dalam rupiah · daftar harga 2026-10-27.v1'}};
+const FEAT={
+'WEB-01':{en:['One template page, up to 5 sections','Subdomain, HTTPS, responsive','Up to 6 service items, 8 images','7-day defect warranty'],id:['1 halaman template, maks. 5 section','Subdomain, HTTPS, responsive','Maks. 6 item layanan, 8 gambar','Garansi defect 7 hari'],len:'For a first, simple presence.',lid:'Untuk kehadiran online pertama.',xen:'Not included: CMS, blog, own domain, copywriting.',xid:'Tidak termasuk: CMS, blog, domain sendiri, copywriting.'},
+'WEB-05':{en:['Up to 3 semi-custom pages','Basic SEO','Subdomain, HTTPS, responsive','2 minor revisions'],id:['Maks. 3 halaman semi-custom','SEO dasar','Subdomain, HTTPS, responsive','2 revisi minor'],len:'For services that need more room.',lid:'Untuk layanan yang perlu ruang lebih.',xen:'Not included: own domain, CMS, blog.',xid:'Tidak termasuk: domain sendiri, CMS, blog.'},
+'WEB-06':{en:['Up to 5 semi-custom pages','.com domain, IDR 249,000 budget','Basic SEO, HTTPS, responsive','3 minor revisions'],id:['Maks. 5 halaman semi-custom','Domain .com, anggaran Rp249.000','SEO dasar, HTTPS, responsive','3 revisi minor'],len:'For established businesses.',lid:'Untuk bisnis yang sudah berjalan.',xen:'Not included: CMS, login, copywriting.',xid:'Tidak termasuk: CMS, login, copywriting.'}};
+const STEPS={en:[['Brief','You describe the need; we ask what is missing.'],['Scope','Pages, features, limits and exclusions agreed in writing.'],['Quotation','Upfront, recurring and vendor costs, valid 14 days.'],['Build','Work starts once materials, access and payment are in.'],['Review','You test against the agreed scope; fixes follow.'],['Handover','Access, docs and support limits handed to you.']],
+id:[['Brief','Anda jelaskan kebutuhan; kami tanyakan yang kurang.'],['Scope','Halaman, fitur, batas dan pengecualian disepakati tertulis.'],['Quotation','Biaya awal, berulang dan vendor, berlaku 14 hari.'],['Pengerjaan','Dimulai setelah materi, akses dan pembayaran lengkap.'],['Review','Anda menguji sesuai scope; perbaikan menyusul.'],['Serah terima','Akses, dokumentasi dan batas support diserahkan.']]};
+const PROBS=[['BUG-01','Something errors and I don’t know why','Ada error dan saya tidak tahu penyebabnya'],['BUG-02','Layout breaks on mobile','Tampilan rusak di mobile'],['BUG-08','Users can’t log in','Pengguna tidak bisa login'],['BUG-10','Deployment keeps failing','Deployment terus gagal'],['BUG-11','Payment webhook not working','Webhook pembayaran tidak jalan'],['BUG-12','The site is slow','Website lambat']];
+const FAQ={en:[['Do I need my own domain?','No. Compro Mini runs on a subdomain such as yourname.buatinweb.site. WEB-02 connects a domain you already own; WEB-03 registers a new one within a set budget, in your name.'],['What happens after year one?','Each package lists its renewal. Compro Mini renews at IDR 99,000 a year for subdomain and managed hosting — content changes are billed separately.'],['Is support available 24/7?','No. Maintenance plans buy a fixed number of hours each month, during service hours (WIB, UTC+7). Response targets are not resolution guarantees.'],['How do payments work?','Compro Mini is paid in full once scope is approved. Standard projects are 50% upfront and 50% before handover. Larger projects use milestones.'],['Can I pay in USD?','Prices are in IDR for every language. A USD estimate will only appear once an approved exchange rate is set; the quotation states the final amount.']],
+id:[['Apakah saya perlu domain sendiri?','Tidak. Compro Mini memakai subdomain seperti namaanda.buatinweb.site. WEB-02 memakai domain yang sudah Anda miliki; WEB-03 mendaftarkan domain baru dengan anggaran tertentu, atas nama Anda.'],['Bagaimana setelah tahun pertama?','Setiap paket mencantumkan biaya perpanjangan. Compro Mini diperpanjang Rp99.000/tahun untuk subdomain dan hosting terkelola — perubahan konten ditagih terpisah.'],['Apakah support tersedia 24/7?','Tidak. Paket maintenance membeli jumlah jam tertentu per bulan, pada jam layanan (WIB, UTC+7). Target respons bukan jaminan waktu selesai.'],['Bagaimana pembayarannya?','Compro Mini dibayar penuh setelah scope disetujui. Proyek standar 50% di awal dan 50% sebelum serah terima. Proyek besar memakai milestone.'],['Bisakah membayar dalam USD?','Harga ditampilkan dalam rupiah untuk semua bahasa. Estimasi USD hanya muncul setelah kurs disetujui; nominal final ada di quotation.']]};
+const ADDS=['ADD-01','ADD-03','ADD-07','ADD-12','SEC-09','MS-01','SHT-14','ADD-02'];
+const BASES=['','WEB-01','WEB-02','WEB-03','WEB-04','WEB-05','WEB-06'];
+const SVC=['WEB-01','WEB-02','WEB-03','WEB-04','WEB-05','WEB-06','WEB-07','WEB-08','APP-05','BUG-01','BUG-02','BUG-08','BUG-10','BUG-11','BUG-12','DEP-08','SHT-05','AI-01','AI-02','ML-01','SEC-09'];
+
+class Component extends DCLogic {
+  state={theme:'system',locale:null,w:1280,menu:false,cat:'all',bill:'all',q:'',cmp:['WEB-01','WEB-05','WEB-06'],base:'WEB-01',add:{},faq:0,sysDark:false,
+    form:{name:'',company:'',channel:'email',contact:'',service:'',budget:'',brief:'',privacy:false,marketing:false},errors:{},status:'idle',ref:''};
+  componentDidMount(){
+    let th=null,lo=null;try{th=localStorage.getItem('bw-theme');lo=localStorage.getItem('bw-locale');}catch(e){}
+    this.mq=window.matchMedia('(prefers-color-scheme: dark)');
+    this.onMq=()=>this.setState({sysDark:this.mq.matches});
+    if(this.mq.addEventListener)this.mq.addEventListener('change',this.onMq);
+    this.onRs=()=>this.setState({w:window.innerWidth});
+    window.addEventListener('resize',this.onRs);
+    this.setState({theme:th||'system',locale:lo,sysDark:this.mq.matches,w:window.innerWidth},()=>this.apply());
+  }
+  componentDidUpdate(){this.apply();}
+  componentWillUnmount(){window.removeEventListener('resize',this.onRs);if(this.mq&&this.mq.removeEventListener)this.mq.removeEventListener('change',this.onMq);}
+  L(){return this.state.locale||this.props.defaultLocale||'en';}
+  apply(){
+    const s=this.state,dark=s.theme==='dark'||(s.theme==='system'&&s.sysDark),b=document.body;
+    b.dataset.theme=dark?'dark':'light';
+    const big=(this.props.typeScale??'display')==='display';
+    b.style.setProperty('--h1',big?'clamp(44px,7.4vw,104px)':'clamp(36px,4.8vw,64px)');
+    b.style.setProperty('--h2',big?'clamp(32px,4.4vw,56px)':'clamp(26px,3vw,38px)');
+    b.style.setProperty('--grid-c',(this.props.gridDetail??true)?'var(--bd)':'transparent');
+    document.documentElement.lang=this.L();
+  }
+  go(id){const el=document.getElementById(id);if(el)window.scrollTo({top:el.getBoundingClientRect().top+window.scrollY-72,behavior:'smooth'});}
+  fmt(n){const L=this.L();return L==='id'?'Rp'+n.toLocaleString('id-ID'):'IDR '+n.toLocaleString('en-US');}
+  price(c){const t=T[this.L()],L=this.L();let s;
+    if(c.type==='q')s=t.tQ;else if(c.type==='a')s=L==='id'?'Biaya aktual':'Actual cost';
+    else if(c.type==='r')s=this.fmt(c.p)+'–'+this.fmt(c.max).replace(/^(Rp|IDR )/,'');
+    else s=(c.type==='s'?t.tS+' ':'')+this.fmt(c.p);
+    if(c.bill==='m')s+=L==='id'?' / bulan':' / month';if(c.bill==='y')s+=L==='id'?' / tahun':' / year';return s;}
+  typeLbl(c){const t=T[this.L()];return {f:t.tF,s:t.tS,r:t.tR,q:t.tQ,a:t.tA}[c.type];}
+  nm(c){return c[this.L()];}
+  set(k,v){this.setState({[k]:v},()=>{if(k==='theme'||k==='locale'){try{localStorage.setItem('bw-'+k,v);}catch(e){}}});}
+  syncUrl(){try{const u=new URL(location.href);const s=this.state;['cat','bill'].forEach(k=>s[k]!=='all'?u.searchParams.set(k,s[k]):u.searchParams.delete(k));s.q?u.searchParams.set('q',s.q):u.searchParams.delete('q');history.replaceState(null,'',u);}catch(e){}}
+  setF(k,v){this.setState({cat:k==='cat'?v:this.state.cat,bill:k==='bill'?v:this.state.bill,q:k==='q'?v:this.state.q},()=>this.syncUrl());}
+  toggleCmp(code){const c=this.state.cmp;if(c.includes(code))this.setState({cmp:c.filter(x=>x!==code)});else if(c.length<3)this.setState({cmp:[...c,code]});}
+  briefFor(code,extra){this.setState(s=>({form:{...s.form,service:code,brief:extra?(s.form.brief?s.form.brief+'\n':'')+extra:s.form.brief},status:s.status==='received'?'idle':s.status}),()=>this.go('brief'));}
+  seg(on){return {bg:on?'var(--inv)':'transparent',fg:on?'var(--invtx)':'var(--tx)'};}
+
+  estimate(){
+    const s=this.state,t=T[this.L()],base=s.base?BY[s.base]:null;
+    const sel=ADDS.filter(c=>s.add[c]&&!(c==='ADD-01'&&DOMAIN_INCL.includes(s.base))).map(c=>BY[c]);
+    let oMin=0,oMax=0,oStart=false,oLines=[],mSum=0,mStart=false,mLines=[],yLines=[],ySum=0,vLines=[];
+    if(base){oMin+=base.p;oMax+=base.p;if(base.type!=='f')oStart=true;oLines.push({k:base.code+' '+this.nm(base),v:this.price(base)});
+      if(RENEW[base.code]){ySum+=RENEW[base.code];yLines.push({k:base.code+' '+(this.L()==='id'?'perpanjangan':'renewal'),v:this.fmt(RENEW[base.code])});}
+      if(base.code==='WEB-02')vLines.push({k:t.domRenew,v:t.actual});
+      if(base.code==='WEB-03'||base.code==='WEB-06')vLines.push({k:t.domDiff,v:t.actual});
+      if(base.code==='WEB-03')vLines.push({k:t.domRenew,v:t.actual});}
+    sel.forEach(c=>{
+      if(c.bill==='o'){oMin+=c.p;oMax+=c.max||c.p;if(c.type!=='f')oStart=true;oLines.push({k:c.code+' '+this.nm(c),v:this.price(c)});}
+      else if(c.bill==='m'){mSum+=c.p;if(c.type!=='f')mStart=true;mLines.push({k:c.code+' '+this.nm(c),v:this.price(c)});}
+      else if(c.type==='a'){vLines.push({k:c.code+' '+t.domReg,v:t.actual});}});
+    const pre=st=>st?t.tS+' ':'';
+    const oVal=oMin===0?t.none:pre(oStart&&oMin===oMax)+(oMin===oMax?this.fmt(oMin):this.fmt(oMin)+'–'+this.fmt(oMax).replace(/^(Rp|IDR )/,''));
+    const groups=[
+      {label:t.gOnce,value:oVal,lines:oLines.length?oLines:[{k:t.nothing,v:''}]},
+      {label:t.gMonth,value:mSum?pre(mStart)+this.fmt(mSum):t.none,lines:mLines},
+      {label:t.gYear,value:ySum?this.fmt(ySum):t.none,lines:yLines},
+      {label:t.gVendor,value:vLines.length?String(vLines.length):t.none,lines:vLines}];
+    const quote=oStart||mStart||oMin!==oMax;
+    const summary=[base?base.code:null,...sel.map(c=>c.code)].filter(Boolean).join(', ');
+    return {groups,pill:quote?t.pillQuote:t.pillFixed,pillBg:quote?'var(--bg)':'var(--inv)',pillFg:quote?'var(--tx)':'var(--invtx)',summary,oVal};
+  }
+
+  validate(){const f=this.state.form,t=T[this.L()],e={};
+    if(!f.name.trim())e.name=t.eName;
+    if(f.channel==='email'){if(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(f.contact.trim()))e.contact=t.eEmail;}
+    else if(!/^\+[1-9]\d{7,14}$/.test(f.contact.replace(/[\s\-()]/g,'')))e.contact=t.eWa;
+    if(!f.service)e.service=t.eService;
+    if(f.brief.trim().length<20)e.brief=t.eBrief;
+    if(!f.privacy)e.privacy=t.ePrivacy;return e;}
+  submit(ev){ev.preventDefault();if(this.state.status==='submitting')return;
+    const e=this.validate();
+    if(Object.keys(e).length){this.setState({errors:e,status:'validation_error'},()=>{const k=['name','contact','service','brief','privacy'].find(x=>e[x]);const el=document.getElementById('f-'+k);if(el)el.focus();});return;}
+    this.setState({errors:{},status:'submitting'});
+    setTimeout(()=>{const sim=this.props.simulateSubmit??'success';
+      if(sim==='success'){const ref='BW-'+new Date().toISOString().slice(2,10).replace(/-/g,'')+'-'+Math.random().toString(36).slice(2,6).toUpperCase();this.setState({status:'received',ref});}
+      else this.setState({status:sim});},1100);}
+
+  renderVals(){
+    const s=this.state,L=this.L(),t=T[L],o=L==='id'?'id':'en';
+    const mobile=s.w<900;
+    const heroLayout=this.props.heroLayout??'split';
+    const groupCards=GROUPS.map((g,i)=>{const its=CAT.filter(c=>c.g===g.k),min=Math.min(...its.filter(c=>c.p>0).map(c=>c.p));
+      return {num:String(i+1).padStart(2,'0'),name:g[o],desc:o==='id'?g.did:g.den,from:t.from+' '+this.fmt(min),count:its.length+' '+t.items,browse:()=>{this.setF('cat',g.k);this.go('catalog');}};});
+    const ql=s.q.trim().toLowerCase();
+    const filtered=CAT.filter(c=>(s.cat==='all'||c.g===s.cat)&&(s.bill==='all'||c.bill===s.bill)&&(!ql||c.code.toLowerCase().includes(ql)||c.en.toLowerCase().includes(ql)||c.id.toLowerCase().includes(ql)));
+    const gname=k=>GROUPS.find(g=>g.k===k)[o];
+    const items=filtered.map(c=>({code:c.code,name:this.nm(c),group:gname(c.g),type:this.typeLbl(c),price:this.price(c)}));
+    const catChips=[{k:'all',label:t.all,n:CAT.filter(c=>s.bill==='all'||c.bill===s.bill).length},...GROUPS.map(g=>({k:g.k,label:g[o],n:CAT.filter(c=>c.g===g.k&&(s.bill==='all'||c.bill===s.bill)).length}))].map(c=>({...c,on:s.cat===c.k,...this.seg(s.cat===c.k),pick:()=>this.setF('cat',c.k)}));
+    const billChips=[['all',t.all],['o',t.once],['m',t.month],['y',t.year]].map(([k,l])=>({label:l,on:s.bill===k,...this.seg(s.bill===k),pick:()=>this.setF('bill',k)}));
+    const cmpCodes=Object.keys(PKG);
+    const cmpChips=cmpCodes.map(c=>{const on=s.cmp.includes(c),dis=!on&&s.cmp.length>=3;return {code:c,on,disabled:dis,op:dis?0.4:1,...this.seg(on),toggle:()=>this.toggleCmp(c)};});
+    const ix=L==='id'?1:0,sel=s.cmp;
+    const row=(label,fn,w)=>({label,cells:sel.map(c=>({v:fn(c),w:w||400}))});
+    const cmpRows=sel.length?[row('',c=>c+' · '+this.nm(BY[c]),600),row(t.rUp,c=>this.price(BY[c]),600),row(t.rRen,c=>this.fmt(RENEW[c])+(L==='id'?' / tahun':' / year')),row(t.rPages,c=>PKG[c].pages[ix]),row(t.rDesign,c=>PKG[c].sec[ix]),row(t.rDom,c=>PKG[c].dom[ix]),row(t.rRev,c=>PKG[c].rev[ix]),row(t.rEx,c=>PKG[c].ex[ix])]:[];
+    const featured=['WEB-01','WEB-05','WEB-06'].map(c=>{const it=BY[c],f=FEAT[c],inC=s.cmp.includes(c);return {code:c,name:this.nm(it),type:this.typeLbl(it),price:this.price(it),renew:t.rRen+': '+this.fmt(RENEW[c])+(L==='id'?' / tahun':' / year'),bullets:f[o],lede:o==='id'?f.lid:f.len,excl:o==='id'?f.xid:f.xen,inCmp:inC,cmpLabel:inC?'✓ '+t.cmpOn:t.cmpAdd,toggleCmp:()=>this.toggleCmp(c),estimate:()=>{this.setState({base:c});this.go('estimator');}};});
+    const baseOpts=BASES.map(c=>c?{code:c,name:this.nm(BY[c]),price:this.price(BY[c]),on:s.base===c,pick:()=>this.setState({base:c})}:{code:'—',name:t.estNone,price:'',on:s.base==='',pick:()=>this.setState({base:''})});
+    const addOpts=ADDS.map(c=>{const it=BY[c],incl=c==='ADD-01'&&DOMAIN_INCL.includes(s.base);return {code:c,name:this.nm(it),price:incl?'':this.price(it),note:incl?t.estIncl:'',on:incl?true:!!s.add[c],disabled:incl,op:incl?0.55:1,toggle:()=>this.setState(st=>({add:{...st.add,[c]:!st.add[c]}}))};});
+    const est=this.estimate();
+    const f=s.form,errors=s.errors;
+    const on={};['name','company','contact','service','budget','brief'].forEach(k=>on[k]=e=>{const v=e.target.value;this.setState(st=>({form:{...st.form,[k]:v},errors:{...st.errors,[k]:undefined}}));});
+    ['privacy','marketing'].forEach(k=>on[k]=e=>{const v=e.target.checked;this.setState(st=>({form:{...st.form,[k]:v},errors:{...st.errors,[k]:undefined}}));});
+    const inv={},bc={};['name','contact','service','brief','privacy'].forEach(k=>{inv[k]=!!errors[k];bc[k]=errors[k]?'var(--err)':'var(--bd2)';});
+    const st=s.status;
+    const alert=st==='validation_error'?[t.aValTitle,t.aValBody]:st==='unavailable'?[t.aUnTitle,t.aUnBody]:st==='rate_limited'?[t.aRlTitle,t.aRlBody]:null;
+    return {
+      t,mobile,desktop:!mobile,menuOpen:s.menu,showMobileNav:mobile&&s.menu,menuLabel:s.menu?t.close:t.menu,
+      toggleMenu:()=>this.setState({menu:!s.menu}),closeMenu:()=>this.setState({menu:false}),
+      navItems:[['Buatinweb%20Service.dc.html',t.navServices],['Buatinweb%20Pricing.dc.html',t.navPricing],['Buatinweb%20Estimator.dc.html','Estimator'],['Buatinweb%20Portfolio.dc.html',t.navPortfolio],['Buatinweb%20About.dc.html',t.navAbout],['Buatinweb%20FAQ.dc.html','FAQ']].map(([href,label])=>({href,label})),
+      langs:[['en','English'],['id','Indonesia']].map(([k,l])=>({label:l,on:L===k,...this.seg(L===k),pick:()=>this.set('locale',k)})),
+      themes:[['light',t.light],['dark',t.dark],['system',t.system]].map(([k,l])=>({label:l,on:s.theme===k,...this.seg(s.theme===k),pick:()=>this.set('theme',k)})),
+      heroSplit:heroLayout==='split',heroIndex:heroLayout==='index',heroCentered:heroLayout==='centered',
+      specRows:['WEB-01','WEB-04','WEB-05','WEB-06','APP-05','BUG-01','DEP-02','SHT-05','MS-02'].map(c=>({code:c,name:this.nm(BY[c]),price:this.price(BY[c])})),
+      heroChips:['WEB-01','BUG-01','APP-05'].map(c=>({code:c,name:this.nm(BY[c]),price:this.price(BY[c])})),
+      groupCards,featured,cmpChips,cmpRows,cmpHint:sel.length>=3?t.cmpHintMax:t.cmpHintN.replace('{n}',sel.length),
+      q:s.q,onQ:e=>this.setF('q',e.target.value),billChips,catChips,items,
+      resultCount:t.results.replace('{n}',items.length),noResults:items.length===0,
+      catTable:(this.props.catalogView??'table')==='table'&&items.length>0,catCards:(this.props.catalogView??'table')==='cards'&&items.length>0,
+      resetFilters:()=>this.setState({cat:'all',bill:'all',q:''},()=>this.syncUrl()),
+      baseOpts,addOpts,est,
+      sendEstimate:()=>this.briefFor(s.base||'',(L==='id'?'Estimasi: ':'Estimate: ')+(est.summary||'—')+' · '+est.oVal),
+      demos:[{name:L==='id'?'Template Compro Mini':'Compro Mini template',code:'WEB-01',url:'compro.buatinweb.site',ph:'template screenshot'},{name:L==='id'?'Template landing page':'Landing page template',code:'WEB-04',url:L==='id'?'Demo template · 7 section':'Template demo · 7 sections',ph:'landing page screenshot'},{name:L==='id'?'Template katalog produk':'Product catalogue template',code:'WEB-08',url:L==='id'?'Demo template · pesan via WhatsApp':'Template demo · WhatsApp ordering',ph:'catalogue screenshot'}],
+      steps:STEPS[o].map((x,i)=>({num:String(i+1).padStart(2,'0'),title:x[0],desc:x[1]})),
+      problems:PROBS.map(p=>({code:p[0],label:o==='id'?p[2]:p[1],price:this.price(BY[p[0]]),brief:()=>this.briefFor(p[0])})),
+      aiCards:[{codes:'SHT · DB',title:L==='id'?'Spreadsheet & database':'Spreadsheets & databases',desc:L==='id'?'Form ke Sheets, otomasi Apps Script, schema dan migrasi ke database.':'Forms to Sheets, Apps Script automation, schemas and migration to a database.',from:t.from+' '+this.fmt(99000),svc:'SHT-05'},
+        {codes:'AI-01 – AI-07',title:L==='id'?'Integrasi AI & otomasi':'AI integration & automation',desc:L==='id'?'Workflow, chatbot dengan batas biaya, RAG dan agent dengan persetujuan manusia.':'Workflows, cost-capped chatbots, RAG and agents with human approval.',from:t.from+' '+this.fmt(1499000),svc:'AI-01'},
+        {codes:'ML-01 – ML-08',title:'Machine learning',desc:L==='id'?'Analisis data, proof of concept, prediksi dan MLOps — dimulai dari discovery.':'Data analysis, proofs of concept, forecasting and MLOps — starting with discovery.',from:t.from+' '+this.fmt(2999000),svc:'ML-01'}].map(c=>({...c,brief:()=>this.briefFor(c.svc)})),
+      faqs:FAQ[o].map((x,i)=>({q:x[0],a:x[1],open:s.faq===i,sign:s.faq===i?'−':'+',toggle:()=>this.setState({faq:s.faq===i?-1:i})})),
+      form:f,errors,on,inv,bc,
+      channels:[['email','Email'],['whatsapp','WhatsApp']].map(([k,l])=>({label:l,on:f.channel===k,bc:f.channel===k?'var(--tx)':'var(--bd2)',pick:()=>this.setState(st2=>({form:{...st2.form,channel:k},errors:{...st2.errors,contact:undefined}}))})),
+      contactLabel:f.channel==='email'?t.fEmail:t.fWa,contactType:f.channel==='email'?'email':'tel',contactAuto:f.channel==='email'?'email':'tel',contactPh:f.channel==='email'?'name@company.com':'+62 812 3456 7890',
+      serviceOpts:[{v:'',l:t.chooseSvc},{v:'not-sure',l:t.notSure},...SVC.map(c=>({v:c,l:c+' — '+this.nm(BY[c])}))],
+      budgetOpts:[{v:'',l:'—'},{v:'ns',l:t.bNs},{v:'b1',l:t.b1},{v:'b2',l:t.b2},{v:'b3',l:t.b3},{v:'b4',l:t.b4}],
+      briefCount:f.brief.length+' / 3000',
+      fs:{received:st==='received',showForm:st!=='received',alert:!!alert,alertTitle:alert?alert[0]:'',alertBody:alert?alert[1]:'',busy:st==='submitting',op:st==='submitting'?0.6:1,submitLabel:st==='submitting'?t.submitting:t.submit},
+      ref:s.ref,submit:e=>this.submit(e),
+      resetForm:()=>this.setState({status:'idle',ref:'',errors:{},form:{name:'',company:'',channel:'email',contact:'',service:'',budget:'',brief:'',privacy:false,marketing:false}})
+    };
+  }
+}
+</script>
+</body>
+</html>

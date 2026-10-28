@@ -1,0 +1,12 @@
+name = "bw-api"
+main = "src/index.ts"
+compatibility_date = "2024-11-01"
+
+[vars]
+# comma-separated allowed origins; set per env
+ALLOWED_ORIGINS = "http://localhost:4321,https://buatinweb.site,https://www.buatinweb.site"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "bw-briefs"
+database_id = "REPLACE_WITH_wrangler_d1_create_OUTPUT"

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;600&family=Geist+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+body{margin:0;--bg:#FFFFFF;--sf:#F5F5F5;--tx:#111111;--tx2:#525252;--bd:#E5E5E5;--bd2:#8A8A8A;--inv:#111111;--invtx:#FFFFFF;--err:#B42318;--ok:#146C34;--logo-f:none;--logo-b:multiply;background:var(--bg);color:var(--tx);font-family:'Geist',system-ui,sans-serif;font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased}
+body[data-theme="dark"]{--bg:#0A0A0A;--sf:#151515;--tx:#F5F5F5;--tx2:#B3B3B3;--bd:#333333;--bd2:#8C8C8C;--inv:#F5F5F5;--invtx:#0A0A0A;--err:#FF8A80;--ok:#6FDC8C;--logo-f:invert(1);--logo-b:screen}
+*{box-sizing:border-box}
+a{color:var(--tx);text-decoration-thickness:1px;text-underline-offset:3px}
+a:hover{color:var(--tx2)}
+</style>
+</helmet>
+<div style="min-height:100vh;background:var(--bg);color:var(--tx)">
+<dc-import name="BW Header" active="Portfolio" hint-size="100%,68px"></dc-import>
+<main id="main" style="max-width:1280px;margin:0 auto;padding:0 clamp(20px,4vw,40px)">
+<section aria-labelledby="pf-h" style="padding:clamp(48px,7vw,88px) 0 40px">
+<p style="font:400 13px/1.4 'Geist Mono',monospace;color:var(--tx2);margin:0 0 24px;letter-spacing:0.02em;text-transform:uppercase">{{ t.eyebrow }}</p>
+<div style="display:flex;flex-wrap:wrap;justify-content:space-between;gap:24px;align-items:end">
+<h1 id="pf-h" style="font-size:clamp(40px,6vw,80px);line-height:0.98;letter-spacing:-0.045em;font-weight:600;margin:0;max-width:11ch">{{ t.title }}</h1>
+<p style="margin:0;color:var(--tx2);max-width:30em;text-wrap:pretty">{{ t.sub }}</p>
+</div>
+</section>
+<div role="group" aria-label="{{ t.filter }}" style="display:flex;gap:6px;flex-wrap:wrap;border-top:1px solid var(--tx);padding-top:16px">
+<sc-for list="{{ chips }}" as="o" hint-placeholder-count="4"><button type="button" aria-pressed="{{ o.on }}" onClick="{{ o.pick }}" style="font:inherit;font-size:14px;min-height:38px;padding:0 14px;border:1px solid var(--bd2);border-radius:999px;cursor:pointer;background:{{ o.bg }};color:{{ o.fg }}">{{ o.label }} <span style="opacity:0.65;font-family:'Geist Mono',monospace;font-size:12px">{{ o.n }}</span></button></sc-for>
+</div>
+<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,340px),1fr));gap:clamp(20px,3vw,32px);margin-top:32px">
+<sc-for list="{{ demos }}" as="d" hint-placeholder-count="6">
+<article style="display:flex;flex-direction:column;gap:14px">
+<div style="aspect-ratio:4/3;border:1px solid var(--bd2);border-radius:12px;background:repeating-linear-gradient(135deg,var(--sf) 0 10px,var(--bg) 10px 20px);display:flex;align-items:center;justify-content:center;position:relative">
+<span style="position:absolute;top:12px;left:12px;font:400 11px 'Geist Mono',monospace;text-transform:uppercase;letter-spacing:0.05em;background:var(--inv);color:var(--invtx);padding:3px 7px;border-radius:4px">{{ t.demo }}</span>
+<span style="position:absolute;top:12px;right:12px;font:400 11px 'Geist Mono',monospace;background:var(--bg);border:1px solid var(--bd2);padding:2px 7px;border-radius:4px">{{ d.code }}</span>
+<span style="font:400 12px 'Geist Mono',monospace;color:var(--tx2);background:var(--bg);padding:4px 8px">{{ d.ph }}</span>
+</div>
+<div style="display:flex;justify-content:space-between;gap:12px;align-items:baseline"><h2 style="margin:0;font-size:19px;font-weight:600;letter-spacing:-0.01em">{{ d.name }}</h2><span style="font:400 12px 'Geist Mono',monospace;color:var(--tx2);white-space:nowrap">{{ d.price }}</span></div>
+<p style="margin:-6px 0 0;color:var(--tx2);font-size:15px;text-wrap:pretty">{{ d.desc }}</p>
+<div style="display:flex;gap:6px;flex-wrap:wrap"><sc-for list="{{ d.tags }}" as="g" hint-placeholder-count="3"><span style="font:400 11px 'Geist Mono',monospace;border:1px solid var(--bd);border-radius:4px;padding:2px 6px;color:var(--tx2)">{{ g }}</span></sc-for></div>
+<div style="display:flex;gap:16px;flex-wrap:wrap;margin-top:2px;font-size:15px;font-weight:600"><a href="{{ d.svcHref }}">{{ t.viewSvc }}</a><a href="{{ d.briefHref }}">{{ t.start }}</a></div>
+</article>
+</sc-for>
+</div>
+<section aria-labelledby="cw-h" style="margin-top:clamp(64px,8vw,104px);border:1px solid var(--bd2);border-radius:12px;padding:clamp(24px,4vw,40px);display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));gap:24px;align-items:center">
+<div><span style="font:400 12px 'Geist Mono',monospace;color:var(--tx2);text-transform:uppercase;letter-spacing:0.04em">{{ t.cwTag }}</span><h2 id="cw-h" style="margin:8px 0 0;font-size:clamp(24px,2.6vw,32px);letter-spacing:-0.02em;font-weight:600">{{ t.cwTitle }}</h2></div>
+<p style="margin:0;color:var(--tx2);text-wrap:pretty">{{ t.cwBody }}</p>
+</section>
+</main>
+<dc-import name="BW Footer" hint-size="100%,220px"></dc-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+const T={en:{eyebrow:'Portfolio · template demos',title:'Demos, clearly labelled.',sub:'Every card below is a template demo you can open and test — not client work. Pick one as a starting point for your brief.',filter:'Filter demos',all:'All',web:'Websites',app:'Applications',data:'Data & AI',demo:'Demo',viewSvc:'View service',start:'Start from this →',
+cwTag:'Client work',cwTitle:'Published only with written permission.',cwBody:'No client projects are listed yet. When a client agrees in writing, the project appears here with what we built, the scope, and what was out of scope.'},
+id:{eyebrow:'Portfolio · demo template',title:'Demo, berlabel jelas.',sub:'Setiap kartu di bawah adalah demo template yang dapat dibuka dan dicoba — bukan proyek klien. Pilih salah satu sebagai titik awal brief Anda.',filter:'Filter demo',all:'Semua',web:'Website',app:'Aplikasi',data:'Data & AI',demo:'Demo',viewSvc:'Lihat layanan',start:'Mulai dari ini →',
+cwTag:'Proyek klien',cwTitle:'Hanya tampil dengan izin tertulis.',cwBody:'Belum ada proyek klien yang ditampilkan. Setelah klien menyetujui secara tertulis, proyek muncul di sini lengkap dengan yang dibuat, scope, dan yang di luar scope.'}};
+const DEMOS=[
+['WEB-01','web','Compro Mini — one page','Compro Mini — satu halaman','Five sections on a subdomain: hero, services, about, gallery, contact.','Lima section di subdomain: hero, layanan, tentang, galeri, kontak.',['1 page','Subdomain','WhatsApp CTA'],'one-page template screenshot'],
+['WEB-04','web','Landing page — campaign','Landing page — kampanye','Seven sections built around a single call to action.','Tujuh section yang dibangun untuk satu ajakan.',['6–8 sections','CTA','Responsive'],'landing page screenshot'],
+['WEB-05','web','Compro Starter — services firm','Compro Starter — jasa profesional','Three semi-custom pages with basic SEO.','Tiga halaman semi-custom dengan SEO dasar.',['3 pages','Basic SEO'],'multi-page screenshot'],
+['WEB-08','web','Product catalogue','Katalog produk','Thirty products in categories, ordered through WhatsApp.','Tiga puluh produk berkategori, dipesan lewat WhatsApp.',['30 products','Categories','No cart'],'catalogue screenshot'],
+['APP-01','app','Booking system','Booking system','Schedules, reservations and an admin dashboard for one business.','Jadwal, reservasi dan dashboard admin untuk satu bisnis.',['Dashboard','Reservations'],'booking app screenshot'],
+['APP-03','app','Analytics dashboard','Dashboard analytics','Five metrics from one data source, with filters and export.','Lima metrik dari satu sumber data, dengan filter dan ekspor.',['5 charts','Export'],'dashboard screenshot'],
+['SHT-05','data','Web form to Sheets','Form web ke Sheets','A ten-field form that appends rows to a Google Sheet.','Form sepuluh field yang menambah baris ke Google Sheet.',['10 fields','Apps Script'],'form + sheet screenshot'],
+['AI-02','data','AI chatbot, cost-capped','AI chatbot dengan batas biaya','One use case on a website widget, with a monthly spend limit.','Satu use case di widget website, dengan batas biaya bulanan.',['1 use case','Cost limit','Handoff'],'chat widget screenshot']];
+class Component extends DCLogic {
+  state={L:'en',D:null,f:'all'};
+  componentDidMount(){import(new URL('bw-data.js',location.href).href).then(D=>this.setState({D}));let L='en';try{L=localStorage.getItem('bw-locale')||'en';}catch(e){}
+    this.setState({L});this.onP=e=>e.detail.locale&&this.setState({L:e.detail.locale});window.addEventListener('bw-prefs',this.onP);}
+  componentWillUnmount(){window.removeEventListener('bw-prefs',this.onP);}
+  renderVals(){const s=this.state,L=s.L,t=T[L]||T.en,D=s.D,id=L==='id';
+    const seg=on=>({bg:on?'var(--inv)':'transparent',fg:on?'var(--invtx)':'var(--tx)'});
+    const enc=(n,q)=>encodeURI('Buatinweb '+n+'.dc.html')+'?'+new URLSearchParams(q);
+    return {t,chips:['all','web','app','data'].map(k=>({label:t[k],n:k==='all'?DEMOS.length:DEMOS.filter(d=>d[1]===k).length,on:s.f===k,...seg(s.f===k),pick:()=>this.setState({f:k})})),
+      demos:DEMOS.filter(d=>s.f==='all'||d[1]===s.f).map(d=>({code:d[0],name:id?d[3]:d[2],desc:id?d[5]:d[4],tags:d[6],ph:d[7],price:D?D.price(D.BY[d[0]],L):'',svcHref:enc('Service',{code:d[0]}),briefHref:enc('Contact',{service:d[0]})}))};}
+}
+</script>
+</body>
+</html>

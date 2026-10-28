@@ -1,0 +1,66 @@
+---
+import { page } from '@bw/shared';
+import type { L } from '~/lib/i18n';
+interface Props { lang: L; active?: string; home?: boolean }
+const { lang, active = '', home = false } = Astro.props;
+const HT = {
+  en: { skip: 'Skip to content', cta: 'Consultation', menu: 'Menu', close: 'Close', langLabel: 'Language', themeLabel: 'Theme', light: 'Light', dark: 'Dark', system: 'System', nav: ['Services', 'Pricing', 'Estimator', 'Portfolio', 'About', 'FAQ'] },
+  id: { skip: 'Lewati ke konten', cta: 'Konsultasi', menu: 'Menu', close: 'Tutup', langLabel: 'Bahasa', themeLabel: 'Tema', light: 'Terang', dark: 'Gelap', system: 'Sistem', nav: ['Layanan', 'Harga', 'Estimator', 'Portfolio', 'Tentang', 'FAQ'] },
+}[lang];
+const PAGES = ['Service', 'Pricing', 'Estimator', 'Portfolio', 'About', 'FAQ'];
+const path = Astro.url.pathname.replace(/^\/(id|en)/, '');
+const langs: [L, string][] = [['en', 'English'], ['id', 'Indonesia']];
+const themes = [['light', HT.light], ['dark', HT.dark], ['system', HT.system]];
+const gap = home ? 28 : 24;
+---
+<a href="#main" class="skip">{HT.skip}</a>
+<header style="position:sticky;top:0;z-index:50;background:var(--bg);border-bottom:1px solid var(--bd)">
+<div class="wrap" style="height:68px;display:flex;align-items:center;gap:24px">
+<a href={page(lang, 'Home')} aria-label="Buatinweb.site" style="display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--tx)">
+<span style="width:30px;height:30px;overflow:hidden;display:block;flex:none"><img src="/assets/logo.jpeg" alt="" width="30" height="30" style="width:30px;height:30px;transform:scale(1.55);filter:var(--logo-f);mix-blend-mode:var(--logo-b);display:block"></span>
+<span style="font-weight:600;font-size:16px;letter-spacing:-0.01em">buatinweb<span style="color:var(--tx2)">.site</span></span>
+</a>
+<nav aria-label="Primary" class="dsk" style={`display:flex;gap:${gap}px;margin-left:16px`}>
+{PAGES.map((p, i) => <a href={page(lang, p)} aria-current={active === p ? 'page' : undefined} style={`text-decoration:${active === p ? 'underline' : 'none'};font-size:15px;text-underline-offset:6px;text-decoration-thickness:2px`}>{HT.nav[i]}</a>)}
+</nav>
+<div class="dsk" style="margin-left:auto;display:flex;align-items:center;gap:12px">
+<div role="group" aria-label={HT.langLabel} class="seg">
+{langs.map(([k, l]) => <a href={`/${k}${path}`} hreflang={k} aria-pressed={lang === k} style="text-decoration:none;font-size:13px;padding:5px 10px;border-radius:4px" class={lang === k ? 'on' : ''}>{l}</a>)}
+</div>
+<div role="group" aria-label={HT.themeLabel} class="seg" data-theme-group>
+{themes.map(([k, l]) => <button type="button" data-theme={k} aria-pressed="false">{l}</button>)}
+</div>
+<a href={page(lang, 'Contact')} class="btn" style="padding:9px 16px;font-size:14px">{HT.cta}</a>
+</div>
+<button type="button" class="mob" id="mbtn" aria-expanded="false" aria-controls="mnav" data-menu={HT.menu} data-close={HT.close} style="margin-left:auto;font:inherit;font-size:14px;min-height:44px;padding:0 14px;border:1px solid var(--bd2);border-radius:6px;background:var(--bg);color:var(--tx);cursor:pointer">{HT.menu}</button>
+</div>
+<div id="mnav" hidden style="border-top:1px solid var(--bd);padding:16px 20px 24px;flex-direction:column;gap:4px;background:var(--bg)">
+{PAGES.map((p, i) => <a href={page(lang, p)} style={`text-decoration:none;font-size:18px;padding:10px 0;border-bottom:1px solid var(--bd);font-weight:${active === p ? 600 : 400}`}>{HT.nav[i]}</a>)}
+<div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:16px">
+<div role="group" aria-label={HT.langLabel} class="seg lg">
+{langs.map(([k, l]) => <a href={`/${k}${path}`} hreflang={k} aria-pressed={lang === k} class={lang === k ? 'on' : ''} style="text-decoration:none;font-size:14px;min-height:40px;padding:0 12px;border-radius:4px;display:flex;align-items:center">{l}</a>)}
+</div>
+<div role="group" aria-label={HT.themeLabel} class="seg lg" data-theme-group>
+{themes.map(([k, l]) => <button type="button" data-theme={k} aria-pressed="false">{l}</button>)}
+</div>
+</div>
+<a href={page(lang, 'Contact')} class="btn" style="margin-top:16px;padding:14px 16px;text-align:center">{HT.cta}</a>
+</div>
+</header>
+<style>
+.seg a.on{background:var(--inv);color:var(--invtx)}
+.mob{display:none}
+@media (max-width:959px){.dsk{display:none!important}.mob{display:block}#mnav:not([hidden]){display:flex}}
+</style>
+<script is:inline>
+(function(){
+  var root=document.documentElement,mq=matchMedia('(prefers-color-scheme: dark)');
+  function cur(){try{return localStorage.getItem('bw-theme')||'system';}catch(e){return 'system';}}
+  function apply(){var t=cur();root.dataset.theme=(t==='dark'||(t==='system'&&mq.matches))?'dark':'light';
+    document.querySelectorAll('[data-theme-group] button').forEach(function(b){b.setAttribute('aria-pressed',String(b.dataset.theme===t));});}
+  document.querySelectorAll('[data-theme-group] button').forEach(function(b){b.addEventListener('click',function(){try{localStorage.setItem('bw-theme',b.dataset.theme);}catch(e){}apply();});});
+  mq.addEventListener&&mq.addEventListener('change',apply);apply();
+  var btn=document.getElementById('mbtn'),nav=document.getElementById('mnav');
+  btn.addEventListener('click',function(){var open=nav.hidden;nav.hidden=!open;btn.setAttribute('aria-expanded',String(open));btn.textContent=open?btn.dataset.close:btn.dataset.menu;});
+})();
+</script>

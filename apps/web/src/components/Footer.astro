@@ -1,0 +1,25 @@
+---
+import { page } from '@bw/shared';
+import type { L } from '~/lib/i18n';
+const { lang } = Astro.props as { lang: L };
+const FT = {
+  en: { tag: 'Websites, applications, technical support, data and AI for clients in Indonesia and abroad.', prices: 'Prices in IDR · price book 2026-10-27.v1', l: ['Home', 'Services', 'Pricing', 'Estimator', 'Portfolio', 'About', 'FAQ', 'Contact', 'Privacy', 'Terms'] },
+  id: { tag: 'Website, aplikasi, technical support, data dan AI untuk klien Indonesia maupun internasional.', prices: 'Harga dalam rupiah · daftar harga 2026-10-27.v1', l: ['Beranda', 'Layanan', 'Harga', 'Estimator', 'Portfolio', 'Tentang', 'FAQ', 'Kontak', 'Privasi', 'Ketentuan'] },
+}[lang];
+const P = ['Home', 'Service', 'Pricing', 'Estimator', 'Portfolio', 'About', 'FAQ', 'Contact', 'About', 'About'];
+const href = (i: number) => page(lang, P[i]) + (i === 8 ? '#privacy' : i === 9 ? '#terms' : '');
+---
+<footer style="border-top:1px solid var(--tx);margin-top:clamp(72px,10vw,128px)">
+<div class="wrap" style="padding-top:40px;padding-bottom:48px;display:flex;flex-wrap:wrap;gap:32px;justify-content:space-between;align-items:flex-start">
+<div style="display:flex;flex-direction:column;gap:14px;max-width:340px">
+<div style="display:flex;align-items:center;gap:10px"><span style="width:28px;height:28px;overflow:hidden;display:block"><img src="/assets/logo.jpeg" alt="" width="28" height="28" style="width:28px;height:28px;transform:scale(1.55);filter:var(--logo-f);mix-blend-mode:var(--logo-b);display:block"></span><span style="font-weight:600">buatinweb<span style="color:var(--tx2)">.site</span></span></div>
+<p style="margin:0;font-size:14px;color:var(--tx2)">{FT.tag}</p>
+</div>
+<nav aria-label="Footer" style="display:flex;flex-wrap:wrap;gap:12px 28px;font-size:14px">
+{FT.l.map((l, i) => <a href={href(i)}>{l}</a>)}
+</nav>
+</div>
+<div class="wrap" style="padding-top:16px;padding-bottom:32px;display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between;font:400 12px 'Geist Mono',monospace;color:var(--tx2);border-top:1px solid var(--bd)">
+<span>© 2026 Buatinweb.site</span><span>{FT.prices}</span>
+</div>
+</footer>

@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;600&family=Geist+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+body{margin:0;--bg:#FFFFFF;--sf:#F5F5F5;--tx:#111111;--tx2:#525252;--bd:#E5E5E5;--bd2:#8A8A8A;--inv:#111111;--invtx:#FFFFFF;--err:#B42318;--ok:#146C34;--logo-f:none;--logo-b:multiply;background:var(--bg);color:var(--tx);font-family:'Geist',system-ui,sans-serif;font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased}
+body[data-theme="dark"]{--bg:#0A0A0A;--sf:#151515;--tx:#F5F5F5;--tx2:#B3B3B3;--bd:#333333;--bd2:#8C8C8C;--inv:#F5F5F5;--invtx:#0A0A0A;--err:#FF8A80;--ok:#6FDC8C;--logo-f:invert(1);--logo-b:screen}
+*{box-sizing:border-box}
+a{color:var(--tx);text-decoration-thickness:1px;text-underline-offset:3px}
+a:hover{color:var(--tx2)}
+</style>
+</helmet>
+<div style="min-height:100vh;background:var(--bg);color:var(--tx)">
+<dc-import name="BW Header" active="Estimator" hint-size="100%,68px"></dc-import>
+<main id="main" style="max-width:1280px;margin:0 auto;padding:0 clamp(20px,4vw,40px)">
+<section aria-labelledby="es-h" style="padding:clamp(48px,7vw,88px) 0 40px;border-bottom:1px solid var(--bd)">
+<p style="font:400 13px/1.4 'Geist Mono',monospace;color:var(--tx2);margin:0 0 24px;letter-spacing:0.02em;text-transform:uppercase">{{ t.eyebrow }}</p>
+<div style="display:flex;flex-wrap:wrap;justify-content:space-between;gap:24px;align-items:end">
+<h1 id="es-h" style="font-size:clamp(40px,6vw,80px);line-height:0.98;letter-spacing:-0.045em;font-weight:600;margin:0;max-width:12ch">{{ t.title }}</h1>
+<p style="margin:0;color:var(--tx2);max-width:30em;text-wrap:pretty">{{ t.sub }}</p>
+</div>
+</section>
+
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,460px),1fr));gap:clamp(24px,4vw,48px);align-items:start;padding-top:40px">
+<div style="display:flex;flex-direction:column;gap:48px">
+<sc-for list="{{ steps }}" as="st" hint-placeholder-count="4">
+<fieldset style="border:0;margin:0;padding:0">
+<legend style="display:flex;gap:14px;align-items:baseline;padding:0;margin-bottom:12px;width:100%"><span style="font:400 12px 'Geist Mono',monospace;color:var(--tx2)">{{ st.num }}</span><span style="font-size:20px;font-weight:600;letter-spacing:-0.015em">{{ st.title }}</span></legend>
+<p style="margin:-4px 0 12px;font-size:14px;color:var(--tx2)">{{ st.hint }}</p>
+<div style="border-top:1px solid var(--tx)">
+<sc-for list="{{ st.opts }}" as="a" hint-placeholder-count="5">
+<div style="display:flex;align-items:center;gap:14px;padding:12px 4px;border-bottom:1px solid var(--bd);min-height:52px;opacity:{{ a.op }}">
+<input id="{{ a.id }}" type="{{ a.kind }}" name="{{ a.grp }}" checked="{{ a.on }}" disabled="{{ a.disabled }}" onChange="{{ a.toggle }}" style="width:18px;height:18px;accent-color:var(--tx);margin:0;flex:none">
+<label for="{{ a.id }}" style="display:flex;align-items:baseline;gap:14px;flex:1;min-width:0;cursor:pointer">
+<span style="font:400 12px 'Geist Mono',monospace;color:var(--tx2);width:56px;flex:none">{{ a.code }}</span>
+<span style="flex:1;min-width:0">{{ a.name }}<span style="display:block;font-size:13px;color:var(--tx2)">{{ a.note }}</span></span>
+<span style="font:400 13px 'Geist Mono',monospace;white-space:nowrap;text-align:right">{{ a.price }}</span>
+</label>
+<sc-if value="{{ a.hasQty }}" hint-placeholder-val="{{ false }}">
+<div role="group" aria-label="{{ a.qtyAria }}" style="display:flex;align-items:center;border:1px solid var(--bd2);border-radius:6px;flex:none">
+<button type="button" aria-label="−" onClick="{{ a.dec }}" style="font:inherit;width:36px;height:36px;border:0;background:transparent;color:var(--tx);cursor:pointer">−</button>
+<span aria-live="polite" style="font:400 13px 'Geist Mono',monospace;min-width:22px;text-align:center">{{ a.qty }}</span>
+<button type="button" aria-label="+" onClick="{{ a.inc }}" style="font:inherit;width:36px;height:36px;border:0;background:transparent;color:var(--tx);cursor:pointer">+</button>
+</div>
+</sc-if>
+</div>
+</sc-for>
+</div>
+</fieldset>
+</sc-for>
+</div>
+
+<aside aria-label="{{ t.result }}" style="position:sticky;top:88px;border:1px solid var(--tx);border-radius:12px;overflow:hidden;background:var(--bg)">
+<div style="display:flex;justify-content:space-between;align-items:center;gap:12px;padding:16px 20px;border-bottom:1px solid var(--tx);flex-wrap:wrap">
+<span style="font:400 12px 'Geist Mono',monospace;text-transform:uppercase;letter-spacing:0.04em">{{ t.result }}</span>
+<span style="font:400 12px 'Geist Mono',monospace;padding:4px 8px;border-radius:4px;border:1px solid var(--tx);background:{{ pillBg }};color:{{ pillFg }}">{{ pill }}</span>
+</div>
+<div aria-live="polite">
+<sc-for list="{{ groups }}" as="g" hint-placeholder-count="4">
+<div style="padding:18px 20px;border-bottom:1px solid var(--bd)">
+<div style="display:flex;justify-content:space-between;gap:12px;align-items:baseline;flex-wrap:wrap"><span style="font-size:14px;color:var(--tx2)">{{ g.label }}</span><span style="font-size:clamp(20px,2vw,26px);font-weight:600;letter-spacing:-0.02em">{{ g.value }}</span></div>
+<sc-for list="{{ g.lines }}" as="l" hint-placeholder-count="1"><div style="display:flex;justify-content:space-between;gap:12px;font:400 12px/1.6 'Geist Mono',monospace;color:var(--tx2);margin-top:4px"><span>{{ l.k }}</span><span style="text-align:right;white-space:nowrap">{{ l.v }}</span></div></sc-for>
+</div>
+</sc-for>
+</div>
+<sc-if value="{{ hasRules }}" hint-placeholder-val="{{ false }}">
+<div style="padding:16px 20px;border-bottom:1px solid var(--bd)">
+<div style="font:400 12px 'Geist Mono',monospace;text-transform:uppercase;letter-spacing:0.04em;margin-bottom:8px">{{ t.rules }}</div>
+<ul style="margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:6px;font-size:13px;color:var(--tx2)">
+<sc-for list="{{ rules }}" as="r" hint-placeholder-count="1"><li style="display:flex;gap:8px"><span aria-hidden="true" style="font-family:'Geist Mono',monospace;color:var(--tx)">✓</span><span>{{ r }}</span></li></sc-for>
+</ul>
+</div>
+</sc-if>
+<div style="padding:16px 20px;background:var(--sf);font-size:13px;color:var(--tx2);display:flex;flex-direction:column;gap:12px">
+<span>{{ t.note }}</span>
+<a href="{{ sendHref }}" style="display:flex;align-items:center;justify-content:center;font-weight:600;font-size:15px;min-height:46px;border-radius:6px;background:var(--inv);color:var(--invtx);text-decoration:none">{{ t.send }}</a>
+<div style="display:flex;gap:8px;flex-wrap:wrap">
+<button type="button" onClick="{{ copyLink }}" style="flex:1;font:inherit;font-size:14px;min-height:44px;border:1px solid var(--bd2);border-radius:6px;background:var(--bg);color:var(--tx);cursor:pointer">{{ copyLabel }}</button>
+<button type="button" onClick="{{ resetAll }}" style="font:inherit;font-size:14px;min-height:44px;padding:0 14px;border:1px solid var(--bd2);border-radius:6px;background:var(--bg);color:var(--tx);cursor:pointer">{{ t.reset }}</button>
+</div>
+</div>
+</aside>
+</div>
+</main>
+<dc-import name="BW Footer" hint-size="100%,220px"></dc-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+const T={en:{eyebrow:'Estimator · indicative only',title:'Estimate before you ask.',sub:'Costs are grouped by when you pay them — upfront, monthly, yearly and vendor. They are never added into one misleading total.',
+s1:'Website package',h1:'Choose one, or none if you only need add-ons.',s2:'One-time add-ons',h2:'Built on top of the package. Quantities apply per page or language.',s3:'Monthly services',h3:'Billed in advance each month. Choose one storage tier at most.',s4:'Integrations & data',h4:'One-time technical work related to your website.',
+none:'No website package',noneNote:'Add-ons only, for an existing site',incl:'Included in your package',same:'Same scope as {c} — selected once only',oneTier:'One storage tier',budgetIncl:'Package includes a domain budget',
+result:'Indicative estimate',gOnce:'Upfront',gMonth:'Monthly',gYear:'Yearly, from year 2',gVendor:'Vendor · not yet estimated',dash:'—',nothing:'Nothing selected',from:'From',actual:'actual cost',
+pillQ:'Needs final quotation',pillF:'Fixed scope',rules:'Double-charge checks',
+rDom:'ADD-01 removed — domain setup is already part of {c}.',rBnd:'SHT-05 removed — BND-03 already includes one form to Sheets.',rBkp:'INF-11 and SEC-06 are the same backup scope; only one is counted.',rRenew:'Year-2 renewal for {c} is shown separately, not added to the upfront cost.',
+domReg:'Domain registration',domRenew:'Domain renewal',domDiff:'Domain cost above package budget',renewal:'renewal',
+note:'An estimate, not an invoice. Final pricing is set in a quotation valid for 14 days.',send:'Send this estimate with a brief',copy:'Copy shareable link',copied:'Link copied',reset:'Reset',qty:'Quantity',month:'/ month'},
+id:{eyebrow:'Estimator · indikatif',title:'Hitung sebelum bertanya.',sub:'Biaya dikelompokkan menurut waktu pembayaran — awal, bulanan, tahunan dan vendor. Tidak pernah dijumlah menjadi satu total yang menyesatkan.',
+s1:'Paket website',h1:'Pilih satu, atau tanpa paket bila hanya butuh add-on.',s2:'Add-on sekali bayar',h2:'Dibangun di atas paket. Jumlah berlaku per halaman atau bahasa.',s3:'Layanan bulanan',h3:'Ditagih di muka setiap bulan. Pilih maksimal satu tier storage.',s4:'Integrasi & data',h4:'Pekerjaan teknis sekali bayar terkait website Anda.',
+none:'Tanpa paket website',noneNote:'Hanya add-on, untuk website yang sudah ada',incl:'Sudah termasuk dalam paket',same:'Scope sama dengan {c} — dipilih sekali saja',oneTier:'Satu tier storage',budgetIncl:'Paket sudah termasuk anggaran domain',
+result:'Indikasi biaya',gOnce:'Biaya awal',gMonth:'Bulanan',gYear:'Tahunan, mulai tahun ke-2',gVendor:'Vendor · belum ditaksir',dash:'—',nothing:'Belum ada pilihan',from:'Mulai',actual:'biaya aktual',
+pillQ:'Perlu penawaran final',pillF:'Scope tetap',rules:'Pengecekan tagihan ganda',
+rDom:'ADD-01 dihapus — setup domain sudah termasuk dalam {c}.',rBnd:'SHT-05 dihapus — BND-03 sudah mencakup satu form ke Sheets.',rBkp:'INF-11 dan SEC-06 memiliki scope backup yang sama; hanya dihitung sekali.',rRenew:'Perpanjangan tahun ke-2 untuk {c} ditampilkan terpisah, tidak ditambahkan ke biaya awal.',
+domReg:'Registrasi domain',domRenew:'Perpanjangan domain',domDiff:'Biaya domain di atas anggaran paket',renewal:'perpanjangan',
+note:'Estimasi, bukan invoice. Harga final ditetapkan dalam quotation yang berlaku 14 hari.',send:'Kirim estimasi ini bersama brief',copy:'Salin tautan',copied:'Tautan disalin',reset:'Reset',qty:'Jumlah',month:'/ bulan'}};
+const BASES=['','WEB-01','WEB-02','WEB-03','WEB-04','WEB-05','WEB-06','WEB-07','WEB-08','WEB-09','WEB-10','BND-03'];
+const ONE=['ADD-01','ADD-02','ADD-03','ADD-07','ADD-08','ADD-12','ADD-06','ADD-17'];
+const MON=['SEC-09','SEC-08','SHT-14','MS-01','MS-02','MS-03','MS-04'];
+const INT=['SHT-05','INF-05','INF-11','SEC-06','ADD-15'];
+const QTY=['ADD-03','ADD-12','ADD-17'];
+const DOM_INCL=['WEB-02','WEB-03','WEB-06','WEB-07'],DOM_BUDGET=['WEB-03','WEB-06','WEB-07'];
+class Component extends DCLogic {
+  state={L:'en',D:null,base:'WEB-01',add:{},qty:{},copied:false};
+  componentDidMount(){
+    import(new URL('bw-data.js',location.href).href).then(D=>this.setState({D}));
+    const p=new URLSearchParams(location.search);let L='en';try{L=localStorage.getItem('bw-locale')||'en';}catch(e){}
+    const add={},qty={};(p.get('add')||'').split(',').filter(Boolean).forEach(x=>{const [c,n]=x.split('*');add[c]=true;if(n)qty[c]=Math.max(1,Math.min(10,+n||1));});
+    const pb=p.get('base');this.setState({L,base:pb!==null&&BASES.includes(pb)?pb:'WEB-01',add,qty});
+    this.onP=e=>e.detail.locale&&this.setState({L:e.detail.locale});window.addEventListener('bw-prefs',this.onP);
+  }
+  componentWillUnmount(){window.removeEventListener('bw-prefs',this.onP);}
+  componentDidUpdate(){const a=this.addList(),key=this.state.base+'|'+a;if(key===this._k)return;const first=this._k===undefined;this._k=key;if(first)return;
+    clearTimeout(this._ut);this._ut=setTimeout(()=>{try{const u=new URL(location.href);u.searchParams.set('base',this.state.base);a?u.searchParams.set('add',a):u.searchParams.delete('add');history.replaceState(history.state,'',u);}catch(x){}},300);}
+  addList(){const s=this.state;return Object.keys(s.add).filter(k=>s.add[k]).map(k=>QTY.includes(k)&&(s.qty[k]||1)>1?k+'*'+s.qty[k]:k).join(',');}
+  toggle(c){this.setState(s=>{const add={...s.add,[c]:!s.add[c]};if(c.startsWith('MS-')&&add[c])MON.filter(x=>x.startsWith('MS-')&&x!==c).forEach(x=>add[x]=false);
+    if(c==='INF-11'&&add[c])add['SEC-06']=false;if(c==='SEC-06'&&add[c])add['INF-11']=false;return {add};});}
+  renderVals(){
+    const s=this.state,L=s.L,t=T[L]||T.en,D=s.D,o=L==='id'?'id':'en';
+    const base0={t,copyLabel:s.copied?t.copied:t.copy,resetAll:()=>this.setState({base:'WEB-01',add:{},qty:{}})};
+    if(!D)return {...base0,steps:[],groups:[],rules:[],hasRules:false};
+    const fmt=n=>D.fmt(n,L),strip=x=>x.replace(/^(Rp|IDR )/,'');
+    const rules=[],locked={};
+    if(DOM_INCL.includes(s.base)){locked['ADD-01']=t.incl;if(s.add['ADD-01'])rules.push(t.rDom.replace('{c}',s.base));}
+    if(s.base==='BND-03'){locked['SHT-05']=t.incl;if(s.add['SHT-05'])rules.push(t.rBnd);}
+    if(DOM_BUDGET.includes(s.base))locked['ADD-02']=t.budgetIncl;
+    const on=c=>!!s.add[c]&&!locked[c];
+    const mkOpt=c=>{const it=D.BY[c],lk=locked[c],q=s.qty[c]||1;return {id:'o-'+c,code:c,kind:'checkbox',grp:c,name:it[o],price:lk?'':D.price(it,L),note:lk||(c==='INF-11'&&s.add['SEC-06']?t.same.replace('{c}','SEC-06'):c==='SEC-06'&&s.add['INF-11']?t.same.replace('{c}','INF-11'):c==='MS-01'?t.oneTier:''),
+      on:lk&&c!=='ADD-02'?true:!!s.add[c],disabled:!!lk,op:lk?0.55:1,toggle:()=>this.toggle(c),
+      hasQty:QTY.includes(c)&&on(c),qty:q,qtyAria:t.qty+' '+c,inc:()=>this.setState(st=>({qty:{...st.qty,[c]:Math.min(10,(st.qty[c]||1)+1)}})),dec:()=>this.setState(st=>({qty:{...st.qty,[c]:Math.max(1,(st.qty[c]||1)-1)}}))};};
+    const baseOpts=BASES.map(c=>c?{id:'b-'+c,code:c,kind:'radio',grp:'base',name:D.BY[c][o],price:D.price(D.BY[c],L),note:D.RENEW[c]?(L==='id'?'Tahun ke-2: ':'Year 2: ')+D.renewLabel(c,L):'',on:s.base===c,disabled:false,op:1,hasQty:false,toggle:()=>this.setState({base:c})}
+      :{id:'b-none',code:'—',kind:'radio',grp:'base',name:t.none,note:t.noneNote,price:'',on:s.base==='',disabled:false,op:1,hasQty:false,toggle:()=>this.setState({base:''})});
+    const steps=[{num:'01',title:t.s1,hint:t.h1,opts:baseOpts},{num:'02',title:t.s2,hint:t.h2,opts:ONE.map(c=>mkOpt(c))},{num:'03',title:t.s3,hint:t.h3,opts:MON.map(c=>mkOpt(c))},{num:'04',title:t.s4,hint:t.h4,opts:INT.map(c=>mkOpt(c))}];
+    // compute
+    let oMin=0,oMax=0,oFrom=false,oL=[],m=0,mFrom=false,mL=[],y=0,yFrom=false,yL=[],vL=[];
+    const b=s.base?D.BY[s.base]:null;
+    if(b){oMin+=b.p;oMax+=b.p;if(b.type!=='f')oFrom=true;oL.push({k:b.code+' '+b[o],v:D.price(b,L)});
+      const r=D.RENEW[b.code];if(r){y+=r.p;if(r.from)yFrom=true;yL.push({k:b.code+' '+t.renewal,v:D.renewLabel(b.code,L)});rules.push(t.rRenew.replace('{c}',b.code));}
+      if(b.code==='WEB-02')vL.push({k:t.domRenew,v:t.actual});if(DOM_BUDGET.includes(b.code))vL.push({k:t.domDiff,v:t.actual});if(b.code==='WEB-03')vL.push({k:t.domRenew,v:t.actual});}
+    let bkp=false;
+    [...ONE,...INT,...MON].filter(on).forEach(c=>{const it=D.BY[c],q=QTY.includes(c)?(s.qty[c]||1):1;
+      if((c==='INF-11'||c==='SEC-06')){if(bkp)return;bkp=true;if(s.add['INF-11']&&s.add['SEC-06'])rules.push(t.rBkp);}
+      const lbl=c+' '+it[o]+(q>1?' ×'+q:'');
+      if(it.type==='a'){vL.push({k:c+' '+t.domReg,v:t.actual});return;}
+      if(it.bill==='m'){m+=it.p;if(it.type!=='f')mFrom=true;mL.push({k:lbl,v:D.price(it,L)});return;}
+      oMin+=it.p*q;oMax+=(it.max||it.p)*q;if(it.type==='s')oFrom=true;oL.push({k:lbl,v:q>1?(it.type==='r'?fmt(it.p*q)+'–'+strip(fmt(it.max*q)):(it.type==='s'?t.from+' ':'')+fmt(it.p*q)):D.price(it,L)});});
+    const val=(min,max,from)=>min===0&&max===0?t.dash:(from?t.from+' ':'')+(min===max?fmt(min):fmt(min)+'–'+strip(fmt(max)));
+    const quote=oFrom||mFrom||yFrom||oMin!==oMax;
+    const groups=[{label:t.gOnce,value:val(oMin,oMax,oFrom),lines:oL.length?oL:[{k:t.nothing,v:''}]},{label:t.gMonth,value:m?(mFrom?t.from+' ':'')+fmt(m)+' '+t.month:t.dash,lines:mL},{label:t.gYear,value:val(y,y,yFrom),lines:yL},{label:t.gVendor,value:vL.length?String(vL.length):t.dash,lines:vL}];
+    const codes=[s.base,...[...ONE,...INT,...MON].filter(on)].filter(Boolean);
+    const summary=codes.join(', ')+' · '+t.gOnce+': '+val(oMin,oMax,oFrom)+(m?' · '+t.gMonth+': '+fmt(m):'');
+    return {...base0,steps,groups,rules,hasRules:rules.length>0,pill:quote?t.pillQ:t.pillF,pillBg:quote?'var(--bg)':'var(--inv)',pillFg:quote?'var(--tx)':'var(--invtx)',
+      sendHref:D.page('Contact',{service:s.base||codes[0]||'',est:summary}),
+      copyLink:()=>{try{navigator.clipboard.writeText(location.href);}catch(e){}this.setState({copied:true});clearTimeout(this.ct);this.ct=setTimeout(()=>this.setState({copied:false}),2000);}};
+  }
+}
+</script>
+</body>
+</html>

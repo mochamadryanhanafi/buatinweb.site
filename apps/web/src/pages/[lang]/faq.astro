@@ -1,0 +1,23 @@
+---
+import Base from '~/layouts/Base.astro';
+import Faq from '~/components/islands/Faq';
+import { paths, type L } from '~/lib/i18n';
+import { T } from '~/i18n/faq.js';
+import { page } from '@bw/shared';
+export const getStaticPaths = paths;
+const lang = Astro.params.lang as L;
+const t = T[lang];
+---
+<Base lang={lang} active="FAQ" title={`FAQ — Buatinweb.site`} desc={t.sub}>
+<div class="wrap">
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:clamp(32px,6vw,80px);padding-top:clamp(48px,7vw,88px);align-items:start">
+<div style="position:sticky;top:100px">
+<p class="eyebrow">FAQ</p>
+<h1 class="h1" style="max-width:9ch">{t.title}</h1>
+<p style="margin:24px 0 0;color:var(--tx2);max-width:26em">{t.sub}</p>
+<a href={page(lang, 'Contact')} class="btn" style="display:inline-flex;margin-top:28px">{t.ask}</a>
+</div>
+<Faq lang={lang} client:load />
+</div>
+</div>
+</Base>

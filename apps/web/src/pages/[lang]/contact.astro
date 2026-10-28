@@ -1,0 +1,29 @@
+---
+import Base from '~/layouts/Base.astro';
+import ContactForm from '~/components/islands/ContactForm';
+import { paths, type L } from '~/lib/i18n';
+import { T } from '~/i18n/contact.js';
+export const getStaticPaths = paths;
+const lang = Astro.params.lang as L;
+const t = T[lang];
+---
+<Base lang={lang} active="" title={`${t.title} — Buatinweb.site`} desc={t.sub}>
+<div class="wrap">
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,380px),1fr));gap:clamp(32px,6vw,80px);padding-top:clamp(48px,7vw,88px);align-items:start">
+<div>
+<p class="eyebrow">{t.eyebrow}</p>
+<h1 class="h1" style="max-width:10ch">{t.title}</h1>
+<p style="margin:24px 0 0;color:var(--tx2);max-width:28em;text-wrap:pretty">{t.sub}</p>
+<ol style="list-style:none;margin:40px 0 0;padding:0;border-top:1px solid var(--tx)">
+{t.next.map((x: string[], i: number) => <li style="display:flex;gap:16px;padding:14px 0;border-bottom:1px solid var(--bd)"><span class="mono" style="font-size:12px;color:var(--tx2);width:24px;padding-top:3px">{String(i + 1).padStart(2, '0')}</span><span><span style="font-weight:600;display:block">{x[0]}</span><span style="font-size:14px;color:var(--tx2)">{x[1]}</span></span></li>)}
+</ol>
+<dl style="margin:40px 0 0;border-top:1px solid var(--bd);font-size:15px">
+<div style="display:flex;justify-content:space-between;gap:16px;padding:12px 0;border-bottom:1px solid var(--bd)"><dt style="color:var(--tx2)">Email</dt><dd class="mono" style="margin:0;font-size:13px">[ {t.ownerSet} ]</dd></div>
+<div style="display:flex;justify-content:space-between;gap:16px;padding:12px 0;border-bottom:1px solid var(--bd)"><dt style="color:var(--tx2)">WhatsApp</dt><dd class="mono" style="margin:0;font-size:13px">[ {t.ownerSet} ]</dd></div>
+<div style="display:flex;justify-content:space-between;gap:16px;padding:12px 0;border-bottom:1px solid var(--bd)"><dt style="color:var(--tx2)">{t.hours}</dt><dd class="mono" style="margin:0;font-size:13px">{t.hoursV}</dd></div>
+</dl>
+</div>
+<ContactForm lang={lang} client:load />
+</div>
+</div>
+</Base>

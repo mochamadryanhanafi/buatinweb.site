@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;600&family=Geist+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+body{margin:0;--bg:#FFFFFF;--sf:#F5F5F5;--tx:#111111;--tx2:#525252;--bd:#E5E5E5;--bd2:#8A8A8A;--inv:#111111;--invtx:#FFFFFF;--err:#B42318;--ok:#146C34;--logo-f:none;--logo-b:multiply;background:var(--bg);color:var(--tx);font-family:'Geist',system-ui,sans-serif;font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased}
+body[data-theme="dark"]{--bg:#0A0A0A;--sf:#151515;--tx:#F5F5F5;--tx2:#B3B3B3;--bd:#333333;--bd2:#8C8C8C;--inv:#F5F5F5;--invtx:#0A0A0A;--err:#FF8A80;--ok:#6FDC8C;--logo-f:invert(1);--logo-b:screen}
+*{box-sizing:border-box}
+a{color:var(--tx);text-decoration-thickness:1px;text-underline-offset:3px}
+a:hover{color:var(--tx2)}
+::placeholder{color:var(--tx2);opacity:1}
+</style>
+</helmet>
+<div style="min-height:100vh;background:var(--bg);color:var(--tx)">
+<dc-import name="BW Header" active="FAQ" hint-size="100%,68px"></dc-import>
+<main id="main" style="max-width:1280px;margin:0 auto;padding:0 clamp(20px,4vw,40px)">
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:clamp(32px,6vw,80px);padding-top:clamp(48px,7vw,88px);align-items:start">
+<div style="position:sticky;top:100px">
+<p style="font:400 13px/1.4 'Geist Mono',monospace;color:var(--tx2);margin:0 0 24px;letter-spacing:0.02em;text-transform:uppercase">FAQ</p>
+<h1 style="font-size:clamp(40px,6vw,80px);line-height:0.98;letter-spacing:-0.045em;font-weight:600;margin:0;max-width:9ch">{{ t.title }}</h1>
+<p style="margin:24px 0 0;color:var(--tx2);max-width:26em">{{ t.sub }}</p>
+<a href="Buatinweb%20Contact.dc.html" style="display:inline-flex;margin-top:28px;background:var(--inv);color:var(--invtx);text-decoration:none;padding:14px 22px;border-radius:6px;font-weight:600">{{ t.ask }}</a>
+</div>
+<div>
+<label style="display:flex;align-items:center;gap:10px;border:1px solid var(--bd2);border-radius:6px;padding:0 14px;min-height:46px">
+<span style="font:400 12px 'Geist Mono',monospace;color:var(--tx2)">{{ t.search }}</span>
+<input type="search" value="{{ q }}" onChange="{{ onQ }}" placeholder="{{ t.searchPh }}" style="flex:1;min-width:0;border:0;outline:0;background:transparent;color:var(--tx);font:inherit;height:44px">
+</label>
+<div role="group" aria-label="{{ t.topics }}" style="display:flex;gap:6px;flex-wrap:wrap;margin:12px 0 28px">
+<sc-for list="{{ chips }}" as="o" hint-placeholder-count="5"><button type="button" aria-pressed="{{ o.on }}" onClick="{{ o.pick }}" style="font:inherit;font-size:14px;min-height:38px;padding:0 14px;border:1px solid var(--bd2);border-radius:999px;cursor:pointer;background:{{ o.bg }};color:{{ o.fg }}">{{ o.label }}</button></sc-for>
+</div>
+<div style="border-top:1px solid var(--tx)">
+<sc-for list="{{ faqs }}" as="f" hint-placeholder-count="8">
+<div style="border-bottom:1px solid var(--bd)">
+<h2 style="margin:0"><button type="button" id="{{ f.bid }}" aria-expanded="{{ f.open }}" aria-controls="{{ f.pid }}" onClick="{{ f.toggle }}" style="width:100%;display:flex;justify-content:space-between;gap:16px;align-items:center;font:inherit;font-size:17px;font-weight:600;text-align:left;padding:18px 0;min-height:56px;border:0;background:transparent;color:var(--tx);cursor:pointer"><span><span style="display:block;font:400 11px 'Geist Mono',monospace;color:var(--tx2);text-transform:uppercase;letter-spacing:0.04em;margin-bottom:4px">{{ f.topic }}</span>{{ f.q }}</span><span aria-hidden="true" style="font-family:'Geist Mono',monospace;font-weight:400;font-size:18px">{{ f.sign }}</span></button></h2>
+<sc-if value="{{ f.open }}" hint-placeholder-val="{{ false }}"><div id="{{ f.pid }}" role="region" aria-labelledby="{{ f.bid }}" style="padding:0 0 20px;color:var(--tx2);max-width:42em;text-wrap:pretty">{{ f.a }}</div></sc-if>
+</div>
+</sc-for>
+</div>
+<sc-if value="{{ empty }}" hint-placeholder-val="{{ false }}"><p style="color:var(--tx2);padding:32px 0">{{ t.empty }}</p></sc-if>
+</div>
+</div>
+</main>
+<dc-import name="BW Footer" hint-size="100%,220px"></dc-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+const T={en:{title:'Common questions.',sub:'Short answers about pricing, domains, support and how projects run.',ask:'Ask something else',search:'SEARCH',searchPh:'e.g. domain, renewal, USD',topics:'Topics',empty:'No questions match. Send us a brief instead.',
+tp:{all:'All',price:'Pricing',domain:'Domains & hosting',support:'Support',process:'Process',intl:'International'},
+q:[['price','What does “From” mean?','It is the starting price for the stated scope. The final price is set in a quotation after we review what you need.'],
+['price','Why are renewals shown separately?','So the first payment is never inflated or hidden. Each package lists its renewal from year two on its own line.'],
+['price','Is the estimator price final?','No. It is indicative. The quotation, valid for 14 days, sets the final price and scope.'],
+['price','Can a diagnosis be credited?','Yes, once. If you continue with the same fix, the paid diagnosis is deducted — e.g. IDR 299,000 − 99,000 = 200,000 remaining.'],
+['domain','Do I need my own domain?','No. Compro Mini runs on a subdomain such as yourname.buatinweb.site. WEB-02 connects a domain you own; WEB-03 registers a new one.'],
+['domain','Whose name is the domain in?','Always yours. We register or connect it on your behalf, but ownership stays with you.'],
+['domain','What happens after year one?','Compro Mini renews at IDR 99,000 a year for subdomain and managed hosting. Content changes are billed separately.'],
+['support','Is support available 24/7?','No. Maintenance plans buy a fixed number of hours each month, during service hours (WIB, UTC+7).'],
+['support','Do you guarantee a bug is fixed?','A diagnosis reports the cause and next step. Fixes are quoted for a reproducible defect; not every issue is guaranteed.'],
+['process','How do payments work?','Compro Mini is paid in full once scope is approved. Standard projects are 50% upfront and 50% before handover. Larger projects use milestones.'],
+['process','When does work start?','Once the brief, materials, access and agreed payment are all in place.'],
+['process','Can I see client work?','Only with written permission from the client. Until then the portfolio shows clearly labelled template demos.'],
+['intl','Can I pay in USD?','Prices are in IDR for every language. A USD estimate appears only once an approved exchange rate is set.'],
+['intl','Which time zone do you work in?','WIB, UTC+7. Replies and support happen during those service hours.']]},
+id:{title:'Pertanyaan umum.',sub:'Jawaban singkat seputar harga, domain, support dan jalannya proyek.',ask:'Tanyakan hal lain',search:'CARI',searchPh:'mis. domain, perpanjangan, USD',topics:'Topik',empty:'Tidak ada pertanyaan yang cocok. Kirim brief saja.',
+tp:{all:'Semua',price:'Harga',domain:'Domain & hosting',support:'Support',process:'Proses',intl:'Internasional'},
+q:[['price','Apa arti “Mulai”?','Harga awal untuk scope yang tertulis. Harga final ditetapkan dalam quotation setelah kami meninjau kebutuhan Anda.'],
+['price','Mengapa perpanjangan ditampilkan terpisah?','Agar pembayaran awal tidak membengkak atau tersembunyi. Setiap paket mencantumkan perpanjangan tahun ke-2 pada barisnya sendiri.'],
+['price','Apakah harga estimator final?','Tidak. Sifatnya indikatif. Quotation yang berlaku 14 hari menetapkan harga dan scope final.'],
+['price','Apakah diagnosis bisa dikreditkan?','Ya, satu kali. Jika dilanjutkan ke perbaikan yang sama, diagnosis dipotong — mis. Rp299.000 − Rp99.000 = sisa Rp200.000.'],
+['domain','Apakah saya perlu domain sendiri?','Tidak. Compro Mini memakai subdomain seperti namaanda.buatinweb.site. WEB-02 memakai domain milik Anda; WEB-03 mendaftarkan yang baru.'],
+['domain','Domain atas nama siapa?','Selalu atas nama Anda. Kami mendaftarkan atau menghubungkannya, tetapi kepemilikan tetap milik Anda.'],
+['domain','Bagaimana setelah tahun pertama?','Compro Mini diperpanjang Rp99.000/tahun untuk subdomain dan hosting terkelola. Perubahan konten ditagih terpisah.'],
+['support','Apakah support tersedia 24/7?','Tidak. Paket maintenance membeli jumlah jam tertentu per bulan, pada jam layanan (WIB, UTC+7).'],
+['support','Apakah bug pasti selesai?','Diagnosis melaporkan penyebab dan langkah berikutnya. Perbaikan diberi penawaran untuk defect yang dapat direproduksi; tidak semua dijamin.'],
+['process','Bagaimana pembayarannya?','Compro Mini dibayar penuh setelah scope disetujui. Proyek standar 50% di awal dan 50% sebelum serah terima. Proyek besar per milestone.'],
+['process','Kapan pengerjaan dimulai?','Setelah brief, materi, akses dan pembayaran yang disepakati lengkap.'],
+['process','Bisakah melihat proyek klien?','Hanya dengan izin tertulis klien. Sementara itu portfolio menampilkan demo template berlabel jelas.'],
+['intl','Bisakah membayar dalam USD?','Harga dalam rupiah untuk semua bahasa. Estimasi USD hanya muncul setelah kurs disetujui.'],
+['intl','Zona waktu kerja?','WIB, UTC+7. Balasan dan support berlangsung pada jam layanan tersebut.']]}};
+class Component extends DCLogic {
+  state={L:'en',q:'',tp:'all',open:0};
+  componentDidMount(){let L='en';try{L=localStorage.getItem('bw-locale')||'en';}catch(e){}
+    this.setState({L});this.onP=e=>e.detail.locale&&this.setState({L:e.detail.locale});window.addEventListener('bw-prefs',this.onP);}
+  componentWillUnmount(){window.removeEventListener('bw-prefs',this.onP);}
+  renderVals(){const s=this.state,t=T[s.L]||T.en,ql=s.q.trim().toLowerCase();
+    const seg=on=>({bg:on?'var(--inv)':'transparent',fg:on?'var(--invtx)':'var(--tx)'});
+    const list=t.q.map((x,i)=>({i,k:x[0],q:x[1],a:x[2]})).filter(x=>(s.tp==='all'||x.k===s.tp)&&(!ql||(x.q+' '+x.a).toLowerCase().includes(ql)));
+    return {t,q:s.q,onQ:e=>this.setState({q:e.target.value}),empty:list.length===0,
+      chips:Object.keys(t.tp).map(k=>({label:t.tp[k],on:s.tp===k,...seg(s.tp===k),pick:()=>this.setState({tp:k})})),
+      faqs:list.map(x=>{const open=s.open===x.i||!!ql;return {bid:'fq-'+x.i,pid:'fa-'+x.i,topic:t.tp[x.k],q:x.q,a:x.a,open,sign:open?'−':'+',toggle:()=>this.setState({open:s.open===x.i?-1:x.i})};})};}
+}
+</script>
+</body>
+</html>
