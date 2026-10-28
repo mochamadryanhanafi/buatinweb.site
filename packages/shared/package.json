@@ -2,5 +2,5 @@
   "name": "@bw/shared",
   "version": "2026.10.27",
   "type": "module",
-  "exports": { ".": "./bw-data.js", "./validate": "./validate.js" }
+  "exports": { ".": "./bw-data.js", "./validate": "./validate.js", "./prices": "./prices.js" }
 }
