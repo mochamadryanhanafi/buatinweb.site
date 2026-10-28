@@ -38,7 +38,7 @@ export default function Estimator({ lang }: { lang: L }) {
   if (base === 'BND-03') { locked['SHT-05'] = t.incl; if (add['SHT-05']) rules.push(t.rBnd); }
   if (DOM_BUDGET.includes(base)) locked['ADD-02'] = t.budgetIncl;
   const on = (c: string) => !!add[c] && !locked[c];
-  const mkOpt = (c: string): Opt => { const it = BY[c], lk = locked[c], q = qty[c] || 1; return { id: 'o-' + c, code: c, kind: 'checkbox', grp: c, name: it[o], price: lk ? '' : price(it, lang), note: lk || (c === 'INF-11' && add['SEC-06'] ? t.same.replace('{c}', 'SEC-06') : c === 'SEC-06' && add['INF-11'] ? t.same.replace('{c}', 'INF-11') : c === 'MS-01' ? t.oneTier : ''),
+  const mkOpt = (c: string): Opt => { const it = BY[c], lk = locked[c], q = qty[c] || 1; return { id: 'o-' + c, code: c, kind: 'checkbox', grp: c, name: it[o], price: lk ? '' : price(it, lang), note: lk || (c === 'INF-11' && add['SEC-06'] ? t.same.replace('{c}', 'SEC-06') : c === 'SEC-06' && add['INF-11'] ? t.same.replace('{c}', 'INF-11') : ''),
     on: lk && c !== 'ADD-02' ? true : !!add[c], disabled: !!lk, op: lk ? 0.55 : 1, toggle: () => toggle(c),
     hasQty: QTY.includes(c) && on(c), qty: q, inc: () => setQty((s) => ({ ...s, [c]: Math.min(10, (s[c] || 1) + 1) })), dec: () => setQty((s) => ({ ...s, [c]: Math.max(1, (s[c] || 1) - 1) })) }; };
   const baseOpts: Opt[] = BASES.map((c: string) => c ? { id: 'b-' + c, code: c, kind: 'radio', grp: 'base', name: BY[c][o], price: price(BY[c], lang), note: RENEW[c] ? (lang === 'id' ? 'Tahun ke-2: ' : 'Year 2: ') + renewLabel(c, lang) : '', on: base === c, disabled: false, op: 1, toggle: () => setBase(c) }

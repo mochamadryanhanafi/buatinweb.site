@@ -12,7 +12,7 @@ const lang = Astro.params.lang as L;
 const t = T[lang];
 const id = lang === 'id';
 const nm = (c: string) => (BY as any)[c][lang];
-const SPEC = ['WEB-01', 'WEB-04', 'WEB-05', 'WEB-06', 'APP-05', 'BUG-01', 'DEP-02', 'SHT-05', 'MS-02'];
+const SPEC = ['WEB-01', 'WEB-04', 'WEB-05', 'WEB-06', 'APP-05', 'BUG-01', 'DEP-02', 'SHT-05', 'DBM-04'];
 const DEMOS = [
   { code: 'WEB-01', name: id ? 'Template Compro Mini' : 'Compro Mini template', url: 'compro.buatinweb.site', href: 'https://compro.buatinweb.site', ph: 'template screenshot' },
   { code: 'WEB-04', name: id ? 'Template landing page' : 'Landing page template', url: id ? 'Demo template · 7 section' : 'Template demo · 7 sections', href: page(lang, 'Portfolio'), ph: 'landing page screenshot' },
