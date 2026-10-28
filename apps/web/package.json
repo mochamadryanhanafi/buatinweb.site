@@ -9,10 +9,13 @@
     "deploy": "astro build && wrangler pages deploy dist --project-name buatinweb-site"
   },
   "dependencies": {
-    "@bw/shared": "workspace:*",
     "@astrojs/preact": "^3.5.0",
+    "@astrojs/sitemap": "3.1.6",
+    "@bw/shared": "workspace:*",
     "astro": "^4.16.0",
     "preact": "^10.24.0"
   },
-  "devDependencies": { "wrangler": "^3.90.0" }
+  "devDependencies": {
+    "wrangler": "^3.90.0"
+  }
 }

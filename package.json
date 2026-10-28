@@ -7,6 +7,7 @@
     "build": "bun run --cwd apps/web build",
     "test": "bun test apps/api",
     "deploy:api": "bun run --cwd apps/api deploy",
-    "deploy:web": "bun run --cwd apps/web deploy"
+    "deploy:web": "bun run --cwd apps/web deploy",
+    "deploy": "bun run deploy:api && bun run deploy:web"
   }
 }
