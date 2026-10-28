@@ -9,4 +9,4 @@ ALLOWED_ORIGINS = "http://localhost:4321,https://buatinweb.site,https://www.buat
 [[d1_databases]]
 binding = "DB"
 database_name = "bw-briefs"
-database_id = "REPLACE_WITH_wrangler_d1_create_OUTPUT"
+database_id = "61505bfc-ba6f-4497-94b0-f0813c707fa2"
