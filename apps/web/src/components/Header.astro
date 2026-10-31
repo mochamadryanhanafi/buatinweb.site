@@ -25,7 +25,7 @@ const gap = home ? 28 : 24;
 </nav>
 <div class="dsk" style="margin-left:auto;display:flex;align-items:center;gap:12px">
 <div role="group" aria-label={HT.langLabel} class="seg">
-{langs.map(([k, l]) => <a href={`/${k}${path}`} hreflang={k} aria-pressed={lang === k} style="text-decoration:none;font-size:13px;padding:5px 10px;border-radius:4px" class={lang === k ? 'on' : ''}>{l}</a>)}
+{langs.map(([k, l]) => <a href={`/${k}${path}`} hreflang={k} aria-current={lang === k ? 'true' : undefined} style="text-decoration:none;font-size:13px;padding:5px 10px;border-radius:4px" class={lang === k ? 'on' : ''}>{l}</a>)}
 </div>
 <div role="group" aria-label={HT.themeLabel} class="seg" data-theme-group>
 {themes.map(([k, l]) => <button type="button" data-theme={k} aria-pressed="false">{l}</button>)}
@@ -38,7 +38,7 @@ const gap = home ? 28 : 24;
 {PAGES.map((p, i) => <a href={page(lang, p)} style={`text-decoration:none;font-size:18px;padding:10px 0;border-bottom:1px solid var(--bd);font-weight:${active === p ? 600 : 400}`}>{HT.nav[i]}</a>)}
 <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:16px">
 <div role="group" aria-label={HT.langLabel} class="seg lg">
-{langs.map(([k, l]) => <a href={`/${k}${path}`} hreflang={k} aria-pressed={lang === k} class={lang === k ? 'on' : ''} style="text-decoration:none;font-size:14px;min-height:40px;padding:0 12px;border-radius:4px;display:flex;align-items:center">{l}</a>)}
+{langs.map(([k, l]) => <a href={`/${k}${path}`} hreflang={k} aria-current={lang === k ? 'true' : undefined} class={lang === k ? 'on' : ''} style="text-decoration:none;font-size:14px;min-height:40px;padding:0 12px;border-radius:4px;display:flex;align-items:center">{l}</a>)}
 </div>
 <div role="group" aria-label={HT.themeLabel} class="seg lg" data-theme-group>
 {themes.map(([k, l]) => <button type="button" data-theme={k} aria-pressed="false">{l}</button>)}

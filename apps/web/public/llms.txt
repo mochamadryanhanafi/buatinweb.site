@@ -1,0 +1,21 @@
+# Buatinweb.site
+
+> Studio jasa pembuatan website, aplikasi web, technical support, dan solusi data/AI untuk klien di Indonesia dan luar negeri. Harga transparan, dirilis sebagai versioned price book.
+
+Buatinweb.site menyediakan tujuh kategori layanan: website (template & custom), aplikasi web, technical support/perbaikan, dan konsultasi data/AI. Setiap layanan punya kode harga tetap yang dapat dicari di halaman pricing. Konten tersedia dalam Bahasa Indonesia (`/id/`) dan English (`/en/`).
+
+## Pages
+
+- [Home (EN)](https://buatinweb.site/en/): Overview, hero, price book preview.
+- [Home (ID)](https://buatinweb.site/id/): Ringkasan, harga, dan katalog.
+- [Services](https://buatinweb.site/en/services/): Full service catalogue by category.
+- [Pricing](https://buatinweb.site/en/pricing/): Searchable price list with scope, exclusions, renewals.
+- [Estimator](https://buatinweb.site/en/estimator/): Build an indicative cost estimate before contacting us.
+- [Portfolio](https://buatinweb.site/en/portfolio/): Demo work, clearly labelled.
+- [About](https://buatinweb.site/en/about/): Studio background.
+- [FAQ](https://buatinweb.site/en/faq/): Common questions.
+- [Contact](https://buatinweb.site/en/contact/): Brief submission form.
+
+## Optional
+
+- [Sitemap](https://buatinweb.site/sitemap-index.xml): Full URL list for crawlers.

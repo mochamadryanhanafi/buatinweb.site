@@ -1,0 +1,17 @@
+{
+  "specVersion": "1.0",
+  "host": {
+    "displayName": "Buatinweb.site",
+    "documentationUrl": "https://buatinweb.site"
+  },
+  "entries": [
+    {
+      "identifier": "urn:air:buatinweb.site:docs:llms",
+      "displayName": "Buatinweb.site llms.txt",
+      "type": "text/plain",
+      "url": "https://buatinweb.site/llms.txt",
+      "description": "Structured overview of Buatinweb.site's services and key pages for AI agents.",
+      "tags": ["website-development", "web-application", "technical-support", "data-ai", "indonesia"]
+    }
+  ]
+}
